@@ -126,3 +126,4 @@ while running:
                 running = False
             if event.key == pygame.K_SPACE:
                 paused = not paused
+pygame.quit()
