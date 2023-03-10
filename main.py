@@ -31,10 +31,10 @@ one_y = 0.5
 running = True
 while running:
     clock.tick(FPS)
-    pg.display.set_caption("main")
+    pg.display.set_caption("DVD")
     screen.fill(black)
 
-    text_display("Hello world",player[0],player[1])
+    text_display("<DVD>",player[0],player[1])
     if player[0] >= W or player[0] <= 0:
         one_x *= -1
         hue += 0.1

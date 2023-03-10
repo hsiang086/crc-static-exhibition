@@ -99,23 +99,23 @@ while running:
                 zbuffer[position] = ooz  # larger ooz means the pixel is closer to the viewer than what's already plotted
                 luminance_index = int(L * 8)  # we multiply by 8 to get luminance_index range 0..11 (8 * sqrt(2) = 11)
                 output[position] = chars[luminance_index if luminance_index > 0 else 0]
-
-    for i in range(screen_height):
-        y_pixel += pixel_height
-        for j in range(screen_width):
-            x_pixel += pixel_width
-            text_display(output[k], x_pixel, y_pixel)
-            k += 1
-        x_pixel = 0
-    y_pixel = 0
-    k = 0
-
-    A += 0.15
-    B += 0.035
-
-    hue += 0.005
-
     if not paused:
+        for i in range(screen_height):
+            y_pixel += pixel_height
+            for j in range(screen_width):
+                x_pixel += pixel_width
+                text_display(output[k], x_pixel, y_pixel)
+                k += 1
+            x_pixel = 0
+        y_pixel = 0
+        k = 0
+
+        A += 0.15
+        B += 0.035
+
+        hue += 0.005
+
+    
         pygame.display.update()
 
     for event in pygame.event.get():
