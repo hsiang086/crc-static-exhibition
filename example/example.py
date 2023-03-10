@@ -1,6 +1,7 @@
 import os
 from math import cos, sin
 import pygame
+from pygame.key import get_pressed
 import colorsys
 
 WHITE = (255, 255, 255)
@@ -124,6 +125,6 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
-            if event.key == pygame.K_SPACE:
-                paused = not paused
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            paused = not paused
 pygame.quit()
