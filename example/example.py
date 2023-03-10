@@ -79,7 +79,7 @@ while running:
             circlex = R2 + R1 * costheta
             circley = R1 * sintheta
 
-            # 3D (x, y, z) coordinates after rotation
+            # 3D (x, y, z) coordinates after rotation (rotation matrix)
             x = circlex * (cosB * cosphi + sinA * sinB * sinphi) - circley * cosA * sinB
             y = circlex * (sinB * cosphi - sinA * cosB * sinphi) + circley * cosA * cosB
             z = K2 + cosA * circlex * sinphi + circley * sinA
@@ -91,7 +91,7 @@ while running:
 
             position = xp + screen_width * yp
 
-            # luminance (L ranges from -sqrt(2) to sqrt(2))
+            # luminance (L ranges from -sqrt(2) to sqrt(2)) (surface normal)
             L = cosphi * costheta * sinB - cosA * costheta * sinphi - sinA * sintheta + cosB * (
                         cosA * sintheta - costheta * sinA * sinphi)
 
