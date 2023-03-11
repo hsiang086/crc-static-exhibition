@@ -18,6 +18,15 @@ player = pygame.Surface((pixel_w,pixel_w))
 player.fill(WHITE)
 player_x = 0
 
+#obstacles
+class Temp(pygame.sprite.Sprite):
+    def __init__(self,color,initial_position):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([pixel_w,pixel_w])
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
+        self.rect.topleft=initial_position
+
 screen = pygame.display.set_mode(RES)
 clock = pygame.time.Clock()
 font = pygame.font.SysFont('Arial', 40, bold=True)
