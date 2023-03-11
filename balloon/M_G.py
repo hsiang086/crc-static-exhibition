@@ -1,9 +1,11 @@
 import pygame
+import random
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
 FPS = 60
-RES = W, H = (600,600)
+RES = W, H = (600,800)
 
 center_x = W // 2
 center_y = H // 2
@@ -11,6 +13,7 @@ center_y = H // 2
 #road quantity
 r_q = 3
 pixel_w = W // r_q
+pixel_H = H // r_q * W / H
 
 pygame.init()
 
@@ -19,7 +22,7 @@ player.fill(WHITE)
 player_x = 0
 
 #obstacles
-class Temp(pygame.sprite.Sprite):
+class Obstacles(pygame.sprite.Sprite):
     def __init__(self,color,initial_position):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([pixel_w,pixel_w])
@@ -48,7 +51,8 @@ while running:
     elif player_x < 0:
         player_x = 0
     screen.blit(player,(player_x,H-pixel_w))
-
+    ob = Obstacles(GREEN,[(random.randint(0,r_q-1))*pixel_w,(random.randint(0,r_q-1)*pixel_H)])
+    screen.blit(ob.image,ob.rect)
     pygame.display.update()
 
     for event in pygame.event.get():
