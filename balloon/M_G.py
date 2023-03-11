@@ -9,7 +9,7 @@ center_x = W // 2
 center_y = H // 2
 
 #road quantity
-r_q = 4
+r_q = 3
 pixel_w = W // r_q
 
 pygame.init()
