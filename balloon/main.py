@@ -8,11 +8,13 @@ RES = W, H = (600,600)
 center_x = W // 2
 center_y = H // 2
 
-pixel_w = W // 3 
+#road quantity
+r_q = 4
+pixel_w = W // r_q
 
 pygame.init()
 
-player = pygame.Surface((200,200))
+player = pygame.Surface((pixel_w,200))
 player.fill(WHITE)
 player_x = 0
 
@@ -37,6 +39,7 @@ while running:
     elif player_x < 0:
         player_x = 0
     screen.blit(player,(player_x,H-pixel_w))
+
     pygame.display.update()
 
     for event in pygame.event.get():
