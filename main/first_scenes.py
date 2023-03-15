@@ -7,6 +7,7 @@ def init():
     global WIDTH, HEIGHT, RES
     global screen
 
+    global font
     global clock
     global FPS
 
@@ -18,8 +19,11 @@ def init():
     pygame.init()
     pygame.display.set_caption('CRC')
 
+    #font
+    font = pygame.font.SysFont('Arial', 20, bold=True)
+
     # screen
-    RES = WIDTH, HEIGHT = 768, 512
+    RES = WIDTH, HEIGHT = 750, 450
     screen = pygame.display.set_mode(RES)
     screen.fill('BLACK')
 
@@ -32,7 +36,10 @@ def init():
     first_scenes.add(Door(), Lock(), Ascii())
 
     lock_focusing = pygame.sprite.Group()
-    lock_focusing.add(DetailedLock(), Back(first_scenes))
+    for i in range (9):
+        DL = DetailedLock(i)
+        lock_focusing.add(DL)
+    lock_focusing.add(Back(first_scenes))
 
     ascii_focusing = pygame.sprite.Group()
     ascii_focusing.add(DetailedAscii(), Back(first_scenes))
@@ -101,13 +108,15 @@ class Ascii(pygame.sprite.Sprite):
 
 # lock focusing
 class DetailedLock(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, loc):
         super().__init__()
-        self.image = pygame.Surface((WIDTH * 48 / 100, HEIGHT * 84 / 100))
+        self.image = pygame.Surface((100, 100))
         self.image.fill('BLUE')
         self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH / 2
-        self.rect.centery = HEIGHT / 2
+        locx = 3 - (loc % 3)
+        locy = 0.5 + (loc // 3)
+        self.rect.left = WIDTH * locx / 5
+        self.rect.centery = HEIGHT * locy / 3
 
 
 # ascii focusing
