@@ -11,8 +11,8 @@ def init():
     global FPS
 
     global first_scenes
-
     global lock_focusing
+    global ascii_focusing
 
     # idk
     pygame.init()
@@ -29,10 +29,13 @@ def init():
 
     # scenes
     first_scenes = pygame.sprite.Group()
-    first_scenes.add(Door(), Lock())
+    first_scenes.add(Door(), Lock(), Ascii())
 
     lock_focusing = pygame.sprite.Group()
     lock_focusing.add(DetailedLock(), Back(first_scenes))
+
+    ascii_focusing = pygame.sprite.Group()
+    ascii_focusing.add(DetailedAscii(), Back(first_scenes))
 
 
 # back button
@@ -79,6 +82,21 @@ class Lock(pygame.sprite.Sprite):
                 screen.fill('BLACK')
                 lock_focusing.draw(screen)
 
+class Ascii(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface((WIDTH / 15, WIDTH / 15))
+        self.image.fill('GREEN')
+        self.rect = self.image.get_rect()
+        self.rect.left = WIDTH * 15 / 100
+        self.rect.bottom = HEIGHT * 85 / 100
+
+    def update(self):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
+                screen.fill('BLACK')
+                ascii_focusing.draw(screen)
+
 
 # lock focusing
 class DetailedLock(pygame.sprite.Sprite):
@@ -89,6 +107,19 @@ class DetailedLock(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
         self.rect.centery = HEIGHT / 2
+
+
+# ascii focusing
+class DetailedAscii(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load('./images/ascii.png').convert_alpha()
+        # self.image = pygame.Surface((WIDTH * 2 / 5, WIDTH * 2 / 5))
+        # self.image.fill('GREEN')
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH / 2
+        self.rect.centery = HEIGHT / 2
+
 
 
 
