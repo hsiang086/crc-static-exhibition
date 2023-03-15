@@ -141,6 +141,9 @@ while True:
     for event in events:
         if event.type == pygame.QUIT:
             os._exit(True)
+        if event == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                os._exit(True)
 
     first_scenes.update()
     lock_focusing.update()
