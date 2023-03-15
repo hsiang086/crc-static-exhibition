@@ -134,7 +134,7 @@ while True:
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
-            os._exit(1)
+            os._exit(True)
 
     first_scenes.update()
     lock_focusing.update()
