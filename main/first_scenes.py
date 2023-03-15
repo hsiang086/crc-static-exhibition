@@ -4,7 +4,7 @@ import os
 def init():
 
     # global variable
-    global WIDTH, HEIGHT
+    global WIDTH, HEIGHT, RES
     global screen
 
     global clock
@@ -19,8 +19,8 @@ def init():
     pygame.display.set_caption('CRC')
 
     # screen
-    WIDTH, HEIGHT = 768, 512
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    RES = WIDTH, HEIGHT = 768, 512
+    screen = pygame.display.set_mode(RES)
     screen.fill('BLACK')
 
     # clock
@@ -45,8 +45,8 @@ class Back(pygame.sprite.Sprite):
         super().__init__()
         self.to_draw = to_draw
         self.image = pygame.image.load(os.path.join("images", "x.png")).convert()
-        self.image.set_colorkey("BLACK")
-        self.image = pygame.transform.scale(self.image, (30,30))
+        self.image = pygame.transform.scale(self.image, (40,40))
+        #self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
         self.rect.right = WIDTH-10
         self.rect.top = 10
