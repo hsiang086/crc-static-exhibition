@@ -29,16 +29,13 @@ def init():
 
     # scenes
     first_scenes = pygame.sprite.Group()
-    first_scenes.add(Door(), Lock(), Ascii())
+    first_scenes.add(Door(), Lock(), Ascii(), Folder())
 
     lock_focusing = pygame.sprite.Group()
     lock_focusing.add(DetailedLock(), Back(first_scenes))
 
     ascii_focusing = pygame.sprite.Group()
     ascii_focusing.add(DetailedAscii(), Back(first_scenes))
-
-#images
-
 
 
 # back button
@@ -99,6 +96,15 @@ class Ascii(pygame.sprite.Sprite):
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
                 screen.fill('BLACK')
                 ascii_focusing.draw(screen)
+
+#folder
+class Folder(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load(os.path.join("images", "new folder.png")).convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.left = WIDTH * 2 / 5
+        self.rect.bottom = HEIGHT * 2 / 3
 
 
 # lock focusing
