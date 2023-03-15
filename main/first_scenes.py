@@ -45,8 +45,8 @@ class Back(pygame.sprite.Sprite):
         super().__init__()
         self.to_draw = to_draw
         self.image = pygame.image.load(os.path.join("images", "x.png")).convert()
-        self.image = pygame.transform.scale(self.image, (40,40))
-        #self.image.set_colorkey("BLACK")
+        self.image = pygame.transform.scale(self.image, (40, 40))
+        # self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
         self.rect.right = WIDTH-10
         self.rect.top = 10
@@ -99,15 +99,6 @@ class Ascii(pygame.sprite.Sprite):
                 screen.fill('BLACK')
                 ascii_focusing.draw(screen)
 
-#folder
-class Folder(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load(os.path.join("images", "new folder.png")).convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.left = WIDTH * 2 / 5
-        self.rect.bottom = HEIGHT * 2 / 3
-
 # lock focusing
 class DetailedLock(pygame.sprite.Sprite):
     def __init__(self):
@@ -123,7 +114,7 @@ class DetailedLock(pygame.sprite.Sprite):
 class DetailedAscii(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load(os.path.join("images", "ascii.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join("images", "ascii list.png")).convert_alpha()
         # self.image = pygame.Surface((WIDTH * 2 / 5, WIDTH * 2 / 5))
         # self.image.fill('GREEN')
         self.rect = self.image.get_rect()
