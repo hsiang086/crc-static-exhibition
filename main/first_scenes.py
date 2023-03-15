@@ -17,7 +17,7 @@ def init():
 
     # idk
     pygame.init()
-    pygame.display.set_caption('CRC')
+    pygame.display.set_caption('first scene')
 
     #font
     font = pygame.font.SysFont('Arial', 20, bold=True)
