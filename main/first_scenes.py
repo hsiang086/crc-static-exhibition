@@ -29,7 +29,7 @@ def init():
 
     # scenes
     first_scenes = pygame.sprite.Group()
-    first_scenes.add(Door(), Lock(), Ascii(), Folder())
+    first_scenes.add(Door(), Lock(), Ascii())
 
     lock_focusing = pygame.sprite.Group()
     lock_focusing.add(DetailedLock(), Back(first_scenes))
@@ -46,9 +46,10 @@ class Back(pygame.sprite.Sprite):
         self.to_draw = to_draw
         self.image = pygame.image.load(os.path.join("images", "x.png")).convert()
         self.image.set_colorkey("BLACK")
+        self.image = pygame.transform.scale(self.image, (30,30))
         self.rect = self.image.get_rect()
-        self.rect.right = WIDTH
-        self.rect.top = 0
+        self.rect.right = WIDTH-10
+        self.rect.top = 10
 
     def update(self):
         for event in events:
@@ -106,7 +107,6 @@ class Folder(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH * 2 / 5
         self.rect.bottom = HEIGHT * 2 / 3
-
 
 # lock focusing
 class DetailedLock(pygame.sprite.Sprite):
