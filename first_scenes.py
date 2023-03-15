@@ -38,13 +38,14 @@ def init():
     ascii_focusing.add(DetailedAscii(), Back(first_scenes))
 
 
+
 # back button
 class Back(pygame.sprite.Sprite):
     def __init__(self, to_draw: pygame.sprite.Group):
         super().__init__()
         self.to_draw = to_draw
-        self.image = pygame.Surface((WIDTH / 15.36, HEIGHT / 10.24))
-        self.image.fill('RED')
+        self.image = pygame.image.load(os.path.join("images", "x.png")).convert()
+        self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
         self.rect.right = WIDTH
         self.rect.top = 0
