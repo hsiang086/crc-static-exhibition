@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
 		self.gravity = 0
 
 		self.jump_sound = pygame.mixer.Sound('audio/jump.mp3')
-		self.jump_sound.set_volume(0.25)
+		self.jump_sound.set_volume(0.35)
 
 	def player_input(self):
 		keys = pygame.key.get_pressed()
@@ -215,10 +215,10 @@ while True:
 		if game_active:
 			if event.type == obstacle_timer:
 				obstacle_group.add(Obstacle(choice(['fly','snail','snail','snail'])))
-				# if randint(0,2):
-				# 	obstacle_rect_list.append(snail_surf.get_rect(bottomright = (randint(900,1100),300)))
-				# else:
-				# 	obstacle_rect_list.append(fly_surf.get_rect(bottomright = (randint(900,1100),210)))
+				#if randint(0,2):
+				#	obstacle_rect_list.append(snail_surf.get_rect(bottomright = (randint(900,1100),300)))
+				#else:
+				#	obstacle_rect_list.append(fly_surf.get_rect(bottomright = (randint(900,1100),210)))
 
 			if event.type == snail_animation_timer:
 				if snail_frame_index == 0: snail_frame_index = 1
