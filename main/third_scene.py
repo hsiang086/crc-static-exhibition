@@ -80,10 +80,9 @@ class Balloon(pygame.sprite.Sprite):
         
 
 init()
+paused = True
 while True:
-    if movecircle_bool:
-        theta += circle_move_speed
-        theta %= 360
+
     screen.fill("black")
     third_scenes.draw(screen)
     clock.tick(FPS)
@@ -91,6 +90,15 @@ while True:
     for event in events:
         if event.type == pygame.QUIT:
             os._exit(True)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:
+                paused = not paused
+                if not paused:
+                    print("paused")
     movecircle_bool = True
-    third_scenes.update()
-    pygame.display.update()
+    if paused:    
+        if movecircle_bool:
+            theta += circle_move_speed
+            theta %= 360
+        third_scenes.update()
+        pygame.display.update()
