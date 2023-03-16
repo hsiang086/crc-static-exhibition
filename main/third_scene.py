@@ -12,7 +12,6 @@ def init():
     global theta
     global movecircle_bool
     global circle_move_speed
-    global key
 
     RES = WIDTH, HEIGHT = 600, 600
     FPS = 60

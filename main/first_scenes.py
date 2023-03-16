@@ -36,10 +36,7 @@ def init():
     first_scenes.add(Door(), Lock(), Ascii())
 
     lock_focusing = pygame.sprite.Group()
-    for i in range (9):
-        DL = DetailedLock(i)
-        lock_focusing.add(DL)
-    lock_focusing.add(Back(first_scenes), CombinationLock())
+    lock_focusing.add(Back(first_scenes))
 
     ascii_focusing = pygame.sprite.Group()
     ascii_focusing.add(DetailedAscii(), Back(first_scenes))
@@ -106,26 +103,9 @@ class Ascii(pygame.sprite.Sprite):
                 screen.fill('BLACK')
                 ascii_focusing.draw(screen)
 
-# lock focusing
-class DetailedLock(pygame.sprite.Sprite):
-    def __init__(self, loc):
-        super().__init__()
-        self.image = pygame.Surface((80, 80))
-        self.image.fill('WHITE')
-        self.rect = self.image.get_rect()
-        locx = 4 - (loc % 3)
-        locy = 2 + (loc // 3)
-        self.rect.centerx = WIDTH * locx / 7
-        self.rect.centery = HEIGHT * locy / 4.5
 
-class CombinationLock(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((HEIGHT * 3 / 4.5, 100))
-        self.image.fill('WHITE')
-        self.rect = self.image.get_rect()
-        self.rect.centery = 100
-        self.rect.left = WIDTH * 1.5 / 7
+
+
 
 
 # ascii focusing
