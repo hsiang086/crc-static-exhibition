@@ -53,15 +53,18 @@ class Balloon(pygame.sprite.Sprite):
         self.image.fill("red")
         self.rect = self.image.get_rect()
         self.speed = 5
-        self.r = 2
+        self.r = 1.0001
         self.rect.centerx = x_center
         self.rect.centery = y_center
+        self.circle_centerx = self.rect.centerx - self.r
+        self.circle_centery = self.rect.centery
+
     def movecircle(self):
         theta_degree = theta * 2 * pi / 360
         costheta, sintheta = cos(theta_degree), sin(theta_degree)
         # rotation matrix   https://en.wikipedia.org/wiki/Rotation_matrix
-        self.rect.centerx = costheta * self.rect.centerx - sintheta * self.rect.centery + self.rect.centerx
-        self.rect.centery = sintheta * self.rect.centerx + costheta * self.rect.centery + self.rect.centery
+        self.rect.centerx = costheta * (self.rect.centerx - self.circle_centerx) - sintheta * (self.rect.centery - self.circle_centery) + self.rect.centerx
+        self.rect.centery = sintheta * (self.rect.centerx - self.circle_centerx) + costheta * (self.rect.centery - self.circle_centery) + self.rect.centery
     def update(self):
         if movecircle_bool == True:
             self.movecircle()
