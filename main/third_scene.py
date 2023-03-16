@@ -10,11 +10,13 @@ def init():
     global x_center, y_center
     global third_scenes
     global theta
+    global movecircle_bool
 
     RES = WIDTH, HEIGHT = 600, 600
     FPS = 60
     x_center, y_center = WIDTH / 2, HEIGHT / 2
     theta = 0
+    movecircle_bool = False
     
     pygame.init()
     pygame.display.set_caption("third")
@@ -56,10 +58,13 @@ class Balloon(pygame.sprite.Sprite):
         self.rect.centery = y_center
     def movecircle(self):
         theta_degree = theta * 2 * pi / 360
-        self.rect.centerx += self.r * cos(theta_degree)
-        self.rect.centery += self.r * sin(theta_degree)
+        costheta, sintheta = cos(theta_degree), sin(theta_degree)
+        # rotation matrix   https://en.wikipedia.org/wiki/Rotation_matrix
+        self.rect.centerx = costheta * self.rect.centerx - sintheta * self.rect.centery + self.rect.centerx
+        self.rect.centery = sintheta * self.rect.centerx + costheta * self.rect.centery + self.rect.centery
     def update(self):
-        self.movecircle()
+        if movecircle_bool == True:
+            self.movecircle()
 
 init()
 while True:
@@ -72,5 +77,6 @@ while True:
     for event in events:
         if event.type == pygame.QUIT:
             os._exit(True)
+    movecircle_bool =True
     third_scenes.update()
     pygame.display.update()
