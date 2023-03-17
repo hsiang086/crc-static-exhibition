@@ -112,20 +112,23 @@ class Balloon(pygame.sprite.Sprite):
                     if self.paused:
                         print("paused")
                 if event.key == pygame.K_m:
-                    self.movecircle_bool = not self.movecircle_bool
-                    self.movetriangle_bool = not self.movetriangle_bool
+                    self.check = True
         
         if self.check:
-             rand_num = random.randint(0,1)
-             self.movecircle_bool = True if rand_num == 0 else False
-             self.movetriangle_bool = True if rand_num == 1 else False
-             self.check = False
+            rand_num = random.randint(0,1)
+            if rand_num == 0:
+                self.movecircle_bool = True
+                self.circle_centerx = self.rect.centerx - self.r
+                self.circle_centery = self.rect.centery
+            else :
+                self.movecircle_bool = False
+            self.movetriangle_bool = True if rand_num == 1 else False
+            self.check = False
         if not self.paused:
             if self.movecircle_bool:
                 self.theta += self.circle_speed
                 self.circlemotion()
             if self.movetriangle_bool:
-                self.theta += 60
                 self.trianglemotion()
             self.theta %= 360
         
