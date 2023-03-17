@@ -113,8 +113,6 @@ class DetailedAscii(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load(os.path.join("images", "ascii list.png")).convert_alpha()
-        # self.image = pygame.Surface((WIDTH * 2 / 5, WIDTH * 2 / 5))
-        # self.image.fill('GREEN')
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
         self.rect.centery = HEIGHT / 2
