@@ -54,14 +54,16 @@ class Balloon(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.paused = False
         self.theta = 0
+        self.count = 0
         # circle radius
-        self.movecircle_bool = True if random.randint(0,1) == 1 else False
+        self.movecircle_bool = True
         self.circle_speed = 2
         self.r = 100
         self.rect.centerx = x_center
         self.rect.centery = y_center
         self.circle_centerx = self.rect.centerx - self.r
         self.circle_centery = self.rect.centery
+        self.check = True
         # 
         self.movetriangle_bool = not self.movecircle_bool
 
@@ -71,16 +73,19 @@ class Balloon(pygame.sprite.Sprite):
         # rotation matrix   https://en.wikipedia.org/wiki/Rotation_matrix
         self.rect.centerx = self.circle_centerx + self.r * costheta
         self.rect.centery = self.circle_centery + self.r * sintheta
+        if self.theta == 360:
+            self.check = True
+            print("1")
 
     def trianglemotion(self):
         m_x = sqrt(3)
         m_y = 1
         self.triangle_speed = 1
         self.step = 150
-        self.count = 0
         self.count += 1
-        self.count %= 450
-        
+        if self.count == 3 * self.step:
+            self.check = True
+            print("1")
         if self.count < self.step:
             self.rect.centerx += m_x * self.triangle_speed
             self.rect.centery += m_y * self.triangle_speed
@@ -93,6 +98,8 @@ class Balloon(pygame.sprite.Sprite):
             self.count %= 3 * self.step
             self.rect.centerx += m_x * self.triangle_speed
             self.rect.centery -= m_y * self.triangle_speed
+        
+     
     
     def update(self):
         #if rotation_bool:
@@ -107,6 +114,12 @@ class Balloon(pygame.sprite.Sprite):
                 if event.key == pygame.K_m:
                     self.movecircle_bool = not self.movecircle_bool
                     self.movetriangle_bool = not self.movetriangle_bool
+        
+        if self.check:
+             rand_num = random.randint(0,1)
+             self.movecircle_bool = True if rand_num == 0 else False
+             self.movetriangle_bool = True if rand_num == 1 else False
+             self.check = False
         if not self.paused:
             if self.movecircle_bool:
                 self.theta += self.circle_speed
