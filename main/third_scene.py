@@ -1,6 +1,7 @@
 import pygame
 import os
-from math import sin, cos, pi
+import random
+from math import sin, cos, pi, sqrt, pow
 
 def init():
     global FPS
@@ -11,13 +12,17 @@ def init():
     global third_scenes
     global theta
     global movecircle_bool
+    global movetriangle_bool
     global circle_move_speed
+    global check
+    global step
 
     RES = WIDTH, HEIGHT = 600, 600
     FPS = 60
     x_center, y_center = WIDTH / 2, HEIGHT / 2
 
     theta = 0
+    step = 150
     circle_move_speed = 2
     movecircle_bool = False
     
@@ -56,6 +61,7 @@ class Balloon(pygame.sprite.Sprite):
         self.image.fill("red")
         self.rect = self.image.get_rect()
         self.speed = 5
+        self.count = 0
         # circle radius
         self.r = 100
         self.rect.centerx = x_center
@@ -69,6 +75,27 @@ class Balloon(pygame.sprite.Sprite):
         # rotation matrix   https://en.wikipedia.org/wiki/Rotation_matrix
         self.rect.centerx = self.circle_centerx + self.r * costheta
         self.rect.centery = self.circle_centery + self.r * sintheta
+
+    def trianglemotion(self):
+        m_x = sqrt(3)
+        m_y = 1
+        speed = 1
+        
+        if self.count < step:
+            self.count += 1
+            self.rect.centerx += m_x * speed
+            self.rect.centery += m_y * speed
+        
+        if self.count < 2 * step and self.count >= step:
+            self.count += 1
+            self.rect.centerx -= sqrt(pow(m_x, 2) + pow(m_y,2)) * speed
+            self.rect.centery += m_y - m_y * speed
+        
+        if self.count < 3 * step and self.count >= 2 * step:
+            self.count += 1
+            self.count %= 3 * step
+            self.rect.centerx += m_x * speed
+            self.rect.centery -= m_y * speed
     
     def update(self):
         #if rotation_bool:
@@ -76,12 +103,16 @@ class Balloon(pygame.sprite.Sprite):
         #    rotation_bool = False
         if movecircle_bool:
             self.circlemotion()
+        if movetriangle_bool:
+            self.trianglemotion()
         
 
 init()
 paused = True
+check = True
+movecircle_bool = False
+movetriangle_bool = False
 while True:
-
     screen.fill("black")
     third_scenes.draw(screen)
     clock.tick(FPS)
@@ -94,10 +125,20 @@ while True:
                 paused = not paused
                 if not paused:
                     print("paused")
-    movecircle_bool = True
-    if paused:    
+    if check:
+        random_num = random.randint(0,1)
+        if random_num == 0:
+            movecircle_bool = True
+        elif random_num == 1:
+            movetriangle_bool = True
+        check = False
+    
+    if paused:
         if movecircle_bool:
             theta += circle_move_speed
+            theta %= 360
+        if movetriangle_bool:
+            theta += 60
             theta %= 360
         third_scenes.update()
         pygame.display.update()
