@@ -3,6 +3,7 @@ import os
 import random
 from math import sin, cos, pi, sqrt, pow
 
+
 def init():
     global FPS
     global RES, WIDTH, HEIGHT 
