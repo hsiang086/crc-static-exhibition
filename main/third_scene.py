@@ -75,7 +75,6 @@ class Balloon(pygame.sprite.Sprite):
         self.rect.centery = self.circle_centery + self.r * sintheta
         if self.theta == 360:
             self.check = True
-            print("1")
 
     def trianglemotion(self):
         m_x = sqrt(3)
@@ -83,10 +82,11 @@ class Balloon(pygame.sprite.Sprite):
         self.triangle_speed = 1
         self.step = 150
         self.count += 1
+        
         if self.count == 3 * self.step:
             self.check = True
-            print("1")
-        if self.count < self.step:
+        self.count %= 3 * self.step
+        if self.count < self.step and self.count > 0:
             self.rect.centerx += m_x * self.triangle_speed
             self.rect.centery += m_y * self.triangle_speed
         
@@ -95,7 +95,6 @@ class Balloon(pygame.sprite.Sprite):
             # self.rect.centery += m_y - m_y * speed
         
         if self.count < 3 * self.step and self.count >= 2 * self.step:
-            self.count %= 3 * self.step
             self.rect.centerx += m_x * self.triangle_speed
             self.rect.centery -= m_y * self.triangle_speed
         
