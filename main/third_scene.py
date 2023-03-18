@@ -63,11 +63,11 @@ class Balloon(pygame.sprite.Sprite):
         # circle radius
         self.movecircle_bool = True
         self.circle_speed = 2
-        self.r = 100
+        self.r = 150
         self.rect.centerx = x_center
         self.rect.centery = y_center
-        self.circle_centerx = self.rect.centerx - self.r
-        self.circle_centery = self.rect.centery
+        self.circle_centerx = self.rect.centerx 
+        self.circle_centery = self.rect.centery + self.r
         self.check = True
         # 
         self.movetriangle_bool = not self.movecircle_bool
@@ -76,8 +76,8 @@ class Balloon(pygame.sprite.Sprite):
         theta_degree = self.theta * 2 * pi / 360
         costheta, sintheta = cos(theta_degree), sin(theta_degree)
         # rotation matrix   https://en.wikipedia.org/wiki/Rotation_matrix
-        self.rect.centerx = self.circle_centerx + self.r * costheta
-        self.rect.centery = self.circle_centery + self.r * sintheta
+        self.rect.centerx = self.circle_centerx - self.r * sintheta
+        self.rect.centery = self.circle_centery - self.r * costheta
         if self.theta == 360:
             self.check = True
 
@@ -101,7 +101,7 @@ class Balloon(pygame.sprite.Sprite):
         
         if self.count < 3 * self.step and self.count >= 2 * self.step:
             self.rect.centerx += (m_x * self.triangle_speed)
-            self.rect.centery -= (m_y * self.triangle_speed) 
+            self.rect.centery -= (m_y * self.triangle_speed)
         
      
     
@@ -118,7 +118,6 @@ class Balloon(pygame.sprite.Sprite):
                 if event.key == pygame.K_m:
                     self.check = True
                 if event.key == pygame.K_SPACE and self.rect.collidepoint(aim.rect.center):
-                    
                     self.change = not self.change
                     if self.change:
                         self.image.fill("blue")
