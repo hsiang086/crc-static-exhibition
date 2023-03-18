@@ -12,6 +12,8 @@ def init():
     global x_center, y_center
     global third_scenes
 
+    global aim
+
 
     RES = WIDTH, HEIGHT = 600, 600
     FPS = 60
@@ -24,7 +26,8 @@ def init():
     clock = pygame.time.Clock()
 
     third_scenes = pygame.sprite.Group()
-    third_scenes.add(Balloon(), Aim())
+    aim = Aim()
+    third_scenes.add(Balloon(), aim)
 
 class Aim(pygame.sprite.Sprite):
     def __init__(self):
@@ -37,14 +40,14 @@ class Aim(pygame.sprite.Sprite):
         self.rect.centery = y_center
     def update(self):
         key= pygame.key.get_pressed()
-        if key[pygame.K_a]:
-            self.rect.centerx -= self.speed
-        if key[pygame.K_d]:
-            self.rect.centerx += self.speed
-        if key[pygame.K_w]:
+        if key[pygame.K_w] or key[pygame.K_UP]:
             self.rect.centery -= self.speed
-        if key[pygame.K_s]:
+        if key[pygame.K_s] or key[pygame.K_DOWN]:
             self.rect.centery += self.speed
+        if key[pygame.K_a] or key[pygame.K_LEFT]:
+            self.rect.centerx -= self.speed
+        if key[pygame.K_d] or key[pygame.K_RIGHT]:
+            self.rect.centerx += self.speed
 
 class Balloon(pygame.sprite.Sprite):
     def __init__(self):
@@ -112,6 +115,9 @@ class Balloon(pygame.sprite.Sprite):
                         print("paused")
                 if event.key == pygame.K_m:
                     self.check = True
+                if event.key == pygame.K_SPACE and self.rect.collidepoint(aim.rect.center):
+                    self.image.fill("BLUE")
+
         
         if self.check:
             rand_num = random.randint(0,1)
