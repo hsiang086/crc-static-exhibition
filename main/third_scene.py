@@ -135,6 +135,7 @@ class Balloon(pygame.sprite.Sprite):
                 self.movecircle_bool = False
             self.movetriangle_bool = True if rand_num == 1 else False
             self.check = False
+            print(self.rect.center)
         if not self.paused:
             if self.movecircle_bool:
                 self.theta += self.circle_speed
