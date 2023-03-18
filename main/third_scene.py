@@ -41,13 +41,13 @@ class Aim(pygame.sprite.Sprite):
     def update(self):
         print(self.rect.center)
         key = pygame.key.get_pressed()
-        if key[pygame.K_w] or key[pygame.K_UP] and 0 <= self.rect.center[1]:
+        if (key[pygame.K_w] or key[pygame.K_UP]) and 0 <= self.rect.center[1]:
             self.rect.centery -= self.speed
-        if key[pygame.K_s] or key[pygame.K_DOWN] and self.rect.center[1] <= HEIGHT:
+        if (key[pygame.K_s] or key[pygame.K_DOWN]) and self.rect.center[1] <= HEIGHT:
             self.rect.centery += self.speed
-        if key[pygame.K_a] or key[pygame.K_LEFT] and 0 <= self.rect.center[0]:
+        if (key[pygame.K_a] or key[pygame.K_LEFT]) and 0 <= self.rect.center[0]:
             self.rect.centerx -= self.speed
-        if key[pygame.K_d] or key[pygame.K_RIGHT] and self.rect.center[0] <= WIDTH:
+        if (key[pygame.K_d] or key[pygame.K_RIGHT]) and self.rect.center[0] <= WIDTH:
             self.rect.centerx += self.speed
 
 class Balloon(pygame.sprite.Sprite):
