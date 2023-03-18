@@ -39,7 +39,6 @@ class Aim(pygame.sprite.Sprite):
         self.rect.centerx = x_center
         self.rect.centery = y_center
     def update(self):
-        print(self.rect.center)
         key = pygame.key.get_pressed()
         if (key[pygame.K_w] or key[pygame.K_UP]) and 0 <= self.rect.center[1]:
             self.rect.centery -= self.speed
@@ -92,16 +91,16 @@ class Balloon(pygame.sprite.Sprite):
             self.check = True
         self.count %= 3 * self.step
         if self.count < self.step and self.count > 0:
-            self.rect.centerx += (m_x * self.triangle_speed)
-            self.rect.centery += (m_y * self.triangle_speed)
+            self.rect.centerx += m_x * self.triangle_speed
+            self.rect.centery += m_y * self.triangle_speed
         
         if self.count < 2 * self.step and self.count >= self.step:
-            self.rect.centerx -= (sqrt(pow(m_x, 2) + pow(m_y,2))) * 2 * self.triangle_speed
+            self.rect.centerx -= sqrt(pow(m_x, 2) + pow(m_y,2)) * 2 * self.triangle_speed
             # self.rect.centery += m_y - m_y * speed
         
         if self.count < 3 * self.step and self.count >= 2 * self.step:
-            self.rect.centerx += (m_x * self.triangle_speed)
-            self.rect.centery -= (m_y * self.triangle_speed)
+            self.rect.centerx += m_x * self.triangle_speed
+            self.rect.centery -= m_y * self.triangle_speed
         
      
     
@@ -130,8 +129,8 @@ class Balloon(pygame.sprite.Sprite):
             rand_num = random.randint(0,1)
             if rand_num == 0:
                 self.movecircle_bool = True
-                self.circle_centerx = self.rect.centerx - self.r
-                self.circle_centery = self.rect.centery
+                self.circle_centerx = self.rect.centerx 
+                self.circle_centery = self.rect.centery + self.r
             else :
                 self.movecircle_bool = False
             self.movetriangle_bool = True if rand_num == 1 else False
