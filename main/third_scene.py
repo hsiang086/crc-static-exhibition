@@ -56,6 +56,7 @@ class Balloon(pygame.sprite.Sprite):
         self.image.fill("red")
         self.rect = self.image.get_rect()
         self.paused = False
+        self.change = True
         self.theta = 0
         self.count = 0
         # circle radius
@@ -83,23 +84,23 @@ class Balloon(pygame.sprite.Sprite):
         m_x = sqrt(3)
         m_y = 1
         self.triangle_speed = 1
-        self.step = 150
+        self.step = 100
         self.count += 1
         
         if self.count == 3 * self.step:
             self.check = True
         self.count %= 3 * self.step
         if self.count < self.step and self.count > 0:
-            self.rect.centerx += m_x * self.triangle_speed
-            self.rect.centery += m_y * self.triangle_speed
+            self.rect.centerx += (m_x * self.triangle_speed)
+            self.rect.centery += (m_y * self.triangle_speed)
         
         if self.count < 2 * self.step and self.count >= self.step:
-            self.rect.centerx -= sqrt(pow(m_x, 2) + pow(m_y,2)) * self.triangle_speed
+            self.rect.centerx -= (sqrt(pow(m_x, 2) + pow(m_y,2))) * 2 * self.triangle_speed
             # self.rect.centery += m_y - m_y * speed
         
         if self.count < 3 * self.step and self.count >= 2 * self.step:
-            self.rect.centerx += m_x * self.triangle_speed
-            self.rect.centery -= m_y * self.triangle_speed
+            self.rect.centerx += (m_x * self.triangle_speed)
+            self.rect.centery -= (m_y * self.triangle_speed) 
         
      
     
@@ -116,7 +117,13 @@ class Balloon(pygame.sprite.Sprite):
                 if event.key == pygame.K_m:
                     self.check = True
                 if event.key == pygame.K_SPACE and self.rect.collidepoint(aim.rect.center):
-                    self.image.fill("BLUE")
+                    
+                    self.change = not self.change
+                    if self.change:
+                        self.image.fill("blue")
+                    else:
+                        self.image.fill("pink")
+                    
 
         
         if self.check:
