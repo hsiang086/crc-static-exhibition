@@ -68,6 +68,8 @@ class Balloon(pygame.sprite.Sprite):
         self.circle_centerx = self.rect.centerx 
         self.circle_centery = self.rect.centery + self.r
         self.check = True
+        self.bf_x = self.rect.centerx
+        self.bf_y = self.rect.centery
         # 
         self.movetriangle_bool = not self.movecircle_bool
 
@@ -81,8 +83,10 @@ class Balloon(pygame.sprite.Sprite):
             self.check = True
 
     def trianglemotion(self):
-        m_x = sqrt(3)
-        m_y = 1
+        m_x = 1
+        m_y = sqrt(3)
+        
+
         self.triangle_speed = 1
         self.step = 100
         self.count += 1
@@ -91,16 +95,19 @@ class Balloon(pygame.sprite.Sprite):
             self.check = True
         self.count %= 3 * self.step
         if self.count < self.step and self.count > 0:
-            self.rect.centerx += m_x * self.triangle_speed
-            self.rect.centery += m_y * self.triangle_speed
+            self.bf_x += m_x * self.triangle_speed
+            self.bf_y += m_y * self.triangle_speed
         
         if self.count < 2 * self.step and self.count >= self.step:
-            self.rect.centerx -= sqrt(pow(m_x, 2) + pow(m_y,2)) * 2 * self.triangle_speed
+            self.bf_x -= sqrt(pow(m_x, 2) + pow(m_y,2)) * self.triangle_speed
             # self.rect.centery += m_y - m_y * speed
         
         if self.count < 3 * self.step and self.count >= 2 * self.step:
-            self.rect.centerx += m_x * self.triangle_speed
-            self.rect.centery -= m_y * self.triangle_speed
+            self.bf_x += m_x * self.triangle_speed
+            self.bf_y -= m_y * self.triangle_speed
+            
+        self.rect.centerx = self.bf_x
+        self.rect.centery = self.bf_y
         
      
     
@@ -133,7 +140,10 @@ class Balloon(pygame.sprite.Sprite):
                 self.circle_centery = self.rect.centery + self.r
             else :
                 self.movecircle_bool = False
-            self.movetriangle_bool = True if rand_num == 1 else False
+            if rand_num == 1:
+                self.movetriangle_bool = True
+                self.bf_x = self.rect.centerx
+                self.bf_y = self.rect.centery
             self.check = False
             print(self.rect.center)
         if not self.paused:
