@@ -12,6 +12,8 @@ def init():
     global x_center, y_center
     global third_scenes
     global aim
+    global font
+    global questions
 
 
     RES = WIDTH, HEIGHT = 600, 600
@@ -23,6 +25,12 @@ def init():
     pygame.display.set_caption("third")
     screen = pygame.display.set_mode(RES)
     clock = pygame.time.Clock()
+    font = pygame.font.SysFont('Arial',20,bold = False)
+
+    # questions
+    questions = []
+    questions.append("hello world (a)True (b)False please enter (a) or (b)")
+
 
     third_scenes = pygame.sprite.Group()
     aim = Aim()
@@ -168,6 +176,14 @@ class QuestionBackground(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = x_center
         self.rect.centery = y_center + 200
+    
+    def text_display(self, char, x, y):
+        text = font.render(str(char), True,"black")
+        text_rect = text.get_rect(center=(x, y))
+        screen.blit(text, text_rect)
+
+    def update(self):
+        self.text_display(questions[0],self.rect.center[0],self.rect.center[1])
 
 
 init()
