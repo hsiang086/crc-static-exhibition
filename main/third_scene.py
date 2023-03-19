@@ -62,7 +62,7 @@ class Balloon(pygame.sprite.Sprite):
         # circle radius
         self.movecircle_bool = True
         self.circle_speed = 2
-        self.r = 150
+        self.r = 130
         self.rect.centerx = x_center
         self.rect.centery = y_center
         self.circle_centerx = self.rect.centerx 
@@ -88,7 +88,7 @@ class Balloon(pygame.sprite.Sprite):
         bf_bool = True
         
 
-        self.triangle_speed = 1
+        self.triangle_speed = 1.5
         self.step = 100
         self.count += 1
         
@@ -152,7 +152,6 @@ class Balloon(pygame.sprite.Sprite):
                 self.bf_y = self.rect.centery
             else :
                 self.movetriangle_bool = False
-            print(rand_num)
             self.check = False
         if not self.paused:
             if self.movecircle_bool:
