@@ -77,7 +77,7 @@ class Balloon(pygame.sprite.Sprite):
         theta_degree = self.theta * 2 * pi / 360
         costheta, sintheta = cos(theta_degree), sin(theta_degree)
         # rotation matrix   https://en.wikipedia.org/wiki/Rotation_matrix
-        self.rect.centerx = self.circle_centerx - self.r * sintheta
+        self.rect.centerx = self.circle_centerx + self.r * sintheta
         self.rect.centery = self.circle_centery - self.r * costheta
         if self.theta == 360:
             self.check = True
@@ -85,6 +85,7 @@ class Balloon(pygame.sprite.Sprite):
     def trianglemotion(self):
         m_x = 1
         m_y = sqrt(3)
+        bf_bool = True
         
 
         self.triangle_speed = 1
@@ -92,7 +93,11 @@ class Balloon(pygame.sprite.Sprite):
         self.count += 1
         
         if self.count == 3 * self.step:
+            self.rect.centerx = int(self.bf_x) + 1
+            self.rect.centery = int(self.bf_y) + 2
+            bf_bool = False
             self.check = True
+
         self.count %= 3 * self.step
         if self.count < self.step and self.count > 0:
             self.bf_x += m_x * self.triangle_speed
@@ -105,10 +110,11 @@ class Balloon(pygame.sprite.Sprite):
         if self.count < 3 * self.step and self.count >= 2 * self.step:
             self.bf_x += m_x * self.triangle_speed
             self.bf_y -= m_y * self.triangle_speed
+
+        if bf_bool:
+            self.rect.centerx = self.bf_x
+            self.rect.centery = self.bf_y
             
-        self.rect.centerx = self.bf_x
-        self.rect.centery = self.bf_y
-        
      
     
     def update(self):
@@ -144,8 +150,10 @@ class Balloon(pygame.sprite.Sprite):
                 self.movetriangle_bool = True
                 self.bf_x = self.rect.centerx
                 self.bf_y = self.rect.centery
+            else :
+                self.movetriangle_bool = False
+            print(rand_num)
             self.check = False
-            print(self.rect.center)
         if not self.paused:
             if self.movecircle_bool:
                 self.theta += self.circle_speed
