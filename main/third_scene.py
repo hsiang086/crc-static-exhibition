@@ -1,8 +1,9 @@
 import pygame
 import os
 import random
-from math import sin, cos, pi, sqrt, pow
+from math import sin, cos, pi, sqrt, pow, ceil
 
+import yaml
 
 def init():
     global FPS
@@ -10,13 +11,17 @@ def init():
     global clock
     global screen
     global x_center, y_center
+
+    global question_background
     global third_scenes
     global aim
+
+    global text_size
     global font
-    global questions
 
 
-    RES = WIDTH, HEIGHT = 600, 600
+
+    RES = WIDTH, HEIGHT = 1280, 720
     FPS = 60
     x_center, y_center = WIDTH / 2, HEIGHT / 2
 
@@ -25,16 +30,14 @@ def init():
     pygame.display.set_caption("third")
     screen = pygame.display.set_mode(RES)
     clock = pygame.time.Clock()
-    font = pygame.font.SysFont('Arial',20,bold = False)
-
-    # questions
-    questions = []
-    questions.append("hello world (a)True (b)False please enter (a) or (b)")
+    text_size = 50
+    font = pygame.font.SysFont('Arial', text_size, bold=True)
 
 
     third_scenes = pygame.sprite.Group()
     aim = Aim()
-    third_scenes.add(Balloon(), aim, QuestionBackground())
+    question_background = QuestionBackground()
+    third_scenes.add(Balloon(), aim, question_background)
 
 class Aim(pygame.sprite.Sprite):
     def __init__(self):
@@ -71,7 +74,7 @@ class Balloon(pygame.sprite.Sprite):
         self.circle_speed = 2
         self.r = 130
         self.rect.centerx = x_center
-        self.rect.centery = y_center
+        self.rect.centery = HEIGHT / 8
         self.circle_centerx = self.rect.centerx 
         self.circle_centery = self.rect.centery + self.r
         self.check = True
@@ -142,8 +145,6 @@ class Balloon(pygame.sprite.Sprite):
                         self.image.fill("blue")
                     else:
                         self.image.fill("pink")
-                    
-
         
         if self.check:
             rand_num = random.randint(0,1)
@@ -171,22 +172,29 @@ class Balloon(pygame.sprite.Sprite):
 class QuestionBackground(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((300,170))
+        self.image = pygame.Surface((700,200))
         self.image.fill("white")
         self.rect = self.image.get_rect()
         self.rect.centerx = x_center
         self.rect.centery = y_center + 200
     
-    def text_display(self, char, x, y):
-        text = font.render(str(char), True,"black")
-        text_rect = text.get_rect(center=(x, y))
-        screen.blit(text, text_rect)
+class Question():
+    def __init__(self, question_index: int, amount_per_line: int):
+        with open('data/questions.yml', 'r') as file:
+            questions = yaml.load(file, Loader=yaml.CLoader)
+        question = questions['questions'][question_index]
+        self.text_list = [question[amount_per_line * i:amount_per_line * (i + 1)] for i in range(ceil(len(question) / amount_per_line))]
+        self.anwsers = questions['answers'][question_index]
+        self.anwser = questions['answer'][question_index]
 
-    def update(self):
-        self.text_display(questions[0],self.rect.center[0],self.rect.center[1])
-
+    def display(self):
+        for i, char in enumerate(self.text_list):
+            text = font.render(str(char), True, "black")
+            text_rect = text.get_rect(midtop=(question_background.rect.centerx, question_background.rect.top + (text_size * i)))
+            screen.blit(text, text_rect)
 
 init()
+q1 = Question(0, 20)
 
 while True:
     screen.fill("black")
@@ -197,5 +205,6 @@ while True:
         if event.type == pygame.QUIT:
             os._exit(True)
 
+    q1.display()
     third_scenes.update()
     pygame.display.update()
