@@ -11,7 +11,6 @@ def init():
     global screen
     global x_center, y_center
     global third_scenes
-
     global aim
 
 
@@ -27,7 +26,7 @@ def init():
 
     third_scenes = pygame.sprite.Group()
     aim = Aim()
-    third_scenes.add(Balloon(), aim)
+    third_scenes.add(Balloon(), aim, QuestionBackground())
 
 class Aim(pygame.sprite.Sprite):
     def __init__(self):
@@ -161,6 +160,15 @@ class Balloon(pygame.sprite.Sprite):
                 self.trianglemotion()
             self.theta %= 360
         
+class QuestionBackground(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface((300,170))
+        self.image.fill("white")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x_center
+        self.rect.centery = y_center + 200
+
 
 init()
 
