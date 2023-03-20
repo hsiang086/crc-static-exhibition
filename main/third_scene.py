@@ -12,8 +12,12 @@ def init():
     global screen
     global x_center, y_center
 
-    global question_background
-    global third_scenes
+    global shooting
+    global questions
+    global question_scene
+    global question_background, player
+
+    global shooting_scene
     global aim
 
     global text_size
@@ -33,11 +37,18 @@ def init():
     text_size = 50
     font = pygame.font.SysFont('Arial', text_size, bold=True)
 
+    shooting = False
 
-    third_scenes = pygame.sprite.Group()
-    aim = Aim()
+    with open('data/questions.yml', 'r') as file:
+        questions = yaml.load(file, Loader=yaml.CLoader)
+    question_scene = pygame.sprite.Group()
     question_background = QuestionBackground()
-    third_scenes.add(Balloon(), aim, question_background)
+    player = Player()
+    question_scene.add(question_background, player, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
+
+    shooting_scene = pygame.sprite.Group()
+    aim = Aim()
+    shooting_scene.add(Balloon())
 
 class Aim(pygame.sprite.Sprite):
     def __init__(self):
@@ -168,43 +179,69 @@ class Balloon(pygame.sprite.Sprite):
             if self.movetriangle_bool:
                 self.trianglemotion()
             self.theta %= 360
+
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface((250, 250))
+        self.image.fill('orange')
+        self.rect = self.image.get_rect()
+        self.rect.right = WIDTH * 94 / 100
+        self.rect.centery = y_center + HEIGHT * 5 / 18
         
 class QuestionBackground(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((700,200))
+        self.image = pygame.Surface((WIDTH * 6 / 10, HEIGHT / 3))
         self.image.fill("white")
         self.rect = self.image.get_rect()
-        self.rect.centerx = x_center
-        self.rect.centery = y_center + 200
+        self.rect.left = WIDTH * 6 / 100
+        self.rect.centery = y_center + HEIGHT * 5 / 18
     
+class AnswerButton(pygame.sprite.Sprite):
+    def __init__(self, pos, answer):
+        super().__init__()
+        self.image = pygame.Surface((question_background.image.get_width() / 7.5, question_background.image.get_height() / 5))
+        self.image.fill("yellow")
+        self.rect = self.image.get_rect()
+        print(answer[0])
+        print(f'#1{pos+ 1 // 2}')
+        print((1 + ((pos+ 1) // 3) * question_background.image.get_height() / 2))
+        print(question_background.image.get_width())
+        self.rect.left = question_background.rect.centerx + ((((pos+ 1) % 2) + 1)* question_background.image.get_width() / 6)
+        self.rect.centery = question_background.rect.top + ((((pos+ 1) // 3) + 1) * question_background.image.get_height() / 3)
+        self.text = answer
+
 class Question():
     def __init__(self, question_index: int, amount_per_line: int):
-        with open('data/questions.yml', 'r') as file:
-            questions = yaml.load(file, Loader=yaml.CLoader)
         question = questions['questions'][question_index]
         self.text_list = [question[amount_per_line * i:amount_per_line * (i + 1)] for i in range(ceil(len(question) / amount_per_line))]
         self.anwsers = questions['answers'][question_index]
         self.anwser = questions['answer'][question_index]
+        super().__init__()
 
     def display(self):
         for i, char in enumerate(self.text_list):
             text = font.render(str(char), True, "black")
-            text_rect = text.get_rect(midtop=(question_background.rect.centerx, question_background.rect.top + (text_size * i)))
+            text_rect = text.get_rect(topleft=(question_background.rect.left * 1.1, question_background.rect.top + (text_size * i)))
             screen.blit(text, text_rect)
+
 
 init()
 q1 = Question(0, 20)
 
 while True:
-    screen.fill("black")
-    third_scenes.draw(screen)
     clock.tick(FPS)
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
             os._exit(True)
+    screen.fill("black")
+    shooting_scene.draw(screen)
+    if not shooting:
+        question_scene.draw(screen)
 
     q1.display()
-    third_scenes.update()
+    shooting_scene.update()
     pygame.display.update()
