@@ -205,10 +205,6 @@ class AnswerButton(pygame.sprite.Sprite):
         self.image = pygame.Surface((question_background.image.get_width() / 7.5, question_background.image.get_height() / 5))
         self.image.fill("yellow")
         self.rect = self.image.get_rect()
-        print(answer[0])
-        print(f'#1{pos+ 1 // 2}')
-        print((1 + ((pos+ 1) // 3) * question_background.image.get_height() / 2))
-        print(question_background.image.get_width())
         self.rect.left = question_background.rect.centerx + ((((pos+ 1) % 2) + 1)* question_background.image.get_width() / 6)
         self.rect.centery = question_background.rect.top + ((((pos+ 1) // 3) + 1) * question_background.image.get_height() / 3)
         self.text = answer
