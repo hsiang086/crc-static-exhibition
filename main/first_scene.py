@@ -33,7 +33,7 @@ def init():
 
     # scenes
     first_scenes = pygame.sprite.Group()
-    first_scenes.add(Door(), Lock(), Ascii())
+    first_scenes.add(PcScreen(), Lock(), Ascii())
 
     lock_focusing = pygame.sprite.Group()
     lock_focusing.add(Back(first_scenes))
@@ -64,14 +64,14 @@ class Back(pygame.sprite.Sprite):
 
 
 # first scenes
-class Door(pygame.sprite.Sprite):
+class PcScreen(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((200, 350))
+        self.image = pygame.Surface(RES)
         self.image.fill('WHITE')
         self.rect = self.image.get_rect()
-        self.rect.x = WIDTH // 15
-        self.rect.y = HEIGHT // 10
+        self.rect.centerx = WIDTH / 2
+        self.rect.centery = HEIGHT / 2
     
 class Lock(pygame.sprite.Sprite):
     def __init__(self):

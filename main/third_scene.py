@@ -44,7 +44,9 @@ def init():
     question_scene = pygame.sprite.Group()
     question_background = QuestionBackground()
     player = Player()
-    question_scene.add(question_background, player, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
+    ballonblood = BalloonBlood()
+    blooddecrease = BloodDecrease()
+    question_scene.add(question_background, player, ballonblood, blooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
 
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
@@ -73,8 +75,8 @@ class Aim(pygame.sprite.Sprite):
 class Balloon(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((80,80))
-        self.image.fill("red")
+        self.image = pygame.image.load(os.path.join("images", "balloon.png")).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (200, 200))
         self.rect = self.image.get_rect()
         self.paused = False
         self.change = True
@@ -181,6 +183,49 @@ class Balloon(pygame.sprite.Sprite):
             self.theta %= 360
 
 
+class BalloonBlood(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface((150,25))
+        self.image.fill('white')
+        self.rect = self.image.get_rect()
+        self.rect.right = WIDTH - 20
+        self.rect.top = 20
+    
+class BloodDecrease(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.width = 140
+        self.image = pygame.Surface((self.width,15))
+        self.image.fill('red')
+        self.decrease = True
+        self.rect = self.image.get_rect()
+        self.rect.left = WIDTH - 165
+        self.rect.top = 25
+        self.count = 0
+        self.step = 60
+        self.bloodstep = True
+        self.bf = 0
+
+    def update(self):
+        if self.decrease and self.count < self.step:
+            self.width -= 30 / self.step
+            self.count +=  1
+            if self.bf % 5 == 0:
+                self.bloodstep = not self.bloodstep
+            if self.bloodstep:
+                self.bf += 1
+                self.image = pygame.Surface((self.width,15))
+                self.image.fill('red')
+            else:
+                self.image = pygame.Surface((self.width,15))
+                self.image.fill('grey')
+        elif self.decrease and self.count == self.step:
+            self.count = 0
+            self.decrease = False
+
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -208,6 +253,15 @@ class AnswerButton(pygame.sprite.Sprite):
         self.rect.left = question_background.rect.centerx + ((((pos+ 1) % 2) + 1)* question_background.image.get_width() / 6)
         self.rect.centery = question_background.rect.top + ((((pos+ 1) // 3) + 1) * question_background.image.get_height() / 3)
         self.text = answer
+        self.num = pos
+
+    def update(self):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
+                if questions['answer'][0] == self.num:
+                    print('Y')
+                else:
+                    print('N')
 
 class Question():
     def __init__(self, question_index: int, amount_per_line: int):
@@ -237,6 +291,7 @@ while True:
     shooting_scene.draw(screen)
     if not shooting:
         question_scene.draw(screen)
+        question_scene.update()
 
     q1.display()
     shooting_scene.update()
