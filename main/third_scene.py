@@ -23,6 +23,8 @@ def init():
     global text_size
     global font
 
+    global q
+
 
 
     RES = WIDTH, HEIGHT = 1280, 720
@@ -44,13 +46,18 @@ def init():
     question_scene = pygame.sprite.Group()
     question_background = QuestionBackground()
     player = Player()
+    balloon = Balloon()
     ballonblood = BalloonBlood()
     blooddecrease = BloodDecrease()
-    question_scene.add(question_background, player, ballonblood, blooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
+    q = 0
+    q1 = Question(0, 20)
+    question_scene.add(question_background, player, balloon, ballonblood, blooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
 
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
-    shooting_scene.add(Balloon())
+    shooting_scene.add(balloon, aim)
+
+    
 
 class Aim(pygame.sprite.Sprite):
     def __init__(self):
@@ -154,10 +161,8 @@ class Balloon(pygame.sprite.Sprite):
                     self.check = True
                 if event.key == pygame.K_SPACE and self.rect.collidepoint(aim.rect.center):
                     self.change = not self.change
-                    if self.change:
-                        self.image.fill("blue")
-                    else:
-                        self.image.fill("pink")
+                    global shooting
+                    shooting = not shooting
         
         if self.check:
             rand_num = random.randint(0,1)
@@ -260,9 +265,12 @@ class AnswerButton(pygame.sprite.Sprite):
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
                 if questions['answer'][0] == self.num:
                     print('Y')
+                    global shooting ,q
+                    q += 1
+                    shooting = not shooting
                 else:
                     print('N')
-
+ 
 class Question():
     def __init__(self, question_index: int, amount_per_line: int):
         question = questions['questions'][question_index]
@@ -279,7 +287,6 @@ class Question():
 
 
 init()
-q1 = Question(0, 20)
 
 while True:
     clock.tick(FPS)
@@ -288,11 +295,14 @@ while True:
         if event.type == pygame.QUIT:
             os._exit(True)
     screen.fill("black")
-    shooting_scene.draw(screen)
     if not shooting:
         question_scene.draw(screen)
+        ques = Question(q, 20)
+        ques.display()
         question_scene.update()
+    else:
+        screen.fill("black")
+        shooting_scene.draw(screen)
+        shooting_scene.update()
 
-    q1.display()
-    shooting_scene.update()
     pygame.display.update()
