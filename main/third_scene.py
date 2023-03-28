@@ -331,4 +331,3 @@ while True:
         shooting_scene.draw(screen)
         shooting_scene.update()
 
-    pygame.display.update()
