@@ -81,7 +81,7 @@ class Bullet(pygame.sprite.Sprite):
         global bullet_bool
         if bullet_bool:
             self.rect.centery -= self.speed
-            print(self.rect.centery)
+            #print(self.rect.centery)
             if self.rect.centery <= 0:
                 bullet_bool = False
                 self.reset()
@@ -89,7 +89,7 @@ class Bullet(pygame.sprite.Sprite):
             global aim_x
             self.rect.centerx = aim_x
             self.reset()
-            print(self.rect.centerx)
+            #print(self.rect.centerx)
 
 class Aim(pygame.sprite.Sprite):
     def __init__(self):
@@ -196,6 +196,9 @@ class Balloon(pygame.sprite.Sprite):
                     
                     bullet_bool = True
                 if self.rect.collidepoint(bullet.rect.center):
+                    print("balloon",self.rect.center)
+                    print("bullet",bullet.rect.center)
+                    print("hellllllllllppppppppp!!!!!!!")
                     bullet_bool = False
                     self.change = not self.change
                     decrease_bool = True
