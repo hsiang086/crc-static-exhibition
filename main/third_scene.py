@@ -88,6 +88,7 @@ class Bullet(pygame.sprite.Sprite):
         else:
             global aim_x
             self.rect.centerx = aim_x
+            self.reset()
             print(self.rect.centerx)
 
 class Aim(pygame.sprite.Sprite):
@@ -192,9 +193,11 @@ class Balloon(pygame.sprite.Sprite):
                     self.check = True
                 if event.key == pygame.K_SPACE : #and self.rect.collidepoint(bullet.rect.center):
                     #decrease_bool = True
-                    self.change = not self.change
+                    
                     bullet_bool = True
                 if self.rect.collidepoint(bullet.rect.center):
+                    bullet_bool = False
+                    self.change = not self.change
                     decrease_bool = True
                     global shooting
                     shooting = not shooting
