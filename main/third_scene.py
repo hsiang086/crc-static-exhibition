@@ -241,7 +241,7 @@ class Bullet(pygame.sprite.Sprite):
         self.y = HEIGHT + 30
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
-        self.speed = 10
+        self.speed = 20
 
     def reset(self):
         self.rect.center = (self.x, self.y)
@@ -251,7 +251,7 @@ class Bullet(pygame.sprite.Sprite):
         if bullet_bool:
             self.rect.centery -= self.speed
             print(self.rect.centery)
-            if self.rect.centery == HEIGHT / 2:
+            if self.rect.centery <= HEIGHT / 2:
                 bullet_bool = False
                 global shooting
                 shooting = not shooting
