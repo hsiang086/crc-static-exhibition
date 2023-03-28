@@ -22,6 +22,7 @@ def init():
 
     global text_size
     global font
+    global decrease_bool
 
     global q
 
@@ -47,6 +48,7 @@ def init():
     question_background = QuestionBackground()
     player = Player()
     balloon = Balloon()
+    decrease_bool = False
     ballonblood = BalloonBlood()
     blooddecrease = BloodDecrease()
     q = 0
@@ -151,15 +153,13 @@ class Balloon(pygame.sprite.Sprite):
         #if rotation_bool:
         #    self.rotate_init()
         #    rotation_bool = False
+        global decrease_bool
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:
-                    self.paused = not self.paused
-                    if self.paused:
-                        print("paused")
                 if event.key == pygame.K_m:
                     self.check = True
                 if event.key == pygame.K_SPACE and self.rect.collidepoint(aim.rect.center):
+                    decrease_bool = True
                     self.change = not self.change
                     global shooting
                     shooting = not shooting
@@ -203,7 +203,7 @@ class BloodDecrease(pygame.sprite.Sprite):
         self.width = 140
         self.image = pygame.Surface((self.width,15))
         self.image.fill('red')
-        self.decrease = True
+        self.decrease = False
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH - 165
         self.rect.top = 25
@@ -213,6 +213,8 @@ class BloodDecrease(pygame.sprite.Sprite):
         self.bf = 0
 
     def update(self):
+        global decrease_bool
+        self.decrease = decrease_bool
         if self.decrease and self.count < self.step:
             self.width -= 30 / self.step
             self.count +=  1
@@ -227,7 +229,7 @@ class BloodDecrease(pygame.sprite.Sprite):
                 self.image.fill('grey')
         elif self.decrease and self.count == self.step:
             self.count = 0
-            self.decrease = False
+            decrease_bool = False
 
 
 
