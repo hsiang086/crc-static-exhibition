@@ -2,7 +2,6 @@ import pygame
 import os
 import random
 from math import sin, cos, pi, sqrt, pow, ceil
-
 import yaml
 
 def init():
@@ -16,13 +15,16 @@ def init():
     global questions
     global question_scene
     global question_background, player
+    global balloon
 
     global shooting_scene
     global aim
+    # global bullet
 
     global text_size
     global font
     global decrease_bool
+    global bullet_bool
 
     global q
 
@@ -41,6 +43,7 @@ def init():
     font = pygame.font.SysFont('Arial', text_size, bold=True)
 
     shooting = False
+    bullet_bool = False
 
     with open('data/questions.yml', 'r') as file:
         questions = yaml.load(file, Loader=yaml.CLoader)
@@ -51,15 +54,49 @@ def init():
     decrease_bool = False
     ballonblood = BalloonBlood()
     blooddecrease = BloodDecrease()
+    
     q = 0
-    q1 = Question(0, 20)
     question_scene.add(question_background, player, balloon, ballonblood, blooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
 
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
+    # bullet = Bullet()
     shooting_scene.add(balloon, aim)
 
-    
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        print(1)
+        self.image = pygame.Surface((50, 50))
+        self.image.fill("pink")
+        self.x = WIDTH
+        self.y = HEIGHT + 30
+        self.rect = self.image.get_rect()
+        self.rect.center = (self.x, self.y)
+        self.speed = 20
+        self.aim_bullet_length = pow(pow(aim.rect.centerx - self.rect.centerx, 2) + pow(aim.rect.centery - self.rect.centery, 2), 0.5)
+        self.x_move = abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length * self.speed
+        self.y_move = abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length * self.speed
+
+    def update(self):
+        self.rect.centerx -= self.x_move
+        self.rect.centery -= self.y_move
+
+    # def reset(self):
+    #     self.rect.centery = self.y
+
+    # def update(self):
+    #     global bullet_bool
+    #     if bullet_bool:
+    #         #print(self.rect.centery)
+    #         if self.rect.centery <= 0:
+    #             bullet_bool = False
+    #             self.reset()
+    #     else:
+    #         self.rect.centerx = aim.rect.centerx
+    #         self.reset()
+    #         #print(self.rect.centerx)
 
 class Aim(pygame.sprite.Sprite):
     def __init__(self):
@@ -94,7 +131,7 @@ class Balloon(pygame.sprite.Sprite):
         # circle radius
         self.movecircle_bool = True
         self.circle_speed = 2
-        self.r = 130
+        self.r = 200
         self.rect.centerx = x_center
         self.rect.centery = HEIGHT / 8
         self.circle_centerx = self.rect.centerx 
@@ -104,6 +141,9 @@ class Balloon(pygame.sprite.Sprite):
         self.bf_y = self.rect.centery
         # 
         self.movetriangle_bool = not self.movecircle_bool
+
+        self.bullet_is_flying = False
+        self.strike = False
 
     def circlemotion(self):
         theta_degree = self.theta * 2 * pi / 360
@@ -120,7 +160,7 @@ class Balloon(pygame.sprite.Sprite):
         bf_bool = True
         
 
-        self.triangle_speed = 1.5
+        self.triangle_speed = 3
         self.step = 100
         self.count += 1
         
@@ -154,15 +194,37 @@ class Balloon(pygame.sprite.Sprite):
         #    self.rotate_init()
         #    rotation_bool = False
         global decrease_bool
+        global bullet_bool
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_m:
                     self.check = True
-                if event.key == pygame.K_SPACE and self.rect.collidepoint(aim.rect.center):
-                    decrease_bool = True
-                    self.change = not self.change
-                    global shooting
-                    shooting = not shooting
+                if event.key == pygame.K_SPACE: #and self.rect.collidepoint(bullet.rect.center):
+                    #decrease_bool = True
+                    global bullet
+                    bullet = Bullet()
+                    shooting_scene.add(bullet)
+                    self.bullet_is_flying = True
+        if self.bullet_is_flying:
+            if self.rect.collidepoint(bullet.rect.center) and not self.strike:
+                self.strike = True
+                shooting_scene.remove(bullet)
+                self.change = not self.change
+                decrease_bool = True
+                global shooting
+                shooting = not shooting
+
+                    
+                #     bullet_bool = True
+                # if self.rect.collidepoint(bullet.rect.center):
+                #     print("balloon",self.rect.center)
+                #     print("bullet",bullet.rect.center)
+                #     print("hellllllllllppppppppp!!!!!!!")
+                #     bullet_bool = False
+                #     self.change = not self.change
+                #     decrease_bool = True
+                #     global shooting
+                #     shooting = not shooting
         
         if self.check:
             rand_num = random.randint(0,1)
@@ -186,7 +248,6 @@ class Balloon(pygame.sprite.Sprite):
             if self.movetriangle_bool:
                 self.trianglemotion()
             self.theta %= 360
-
 
 class BalloonBlood(pygame.sprite.Sprite):
     def __init__(self):
@@ -231,8 +292,6 @@ class BloodDecrease(pygame.sprite.Sprite):
             self.count = 0
             decrease_bool = False
 
-
-
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -267,9 +326,10 @@ class AnswerButton(pygame.sprite.Sprite):
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
                 if questions['answer'][0] == self.num:
                     print('Y')
-                    global shooting ,q
+                    global shooting, q
                     q += 1
                     shooting = not shooting
+                    balloon.strike = False
                 else:
                     print('N')
  
@@ -286,7 +346,6 @@ class Question():
             text = font.render(str(char), True, "black")
             text_rect = text.get_rect(topleft=(question_background.rect.left * 1.1, question_background.rect.top + (text_size * i)))
             screen.blit(text, text_rect)
-
 
 init()
 
