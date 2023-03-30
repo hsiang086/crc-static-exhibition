@@ -1,4 +1,5 @@
 import pygame
+import random
 
 def init():
     global FPS
@@ -7,11 +8,12 @@ def init():
     global screen
     global POS
 
-    FPS = 60
-    RES = WIDTH, HIGHT = (1600, 900)
+    FPS = 120
+    RES = WIDTH, HIGHT = (1500, 800)
     POS=[(HIGHT/2)-200,(HIGHT/2),(HIGHT/2)+200]
     clock = pygame.time.Clock()
     
+    itv = 0
     pygame.init()
     screen = pygame.display.set_mode(RES)
     
@@ -29,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 10
         self.rect.centery = HIGHT/2
-        self.pos = 0
+        self.pos = 1
         self.itv = 0
          
     def update(self):
@@ -37,27 +39,43 @@ class Player(pygame.sprite.Sprite):
         key_pressed = pygame.key.get_pressed()
         if self.itv >= 8:
             if key_pressed[pygame.K_UP]:
-                if self.pos == -1:
-                    self.pos = -1
+                if self.pos == 0:
+                    self.pos = 0
                 else:
-                    self.pos -= 1
-                while self.rect.centery >= (HIGHT/2) + self.pos*200:
-                    self.rect.centery -= 2 
+                    self.pos -= 1 
             if key_pressed[pygame.K_DOWN]:
-                if self.pos == 1:
-                    self.pos = 1
+                if self.pos == 2:
+                    self.pos = 2
                 else:
-                    self.pos += 1
-                self.rect.centery = (HIGHT/2) + self.pos*200      
-            self.itv = 0     
+                    self.pos += 1     
+            self.itv = 0
+        self.rect.centery = POS[self.pos]         
+
+class Object(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50,50))
+        self.image.fill((0,153,153))
+        self.rect = self.image.get_rect()
+        self.rect.left = WIDTH
+        self.pos = random.randrange(0,3)
+        self.rect.centery = POS[self.pos]
+        self.v = -5
+        self.itv = 0
+    def update(self):
+        if self.rect.right >= 0:
+            self.rect.x += self.v*5
+        else:    
+            self.kill()
+
+
 
         
         
 all_sprites = pygame.sprite.Group()
 objects = pygame.sprite.Group() 
 player = Player()
-obstacle = Obstacle()
-all_sprites.add(player, obstacle) 
+all_sprites.add(player) 
 
 
 time = 0
@@ -67,7 +85,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    if time >= 90:
+    if time >= 40:
         Obj = Object()
         all_sprites.add(Obj)
         objects.add(Obj)  
