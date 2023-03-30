@@ -14,8 +14,9 @@ def init():
     global shooting
     global questions
     global question_scene
-    global question_background, player
+    global question_background
     global balloon
+    global playerblood
 
     global shooting_scene
     global aim
@@ -23,7 +24,8 @@ def init():
 
     global text_size
     global font
-    global decrease_bool
+    global balloon_decrease_bool
+    global player_decrease_bool
     global bullet_bool
 
     global q
@@ -44,25 +46,27 @@ def init():
 
     shooting = False
     bullet_bool = False
-    
 
     with open('data/questions.yml', 'r') as file:
         questions = yaml.load(file, Loader=yaml.CLoader)
     question_scene = pygame.sprite.Group()
     question_background = QuestionBackground()
-    player = Player()
+    #player = Player()
     balloon = Balloon()
-    decrease_bool = False
-    ballonblood = BalloonBlood()
-    blooddecrease = BloodDecrease()
+    balloon_decrease_bool = False
+    player_decrease_bool = False
+    balloonblood = BalloonBlood()
+    balloonblooddecrease = BalloonBloodDecrease()
+    playerblood = PlayerBlood()
+    playerblooddecrease = PlayerBloodDecrease()
     
     q = 0
-    question_scene.add(balloon, question_background, player, ballonblood, blooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
+    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
+
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
     bullet = Bullet()
-    
-    # bullet = Bullet()
+    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease)
     shooting_scene.add(balloon, aim, bullet)
 
 
@@ -92,8 +96,8 @@ class Bullet(pygame.sprite.Sprite):
                 self.is_flying = False
                 balloon.change = not balloon.change
                 balloon.size = 'small'
-                global decrease_bool
-                decrease_bool = True
+                global balloon_decrease_bool
+                balloon_decrease_bool = True
                 global shooting
                 shooting = False
             if self.rect.centery <= 0:
@@ -101,8 +105,9 @@ class Bullet(pygame.sprite.Sprite):
                 self.rect.x = WIDTH            
                 self.rect.y = HEIGHT + 30
                 self.is_flying = False
-
-
+        else:
+            self.x_move = abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length * self.speed
+            self.y_move = abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length * self.speed
     # def reset(self):
     #     self.rect.centery = self.y
 
@@ -218,27 +223,24 @@ class Balloon(pygame.sprite.Sprite):
         #if rotation_bool:
         #    self.rotate_init()
         #    rotation_bool = False
-        global decrease_bool
+        global balloon_decrease_bool
         global bullet_bool
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_m:
                     self.check = True
                 if event.key == pygame.K_SPACE and not bullet.is_flying: #and self.rect.collidepoint(bullet.rect.center):
-                    #decrease_bool = True
+                    #balloon_decrease_bool = True
                     bullet.is_flying = True
 
-        # if self.bullet_is_flying:
-        #     if self.rect.collidepoint(bullet.rect.center):
-        #         bullet.rect.x = WIDTH
-        #         bullet.rect.y = HEIGHT + 30
-        #         shooting_scene.remove(bullet)
-        #         self.bullet_is_flying = False
-        #         self.change = not self.change
-        #         decrease_bool = True
-        #         global shooting
-        #         shooting = False
-        #         self.size = 'small'
+        if self.bullet_is_flying:
+            if self.rect.collidepoint(bullet.rect.center):
+                bullet.rect.x = WIDTH
+                bullet.rect.y = HEIGHT + 30
+                shooting_scene.remove(bullet)
+                self.change = not self.change
+                balloon_decrease_bool = True
+                self.size = 'small'
                 #     bullet_bool = True
                 # if self.rect.collidepoint(bullet.rect.center):
                 #     print("balloon",self.rect.center)
@@ -246,7 +248,7 @@ class Balloon(pygame.sprite.Sprite):
                 #     print("hellllllllllppppppppp!!!!!!!")
                 #     bullet_bool = False
                 #     self.change = not self.change
-                #     decrease_bool = True
+                #     balloon_decrease_bool = True
                 #     global shooting
                 #     shooting = not shooting
         if self.size == 'large' and self.theta == 0 and self.count == 0:
@@ -294,7 +296,7 @@ class BalloonBlood(pygame.sprite.Sprite):
         self.rect.right = WIDTH - 20
         self.rect.top = 20
     
-class BloodDecrease(pygame.sprite.Sprite):
+class BalloonBloodDecrease(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.width = 140
@@ -310,8 +312,8 @@ class BloodDecrease(pygame.sprite.Sprite):
         self.bf = 0
 
     def update(self):
-        global decrease_bool
-        self.decrease = decrease_bool
+        global balloon_decrease_bool
+        self.decrease = balloon_decrease_bool
         if self.decrease and self.count < self.step:
             self.width -= 30 / self.step
             self.count +=  1
@@ -326,16 +328,53 @@ class BloodDecrease(pygame.sprite.Sprite):
                 self.image.fill('grey')
         elif self.decrease and self.count == self.step:
             self.count = 0
-            decrease_bool = False
+            balloon_decrease_bool = False
 
-class Player(pygame.sprite.Sprite):
+
+
+class PlayerBlood(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((250, 250))
-        self.image.fill('orange')
+        self.image = pygame.Surface((150,25))
+        self.image.fill('white')
         self.rect = self.image.get_rect()
-        self.rect.right = WIDTH * 94 / 100
-        self.rect.centery = y_center + HEIGHT * 5 / 18
+        self.rect.right = WIDTH - 20
+        self.rect.top = HEIGHT - 50
+
+class PlayerBloodDecrease(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.width = 140
+        self.image = pygame.Surface((self.width,15))
+        self.image.fill('red')
+        self.decrease = False
+        self.rect = self.image.get_rect()
+        self.rect.left = WIDTH - 165
+        self.rect.top = HEIGHT - 45
+        self.count = 0
+        self.step = 60
+        self.bloodstep = True
+        self.bf = 0
+
+    def update(self):
+        global player_decrease_bool
+        self.decrease = player_decrease_bool
+        if self.decrease and self.count < self.step:
+            self.width -= 30 / self.step
+            self.count +=  1
+            if self.bf % 5 == 0:
+                self.bloodstep = not self.bloodstep
+            if self.bloodstep:
+                self.bf += 1
+                self.image = pygame.Surface((self.width,15))
+                self.image.fill('red')
+            else:
+                self.image = pygame.Surface((self.width,15))
+                self.image.fill('grey')
+        elif self.decrease and self.count == self.step:
+            self.count = 0
+            player_decrease_bool = False
+
         
 class QuestionBackground(pygame.sprite.Sprite):
     def __init__(self):
@@ -371,7 +410,8 @@ class AnswerButton(pygame.sprite.Sprite):
                 if questions['answer'][0] == self.num:
                     self.correct()
                 else:
-                    print('N')
+                    global player_decrease_bool
+                    player_decrease_bool = True
  
 class Question():
     def __init__(self, question_index: int, amount_per_line: int):
@@ -390,6 +430,7 @@ class Question():
 init()
 
 while True:
+    print(balloon.theta, balloon.count)
     clock.tick(FPS)
     events = pygame.event.get()
     for event in events:
