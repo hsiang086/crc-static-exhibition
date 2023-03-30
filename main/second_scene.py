@@ -10,6 +10,7 @@ def init():
 
     FPS = 60
     RES = WIDTH, HIGHT = (1600, 900)
+    POS=[(HIGHT/2)-200,(HIGHT/2),(HIGHT/2)+200]
     clock = pygame.time.Clock()
     
     itv = 0
