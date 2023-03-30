@@ -59,6 +59,7 @@ def init():
     balloonblooddecrease = BalloonBloodDecrease()
     playerblood = PlayerBlood()
     playerblooddecrease = PlayerBloodDecrease()
+    bullet_count = BulletCount()
     
     q = 0
     question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
@@ -66,7 +67,7 @@ def init():
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
     bullet = Bullet()
-    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease)
+    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet,bullet_count)
     shooting_scene.add(balloon, aim, bullet)
 
 
@@ -75,6 +76,7 @@ class Bullet(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.Surface((50, 50))
         self.image.fill("pink")
+        self.time = 0
         self.x = WIDTH
         self.y = HEIGHT + 30
         self.rect = self.image.get_rect()
@@ -86,26 +88,32 @@ class Bullet(pygame.sprite.Sprite):
         self.is_flying = False
 
     def update(self):
+        global shooting
         print(self.rect.center)
         if self.is_flying:
             self.rect.centerx -= self.x_move
             self.rect.centery -= self.y_move
             if balloon.rect.collidepoint(self.rect.center):
                 self.rect.x = WIDTH
+                self.time = 0
                 self.rect.y = HEIGHT + 30
                 self.is_flying = False
                 balloon.change = not balloon.change
                 balloon.size = 'small'
                 global balloon_decrease_bool
                 balloon_decrease_bool = True
-                global shooting
                 shooting = False
                 aim.__init__()
-            if self.rect.centery <= 0:
+            if self.rect.centery <= 0 or self.rect.centerx <= 0:
+                self.time += 1
                 print(1)
                 self.rect.x = WIDTH            
                 self.rect.y = HEIGHT + 30
                 self.is_flying = False
+                if self.time >= 3:
+                    self.time = 0
+                    aim.__init__()
+                    shooting = False
         else:
             self.x_move = abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length * self.speed
             self.y_move = abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length * self.speed
@@ -158,7 +166,7 @@ class Balloon(pygame.sprite.Sprite):
         # circle radius
         self.movecircle_bool = True
         self.circle_speed = 2
-        self.r = 200
+        self.r = 150
         self.rect.centerx = x_center
         self.rect.centery = HEIGHT / 8
         self.circle_centerx = self.rect.centerx 
@@ -331,8 +339,6 @@ class BalloonBloodDecrease(pygame.sprite.Sprite):
             self.count = 0
             balloon_decrease_bool = False
 
-
-
 class PlayerBlood(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -375,8 +381,7 @@ class PlayerBloodDecrease(pygame.sprite.Sprite):
         elif self.decrease and self.count == self.step:
             self.count = 0
             player_decrease_bool = False
-
-        
+       
 class QuestionBackground(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -400,7 +405,13 @@ class AnswerButton(pygame.sprite.Sprite):
     def correct(self):
         print('correct')
         global shooting, q, balloon
-        q += 1
+        while 1:
+            q_check = random.randint(0,4)
+            if q != q_check:
+                q = q_check
+                break
+        
+
         shooting = True
         balloon.size = 'large'
 
@@ -428,6 +439,14 @@ class Question():
             text_rect = text.get_rect(topleft=(question_background.rect.left * 1.1, question_background.rect.top + (text_size * i)))
             screen.blit(text, text_rect)
 
+class BulletCount(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface((50,100))
+        self.image.fill((1,146,46))
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH - 50
+        self.rect.centery = HEIGHT - 50
 init()
 
 while True:
