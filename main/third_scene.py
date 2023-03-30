@@ -67,7 +67,6 @@ def init():
 class Bullet(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        print(1)
         self.image = pygame.Surface((50, 50))
         self.image.fill("pink")
         self.x = WIDTH
@@ -131,7 +130,7 @@ class Balloon(pygame.sprite.Sprite):
         # circle radius
         self.movecircle_bool = True
         self.circle_speed = 2
-        self.r = 200
+        self.r = 150
         self.rect.centerx = x_center
         self.rect.centery = HEIGHT / 8
         self.circle_centerx = self.rect.centerx 
@@ -139,6 +138,13 @@ class Balloon(pygame.sprite.Sprite):
         self.check = True
         self.bf_x = self.rect.centerx
         self.bf_y = self.rect.centery
+
+        self.m_x = 1
+        self.m_y = sqrt(3)
+        self.bf_bool = True
+        self.triangle_speed = 3
+        self.step = 45
+
         # 
         self.movetriangle_bool = not self.movecircle_bool
 
@@ -155,35 +161,33 @@ class Balloon(pygame.sprite.Sprite):
             self.check = True
 
     def trianglemotion(self):
-        m_x = 1
-        m_y = sqrt(3)
-        bf_bool = True
+        # m_x = 1
+        # m_y = sqrt(3)
+        # bf_bool = True
         
 
-        self.triangle_speed = 3
-        self.step = 100
         self.count += 1
         
         if self.count == 3 * self.step:
             self.rect.centerx = int(self.bf_x) + 1
             self.rect.centery = int(self.bf_y) + 2
-            bf_bool = False
+            self.bf_bool = False
             self.check = True
 
         self.count %= 3 * self.step
         if self.count < self.step and self.count > 0:
-            self.bf_x += m_x * self.triangle_speed
-            self.bf_y += m_y * self.triangle_speed
+            self.bf_x += self.m_x * self.triangle_speed
+            self.bf_y += self.m_y * self.triangle_speed
         
         if self.count < 2 * self.step and self.count >= self.step:
-            self.bf_x -= sqrt(pow(m_x, 2) + pow(m_y,2)) * self.triangle_speed
+            self.bf_x -= sqrt(pow(self.m_x, 2) + pow(self.m_y, 2)) * self.triangle_speed
             # self.rect.centery += m_y - m_y * speed
         
         if self.count < 3 * self.step and self.count >= 2 * self.step:
-            self.bf_x += m_x * self.triangle_speed
-            self.bf_y -= m_y * self.triangle_speed
+            self.bf_x += self.m_x * self.triangle_speed
+            self.bf_y -= self.m_y * self.triangle_speed
 
-        if bf_bool:
+        if self.bf_bool:
             self.rect.centerx = self.bf_x
             self.rect.centery = self.bf_y
             
@@ -205,6 +209,7 @@ class Balloon(pygame.sprite.Sprite):
                     bullet = Bullet()
                     shooting_scene.add(bullet)
                     self.bullet_is_flying = True
+
         if self.bullet_is_flying:
             if self.rect.collidepoint(bullet.rect.center) and not self.strike:
                 self.strike = True
@@ -321,15 +326,21 @@ class AnswerButton(pygame.sprite.Sprite):
         self.text = answer
         self.num = pos
 
+    def correct(self):
+        print('correct')
+        global shooting, q, balloon
+        q += 1
+        shooting = not shooting
+        balloon.strike = False
+        balloon.r = 200
+        balloon.step = 90
+
+
     def update(self):
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
                 if questions['answer'][0] == self.num:
-                    print('Y')
-                    global shooting, q
-                    q += 1
-                    shooting = not shooting
-                    balloon.strike = False
+                    self.correct()
                 else:
                     print('N')
  
