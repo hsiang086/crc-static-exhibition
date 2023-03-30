@@ -130,7 +130,7 @@ class Balloon(pygame.sprite.Sprite):
         self.count = 0
         # circle radius
         self.movecircle_bool = True
-        self.circle_speed = 2
+        self.circle_speed = 3
         self.r = 200
         self.rect.centerx = x_center
         self.rect.centery = HEIGHT / 8
