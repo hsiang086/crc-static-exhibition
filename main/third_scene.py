@@ -141,7 +141,6 @@ class Balloon(pygame.sprite.Sprite):
 
         self.m_x = 1
         self.m_y = sqrt(3)
-        self.bf_bool = True
         self.triangle_speed = 3
         self.step = 45
 
@@ -149,7 +148,6 @@ class Balloon(pygame.sprite.Sprite):
         self.movetriangle_bool = not self.movecircle_bool
 
         self.bullet_is_flying = False
-        self.strike = False
 
     def circlemotion(self):
         theta_degree = self.theta * 2 * pi / 360
@@ -166,16 +164,17 @@ class Balloon(pygame.sprite.Sprite):
         # bf_bool = True
         
 
+        self.bf_bool = True
         self.count += 1
         
-        if self.count == 3 * self.step:
+        if self.count >= 3 * self.step:
             self.rect.centerx = int(self.bf_x) + 1
             self.rect.centery = int(self.bf_y) + 2
+            self.count = 0
             self.bf_bool = False
             self.check = True
 
-        self.count %= 3 * self.step
-        if self.count < self.step and self.count > 0:
+        if self.count < self.step:
             self.bf_x += self.m_x * self.triangle_speed
             self.bf_y += self.m_y * self.triangle_speed
         
@@ -211,8 +210,9 @@ class Balloon(pygame.sprite.Sprite):
                     self.bullet_is_flying = True
 
         if self.bullet_is_flying:
-            if self.rect.collidepoint(bullet.rect.center) and not self.strike:
-                self.strike = True
+            if self.rect.collidepoint(bullet.rect.center):
+                bullet.rect.x = WIDTH
+                bullet.rect.y = HEIGHT + 30
                 shooting_scene.remove(bullet)
                 self.change = not self.change
                 decrease_bool = True
@@ -331,9 +331,8 @@ class AnswerButton(pygame.sprite.Sprite):
         global shooting, q, balloon
         q += 1
         shooting = not shooting
-        balloon.strike = False
-        balloon.r = 200
-        balloon.step = 90
+        # balloon.r = 200
+        # balloon.step = 90
 
 
     def update(self):
