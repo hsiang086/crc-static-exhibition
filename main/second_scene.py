@@ -8,7 +8,7 @@ def init():
     global screen
     global POS
 
-    FPS = 120
+    FPS = 60
     RES = WIDTH, HIGHT = (1500, 800)
     POS=[(HIGHT/2)-200,(HIGHT/2),(HIGHT/2)+200]
     clock = pygame.time.Clock()
@@ -85,7 +85,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    if time >= 40:
+    if time >= 20:
         Obj = Object()
         all_sprites.add(Obj)
         objects.add(Obj)  
