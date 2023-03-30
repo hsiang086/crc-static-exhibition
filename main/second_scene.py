@@ -7,7 +7,7 @@ def init():
     global screen
 
     FPS = 60
-    RES = WIDTH, HIGHT = (1600, 900)
+    RES = WIDTH, HIGHT = (1200, 700)
     clock = pygame.time.Clock()
     
     itv = 0
