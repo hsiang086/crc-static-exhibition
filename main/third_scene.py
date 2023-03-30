@@ -56,7 +56,7 @@ def init():
     blooddecrease = BloodDecrease()
     
     q = 0
-    question_scene.add(question_background, player, balloon, ballonblood, blooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
+    question_scene.add(balloon, question_background, player, ballonblood, blooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
 
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
@@ -125,6 +125,7 @@ class Balloon(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.paused = False
         self.change = True
+        self.size = 'small'
         self.theta = 0
         self.count = 0
         # circle radius
@@ -217,9 +218,8 @@ class Balloon(pygame.sprite.Sprite):
                 self.change = not self.change
                 decrease_bool = True
                 global shooting
-                shooting = not shooting
-
-                    
+                shooting = False
+                self.size = 'small'
                 #     bullet_bool = True
                 # if self.rect.collidepoint(bullet.rect.center):
                 #     print("balloon",self.rect.center)
@@ -230,6 +230,18 @@ class Balloon(pygame.sprite.Sprite):
                 #     decrease_bool = True
                 #     global shooting
                 #     shooting = not shooting
+        if self.size == 'large' and self.theta == 0 and self.count == 0:
+            print(self.theta, self.count)
+            print('large')
+            self.r = 200
+            self.step = 90
+        if self.size == 'small' and self.theta == 0 and self.count == 0:
+            print(self.theta, self.count)
+            print('small')
+            self.r = 150
+            self.step = 45
+
+
         
         if self.check:
             rand_num = random.randint(0,1)
@@ -330,9 +342,8 @@ class AnswerButton(pygame.sprite.Sprite):
         print('correct')
         global shooting, q, balloon
         q += 1
-        shooting = not shooting
-        # balloon.r = 200
-        # balloon.step = 90
+        shooting = True
+        balloon.size = 'large'
 
 
     def update(self):
@@ -360,6 +371,7 @@ class Question():
 init()
 
 while True:
+    print(balloon.theta, balloon.count)
     clock.tick(FPS)
     events = pygame.event.get()
     for event in events:
