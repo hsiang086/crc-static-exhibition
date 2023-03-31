@@ -1,4 +1,5 @@
 import pygame
+import time
 import random
 
 def init():
@@ -7,6 +8,10 @@ def init():
     global clock
     global screen
     global POS
+    global font
+    global time_start
+
+    font = pygame.font.SysFont('Arial', 20, bold=True)
 
     FPS = 60
     RES = WIDTH, HIGHT = (1500, 800)
@@ -15,13 +20,14 @@ def init():
     
     itv = 0
     pygame.init()
+    time_start = time.time()
     screen = pygame.display.set_mode(RES)
     
 
     pygame.display.set_caption("second scene")
 
-init()
 
+init()
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -68,6 +74,18 @@ class Object(pygame.sprite.Sprite):
         else:    
             self.kill()
 
+    class Time(pygame.sprite.Sprite):
+        def __init__(self):
+            super().__init__()
+            self.char = 60
+        def display(self):
+            text = font.render(str(self.char), True, "black")
+            text_rect = text.get_rect()
+            screen.blit(text, text_rect)
+        def update(self):
+            count_time = int(time.time()) - int(time_start)
+            self.char = str(count_time)
+            self.display()
 
 
         
