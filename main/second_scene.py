@@ -85,7 +85,7 @@ class Object(pygame.sprite.Sprite):
 
 class TimeRunning():
     def __init__(self):
-        self.time = 10
+        self.time = 60
         self.time_start = tm.time()
         self.text_rect = (WIDTH / 2, 100)
     def display(self,time_run):
@@ -96,7 +96,6 @@ class TimeRunning():
 
 
 global timerunning
-
 timerunning = TimeRunning()
 timerunning.__init__()
 all_sprites = pygame.sprite.Group()
