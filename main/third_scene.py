@@ -29,7 +29,7 @@ def init():
     global bullet_bool
 
     global q
-
+    global q_list
 
 
     RES = WIDTH, HEIGHT = 1280, 720
@@ -60,8 +60,9 @@ def init():
     playerblood = PlayerBlood()
     playerblooddecrease = PlayerBloodDecrease()
     bullet_count = BulletCount()
-    
-    q = 0
+
+    q = random.randrange(4)
+    q_list = [i for i in range(len(questions['questions']))]
     question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
 
     shooting_scene = pygame.sprite.Group()
@@ -402,35 +403,26 @@ class AnswerButton(pygame.sprite.Sprite):
         self.text = answer
         self.num = pos
 
-    def correct(self):
-        print('correct')
-        global shooting, q, balloon
-        while 1:
-            q_check = random.randint(0,4)
-            if q != q_check:
-                q = q_check
-                break
+    def switch_q(self):
+        global q
+        q_list.remove(q)
+        q = random.choice(q_list)
+
         
 
-        shooting = True
-        balloon.size = 'large'
 
 
     def update(self):
+        global q_list, shooting, balloon, player_decrease_bool
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
                 if questions['answer'][0] == self.num:
-                    self.correct()
+                    shooting = True
+                    balloon.size = 'large'
+                    self.switch_q()
                 else:
-                    global player_decrease_bool
                     player_decrease_bool = True
-                    global q
-                    while 1:
-                        q_check = random.randint(0,4)
-                        if q != q_check:
-                            q = q_check
-                            break
- 
+                    self.switch_q()
 class Question():
     def __init__(self, question_index: int, amount_per_line: int):
         question = questions['questions'][question_index]
