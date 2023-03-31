@@ -29,7 +29,7 @@ def init():
     global bullet_bool
 
     global q
-
+    global q_listinit
 
 
     RES = WIDTH, HEIGHT = 1280, 720
@@ -59,15 +59,19 @@ def init():
     balloonblooddecrease = BalloonBloodDecrease()
     playerblood = PlayerBlood()
     playerblooddecrease = PlayerBloodDecrease()
-    bullet_count = BulletCount()
-    
-    q = 0
-    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
+    #bullet_count = BulletCount()
+
+    q = random.randrange(4)
+    def q_listinit():
+        global q_list
+        q_list = [i for i in range(len(questions['questions']))]
+    q_listinit()
+    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'][0])])
 
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
     bullet = Bullet()
-    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet,bullet_count)
+    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet)
     shooting_scene.add(balloon, aim, bullet)
 
 
@@ -83,8 +87,8 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.center = (self.x, self.y)
         self.speed = 20
         self.aim_bullet_length = pow(pow(aim.rect.centerx - self.rect.centerx, 2) + pow(aim.rect.centery - self.rect.centery, 2), 0.5)
-        self.x_move = abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length * self.speed
-        self.y_move = abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length * self.speed
+        self.x_move = (abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length) * self.speed
+        self.y_move = (abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length) * self.speed
         self.is_flying = False
 
     def update(self):
@@ -115,8 +119,10 @@ class Bullet(pygame.sprite.Sprite):
                     aim.__init__()
                     shooting = False
         else:
+            #m = abs(aim.rect.centery - self.rect.centery) / abs(aim.rect.centerx - self.rect.centerx)
             self.x_move = abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length * self.speed
             self.y_move = abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length * self.speed
+            self.aim_bullet_length = pow(pow(aim.rect.centerx - self.rect.centerx, 2) + pow(aim.rect.centery - self.rect.centery, 2), 0.5)
     # def reset(self):
     #     self.rect.centery = self.y
 
@@ -402,29 +408,29 @@ class AnswerButton(pygame.sprite.Sprite):
         self.text = answer
         self.num = pos
 
-    def correct(self):
-        print('correct')
-        global shooting, q, balloon
-        while 1:
-            q_check = random.randint(0,4)
-            if q != q_check:
-                q = q_check
-                break
+    def switch_q(self):
+        global q
+        if len(q_list) == 1:
+            q_listinit()
+        q_list.remove(q)
+        q = random.choice(q_list)
+
         
 
-        shooting = True
-        balloon.size = 'large'
 
 
     def update(self):
+        global q_list, shooting, balloon, player_decrease_bool
         for event in events:
-            if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
+            if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()) and not player_decrease_bool:
+                print(self.num)
                 if questions['answer'][0] == self.num:
-                    self.correct()
+                    shooting = True
+                    balloon.size = 'large'
+                    self.switch_q()
                 else:
-                    global player_decrease_bool
                     player_decrease_bool = True
- 
+                    self.switch_q()
 class Question():
     def __init__(self, question_index: int, amount_per_line: int):
         question = questions['questions'][question_index]
@@ -439,18 +445,18 @@ class Question():
             text_rect = text.get_rect(topleft=(question_background.rect.left * 1.1, question_background.rect.top + (text_size * i)))
             screen.blit(text, text_rect)
 
-class BulletCount(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((50,100))
-        self.image.fill((1,146,46))
-        self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH - 50
-        self.rect.centery = HEIGHT - 50
+# class BulletCount(pygame.sprite.Sprite):
+#     def __init__(self):
+#         super().__init__()
+#         self.image = pygame.Surface((50,100))
+#         self.image.fill((1,146,46))
+#         self.rect = self.image.get_rect()
+#         self.rect.centerx = WIDTH - 50
+#         self.rect.centery = HEIGHT - 50
 init()
 
 while True:
-    print(balloon.theta, balloon.count)
+    #print(q_list)
     clock.tick(FPS)
     events = pygame.event.get()
     for event in events:
