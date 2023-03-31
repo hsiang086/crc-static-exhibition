@@ -162,7 +162,7 @@ class Balloon(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load(os.path.join("images", "balloon(2).png")).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (200, 200))
+        self.image = pygame.transform.scale(self.image, (150, 150))
         self.rect = self.image.get_rect()
         self.paused = False
         self.change = True
