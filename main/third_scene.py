@@ -87,8 +87,8 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.center = (self.x, self.y)
         self.speed = 20
         self.aim_bullet_length = pow(pow(aim.rect.centerx - self.rect.centerx, 2) + pow(aim.rect.centery - self.rect.centery, 2), 0.5)
-        self.x_move = abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length * self.speed
-        self.y_move = abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length * self.speed
+        self.x_move = (abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length) * self.speed
+        self.y_move = (abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length) * self.speed
         self.is_flying = False
 
     def update(self):
@@ -119,8 +119,10 @@ class Bullet(pygame.sprite.Sprite):
                     aim.__init__()
                     shooting = False
         else:
+            #m = abs(aim.rect.centery - self.rect.centery) / abs(aim.rect.centerx - self.rect.centerx)
             self.x_move = abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length * self.speed
             self.y_move = abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length * self.speed
+            self.aim_bullet_length = pow(pow(aim.rect.centerx - self.rect.centerx, 2) + pow(aim.rect.centery - self.rect.centery, 2), 0.5)
     # def reset(self):
     #     self.rect.centery = self.y
 
