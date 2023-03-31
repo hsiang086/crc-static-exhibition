@@ -1,5 +1,6 @@
 import pygame
 import random
+import time as tm
 
 def init():
     global FPS
@@ -7,6 +8,7 @@ def init():
     global clock
     global screen
     global POS
+ 
 
     FPS = 60
     RES = WIDTH, HIGHT = (1500, 800)
@@ -15,6 +17,7 @@ def init():
     
     itv = 0
     pygame.init()
+
     screen = pygame.display.set_mode(RES)
     
 
@@ -80,9 +83,22 @@ class Object(pygame.sprite.Sprite):
             self.kill()
 
 
+class TimeRunning():
+    def __init__(self):
+        self.time = 10
+        self.time_start = tm.time()
+        self.text_rect = (WIDTH / 2, 100)
+    def display(self,time_run):
+        time_left = self.time - int(time_run - self.time_start)
+        font = pygame.font.SysFont('Arial', 70, bold = True)
+        text = font.render(str(time_left), True, 'black')
+        screen.blit(text, self.text_rect)
 
-        
-        
+
+global timerunning
+
+timerunning = TimeRunning()
+timerunning.__init__()
 all_sprites = pygame.sprite.Group()
 objects = pygame.sprite.Group() 
 player = Player()
@@ -106,13 +122,17 @@ while running:
         all_sprites.add(Obj)
         objects.add(Obj)  
         time = 0
-
+    t_run = tm.time()
+    
+    
     all_sprites.update()
+
 
     hits = pygame.sprite.spritecollide(player, objects, 0)
     if hits:
         running = False
     screen.fill((255,255,255))
+    timerunning.display(t_run)
     all_sprites.draw(screen)
     pygame.display.update()
     time += 1        
