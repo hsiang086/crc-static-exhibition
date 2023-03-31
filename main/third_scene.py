@@ -424,6 +424,12 @@ class AnswerButton(pygame.sprite.Sprite):
                 else:
                     global player_decrease_bool
                     player_decrease_bool = True
+                    global q
+                    while 1:
+                        q_check = random.randint(0,4)
+                        if q != q_check:
+                            q = q_check
+                            break
  
 class Question():
     def __init__(self, question_index: int, amount_per_line: int):
