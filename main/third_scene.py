@@ -59,7 +59,7 @@ def init():
     balloonblooddecrease = BalloonBloodDecrease()
     playerblood = PlayerBlood()
     playerblooddecrease = PlayerBloodDecrease()
-    bullet_count = BulletCount()
+    #bullet_count = BulletCount()
 
     q = random.randrange(4)
     def q_listinit():
@@ -71,7 +71,7 @@ def init():
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
     bullet = Bullet()
-    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet,bullet_count)
+    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet)
     shooting_scene.add(balloon, aim, bullet)
 
 
@@ -445,14 +445,14 @@ class Question():
             text_rect = text.get_rect(topleft=(question_background.rect.left * 1.1, question_background.rect.top + (text_size * i)))
             screen.blit(text, text_rect)
 
-class BulletCount(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((50,100))
-        self.image.fill((1,146,46))
-        self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH - 50
-        self.rect.centery = HEIGHT - 50
+# class BulletCount(pygame.sprite.Sprite):
+#     def __init__(self):
+#         super().__init__()
+#         self.image = pygame.Surface((50,100))
+#         self.image.fill((1,146,46))
+#         self.rect = self.image.get_rect()
+#         self.rect.centerx = WIDTH - 50
+#         self.rect.centery = HEIGHT - 50
 init()
 
 while True:
