@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.itv = 0
          
     def update(self):
-        self.itv += 1
+        """self.itv += 1
         key_pressed = pygame.key.get_pressed()
         if self.itv >= 8:
             if key_pressed[pygame.K_UP]:
@@ -48,8 +48,19 @@ class Player(pygame.sprite.Sprite):
                     self.pos = 2
                 else:
                     self.pos += 1     
-            self.itv = 0
-        self.rect.centery = POS[self.pos]         
+            self.itv = 0"""
+        self.rect.centery = POS[self.pos]
+    def UP(self):
+        if self.pos == 0:
+            self.pos = 0
+        else:
+            self.pos -= 1
+    def DOWN(self):
+        if self.pos == 2:
+            self.pos = 2
+        else:
+            self.pos += 1
+
 
 class Object(pygame.sprite.Sprite):
     def __init__(self):
@@ -64,7 +75,7 @@ class Object(pygame.sprite.Sprite):
         self.itv = 0
     def update(self):
         if self.rect.right >= 0:
-            self.rect.x += self.v*5
+            self.rect.x += self.v
         else:    
             self.kill()
 
@@ -85,7 +96,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    if time >= 20:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP or event.key == pygame.K_w:
+                player.UP()
+            elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                player.DOWN()
+    if time >= 60:
         Obj = Object()
         all_sprites.add(Obj)
         objects.add(Obj)  
