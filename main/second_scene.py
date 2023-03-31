@@ -1,5 +1,4 @@
 import pygame
-import time
 import random
 
 def init():
@@ -8,10 +7,6 @@ def init():
     global clock
     global screen
     global POS
-    global font
-    global time_start
-
-    font = pygame.font.SysFont('Arial', 20, bold=True)
 
     FPS = 60
     RES = WIDTH, HIGHT = (1500, 800)
@@ -20,14 +15,13 @@ def init():
     
     itv = 0
     pygame.init()
-    time_start = time.time()
     screen = pygame.display.set_mode(RES)
     
 
     pygame.display.set_caption("second scene")
 
-
 init()
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -41,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.itv = 0
          
     def update(self):
-        """self.itv += 1
+        self.itv += 1
         key_pressed = pygame.key.get_pressed()
         if self.itv >= 8:
             if key_pressed[pygame.K_UP]:
@@ -54,19 +48,8 @@ class Player(pygame.sprite.Sprite):
                     self.pos = 2
                 else:
                     self.pos += 1     
-            self.itv = 0"""
-        self.rect.centery = POS[self.pos]
-    def UP(self):
-        if self.pos == 0:
-            self.pos = 0
-        else:
-            self.pos -= 1
-    def DOWN(self):
-        if self.pos == 2:
-            self.pos = 2
-        else:
-            self.pos += 1
-
+            self.itv = 0
+        self.rect.centery = POS[self.pos]         
 
 class Object(pygame.sprite.Sprite):
     def __init__(self):
@@ -81,22 +64,10 @@ class Object(pygame.sprite.Sprite):
         self.itv = 0
     def update(self):
         if self.rect.right >= 0:
-            self.rect.x += self.v
+            self.rect.x += self.v*5
         else:    
             self.kill()
 
-    class Time(pygame.sprite.Sprite):
-        def __init__(self):
-            super().__init__()
-            self.char = 60
-        def display(self):
-            text = font.render(str(self.char), True, "black")
-            text_rect = text.get_rect()
-            screen.blit(text, text_rect)
-        def update(self):
-            count_time = int(time.time()) - int(time_start)
-            self.char = str(count_time)
-            self.display()
 
 
         
@@ -114,12 +85,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP or event.key == pygame.K_w:
-                player.UP()
-            elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                player.DOWN()
-    if time >= 60:
+    if time >= 20:
         Obj = Object()
         all_sprites.add(Obj)
         objects.add(Obj)  
