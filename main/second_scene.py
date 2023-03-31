@@ -90,6 +90,9 @@ class TimeRunning():
         self.text_rect = (WIDTH / 2, 100)
     def display(self,time_run):
         time_left = self.time - int(time_run - self.time_start)
+        if time_left < 0:
+            global running
+            running = False
         font = pygame.font.SysFont('Arial', 70, bold = True)
         text = font.render(str(time_left), True, 'black')
         screen.blit(text, self.text_rect)
@@ -128,12 +131,12 @@ while running:
 
 
     hits = pygame.sprite.spritecollide(player, objects, 0)
-    if hits:
-        running = False
     screen.fill((255,255,255))
     timerunning.display(t_run)
     all_sprites.draw(screen)
-    pygame.display.update()
+    if not hits :
+        pygame.display.update()
+
     time += 1        
 
 pygame.quit()
