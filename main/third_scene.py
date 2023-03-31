@@ -423,7 +423,6 @@ class AnswerButton(pygame.sprite.Sprite):
         global q_list, shooting, balloon, player_decrease_bool
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()) and not player_decrease_bool:
-                print(self.num)
                 if questions['answer'][0] == self.num:
                     shooting = True
                     balloon.size = 'large'
@@ -456,7 +455,7 @@ class Question():
 init()
 
 while True:
-    #print(q_list)
+    print(q_list)
     clock.tick(FPS)
     events = pygame.event.get()
     for event in events:
