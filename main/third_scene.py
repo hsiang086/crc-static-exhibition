@@ -29,7 +29,7 @@ def init():
     global bullet_bool
 
     global q
-    global q_list
+    global q_listinit
 
 
     RES = WIDTH, HEIGHT = 1280, 720
@@ -62,7 +62,10 @@ def init():
     bullet_count = BulletCount()
 
     q = random.randrange(4)
-    q_list = [i for i in range(len(questions['questions']))]
+    def q_listinit():
+        global q_list
+        q_list = [i for i in range(len(questions['questions']))]
+    q_listinit()
     question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'][0])])
 
     shooting_scene = pygame.sprite.Group()
@@ -405,6 +408,8 @@ class AnswerButton(pygame.sprite.Sprite):
 
     def switch_q(self):
         global q
+        if len(q_list) == 1:
+            q_listinit()
         q_list.remove(q)
         q = random.choice(q_list)
 
