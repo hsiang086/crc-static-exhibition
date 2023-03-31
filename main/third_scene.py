@@ -63,7 +63,7 @@ def init():
 
     q = random.randrange(4)
     q_list = [i for i in range(len(questions['questions']))]
-    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'])])
+    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'][0])])
 
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
@@ -448,7 +448,7 @@ class BulletCount(pygame.sprite.Sprite):
 init()
 
 while True:
-    print(balloon.theta, balloon.count)
+    print(q_list)
     clock.tick(FPS)
     events = pygame.event.get()
     for event in events:
