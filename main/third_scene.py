@@ -161,7 +161,7 @@ class Aim(pygame.sprite.Sprite):
 class Balloon(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load(os.path.join("images", "balloon.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join("images", "balloon(2).png")).convert_alpha()
         self.image = pygame.transform.scale(self.image, (200, 200))
         self.rect = self.image.get_rect()
         self.paused = False
@@ -171,7 +171,7 @@ class Balloon(pygame.sprite.Sprite):
         self.count = 0
         # circle radius
         self.movecircle_bool = True
-        self.circle_speed = 2
+        self.circle_speed = 3
         self.r = 150
         self.rect.centerx = x_center
         self.rect.centery = HEIGHT / 8
