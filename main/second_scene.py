@@ -1,6 +1,7 @@
 import pygame
 import random
 import time as tm
+import os
 
 def init():
     global FPS
@@ -8,8 +9,12 @@ def init():
     global clock
     global screen
     global POS
- 
+    global pause_times, time_start
+    global object_kill
 
+    object_kill = False
+    pause_times = 0
+    time_start = tm.time()
     FPS = 60
     RES = WIDTH, HIGHT = (1500, 800)
     POS=[(HIGHT/2)-200,(HIGHT/2),(HIGHT/2)+200]
@@ -71,6 +76,18 @@ class Object(pygame.sprite.Sprite):
                 self.rect.x += self.v
             else:    
                 self.kill()
+class BalloonAppear(pygame.sprite.Sprite):
+    def __init__(self) :
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join("images", "balloon(2).png")).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (700, 700))
+        self.rect = self.image.get_rect()
+        self.rect.left = WIDTH
+        self.rect.centery = HIGHT / 2
+        self.v = -5
+        self.itv = 0
+    def update(self):
+        self.rect.centerx += self.v
 
 class collide_effect(pygame.sprite.Sprite):
     def __init__(self,x,y):
@@ -104,6 +121,7 @@ timerunning = TimeRunning()
 timerunning.__init__()
 all_sprites = pygame.sprite.Group()
 objects = pygame.sprite.Group() 
+balloon = pygame.sprite.Group()
 player = Player()
 all_sprites.add(player) 
 
@@ -126,7 +144,7 @@ while running:
                 player.UP()
             elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 player.DOWN()
-    if time >= ogi:
+    if time >= ogi and not object_kill:
         Obj = Object()
         all_sprites.add(Obj)
         objects.add(Obj)  
@@ -137,19 +155,26 @@ while running:
         if tm.time()-p_moment >= t_pause:
             pause = False
 
-    all_sprites.update()
 
 
     hits = pygame.sprite.spritecollide(player, objects, 1)
     screen.fill((255,255,255))
     timerunning.display(t_run)
-    all_sprites.draw(screen)
     if hits:
         pause = True
         p_moment = tm.time()
         player.collide()
-        
-    
+        pause_times += 1
+    if tm.time()-time_start >= 30 + pause_times*3 and not object_kill:
+        balloon_appear = BalloonAppear()
+        object_kill = True
+        balloon.add(balloon_appear)
+        all_sprites.add(balloon_appear)
+    balloon_hits = pygame.sprite.spritecollide(player, balloon, 1)
+    if balloon_hits:
+        running = False
+    all_sprites.update()
+    all_sprites.draw(screen)
     pygame.display.update()
 
     if not pause: time += 1        
