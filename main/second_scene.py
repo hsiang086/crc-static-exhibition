@@ -87,7 +87,8 @@ class BalloonAppear(pygame.sprite.Sprite):
         self.v = -5
         self.itv = 0
     def update(self):
-        self.rect.centerx += self.v
+        if not pause:
+            self.rect.centerx += self.v
 
 class collide_effect(pygame.sprite.Sprite):
     def __init__(self,x,y):
