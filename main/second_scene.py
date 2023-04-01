@@ -152,6 +152,6 @@ while running:
     
     pygame.display.update()
 
-    time += 1        
+    if not pause: time += 1        
 
 pygame.quit()
