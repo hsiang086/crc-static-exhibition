@@ -38,21 +38,7 @@ class Player(pygame.sprite.Sprite):
         self.itv = 0
          
     def update(self):
-        """self.itv += 1
-        key_pressed = pygame.key.get_pressed()
-        if self.itv >= 8:
-            if key_pressed[pygame.K_UP]:
-                if self.pos == 0:
-                    self.pos = 0
-                else:
-                    self.pos -= 1 
-            if key_pressed[pygame.K_DOWN]:
-                if self.pos == 2:
-                    self.pos = 2
-                else:
-                    self.pos += 1     
-            self.itv = 0"""
-        self.rect.centery = POS[self.pos]
+        if not pause: self.rect.centery = POS[self.pos]
     def UP(self):
         if self.pos == 0:
             self.pos = 0
@@ -63,6 +49,9 @@ class Player(pygame.sprite.Sprite):
             self.pos = 2
         else:
             self.pos += 1
+    def collide(self):
+        effect = collide_effect(self.rect.right, self.rect.centery)
+        all_sprites.add(effect)      
 
 
 class Object(pygame.sprite.Sprite):
@@ -77,11 +66,23 @@ class Object(pygame.sprite.Sprite):
         self.v = -5
         self.itv = 0
     def update(self):
-        if self.rect.right >= 0:
-            self.rect.x += self.v
-        else:    
-            self.kill()
+        if not pause:
+            if self.rect.right >= 0:
+                self.rect.x += self.v
+            else:    
+                self.kill()
 
+class collide_effect(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((75,75))
+        self.image.fill((153,153,0))
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+    def update(self):
+        if not pause:
+            self.kill()    
 
 class TimeRunning():
     def __init__(self):
@@ -108,34 +109,48 @@ all_sprites.add(player)
 
 
 time = 0
+p_moment = 0 
+t_pause = 3 #Stop for __ second if collide
+object_generate_interval = 2 #(seconds)
+ogi = object_generate_interval*FPS
+
+pause = False
 running = True
 while running:
     clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN and not pause:
             if event.key == pygame.K_UP or event.key == pygame.K_w:
                 player.UP()
             elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 player.DOWN()
-    if time >= 60:
+    if time >= ogi:
         Obj = Object()
         all_sprites.add(Obj)
         objects.add(Obj)  
         time = 0
     t_run = tm.time()
     
-    
+    if pause:
+        if tm.time()-p_moment >= t_pause:
+            pause = False
+
     all_sprites.update()
 
 
-    hits = pygame.sprite.spritecollide(player, objects, 0)
+    hits = pygame.sprite.spritecollide(player, objects, 1)
     screen.fill((255,255,255))
     timerunning.display(t_run)
     all_sprites.draw(screen)
-    if not hits :
-        pygame.display.update()
+    if hits:
+        pause = True
+        p_moment = tm.time()
+        player.collide()
+        
+    
+    pygame.display.update()
 
     time += 1        
 
