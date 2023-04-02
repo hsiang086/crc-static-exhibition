@@ -65,7 +65,7 @@ class Back(pygame.sprite.Sprite):
                 self.to_draw.draw(screen)
                 inputbox.disappear()
     
-class InputBox:
+class InputBox():
     def __init__(self, rect: pygame.Rect):
         self.boxBody: pygame.Rect = rect
         self.color_inactive = pygame.Color('lightskyblue3')
@@ -99,6 +99,7 @@ class InputBox:
         self.boxBody.w = width
         screen.blit(txtSurface, (self.boxBody.x+5, self.boxBody.y+5))
         pygame.draw.rect(screen, self.color, self.boxBody, 2)
+
     def disappear(self):  
         global typing 
         typing = False 
