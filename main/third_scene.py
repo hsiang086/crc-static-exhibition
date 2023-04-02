@@ -462,7 +462,7 @@ while True:
     screen.fill("black")
     if not shooting:
         question_scene.draw(screen)
-        ques = Question(q, 20)
+        ques = Question(q, 50)
         ques.display()
         question_scene.update()
     else:
