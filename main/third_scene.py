@@ -30,6 +30,7 @@ def init():
 
     global q
     global q_listinit
+    global background_init
 
 
     RES = WIDTH, HEIGHT = 1280, 720
@@ -40,6 +41,10 @@ def init():
     pygame.init()
     pygame.display.set_caption("third")
     screen = pygame.display.set_mode(RES)
+    
+    bg_image = pygame.image.load("images/third_scene_images/bg.png").convert()
+    def background_init():
+        screen.blit(bg_image,(0,0))
     clock = pygame.time.Clock()
     text_size = 50
     font = pygame.font.SysFont('Arial', text_size, bold=True)
@@ -450,6 +455,8 @@ class Question():
 #         self.rect = self.image.get_rect()
 #         self.rect.centerx = WIDTH - 50
 #         self.rect.centery = HEIGHT - 50
+
+
 init()
 
 while True:
@@ -459,14 +466,16 @@ while True:
     for event in events:
         if event.type == pygame.QUIT:
             os._exit(True)
-    screen.fill("black")
+
+    background_init()
+    
     if not shooting:
         question_scene.draw(screen)
         ques = Question(q, 50)
         ques.display()
         question_scene.update()
     else:
-        screen.fill("black")
+        background_init()
         shooting_scene.draw(screen)
         shooting_scene.update()
 
