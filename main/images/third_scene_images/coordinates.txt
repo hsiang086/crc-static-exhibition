@@ -1,0 +1,37 @@
+##畫面最左上角的點是x = 0, y = 0，x共1920, y共1080
+#提問視窗
+main_frame.png x = 960, y = 1620
+A.png x = 360, y = 866
+B.png x = 760, y = 866
+C.png x = 1160, y = 866
+D.png x = 1560, y = 866
+
+#生命框--b表氣球、p表玩家
+bHp_frame.png x = 960, y = 66
+bHp_multiplier_frame.png x = 1453, y = 66
+pHp_frame.png x = 471, y = 638
+
+#生命條
+bHp_bar_outline.png x = 960, y = 81
+bHp_bar_seg1.png x = 640, y = 81
+bHp_bar_seg2.png x = 800, y = 81
+bHp_bar_seg3.png x = 960, y = 81
+bHp_bar_seg4.png x = 1120, y = 81
+bHp_bar_seg5.png x = 1280, y = 81
+
+pHp_bar_outline.png x = 471, y = 652
+pHp_bar_seg1.png x = 237, y = 652
+pHp_bar_seg2.png x = 354, y = 652
+pHp_bar_seg3.png x = 471, y = 652
+pHp_bar_seg4.png x = 588, y = 652
+pHp_bar_seg5.png x = 705, y = 652
+
+#彈藥
+ammo_frame.png x = 1690, y = 638
+ammo_icon.png x = 1650, y = 638
+
+#推薦文字中心座標(大略)
+氣球hp x = 960, y = 48
+氣球hp條數 x = 1453, y = 73
+玩家hp x = 471, y = 626
+彈藥數量 x = 1719, y = 638

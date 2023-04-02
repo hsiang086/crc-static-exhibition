@@ -141,8 +141,8 @@ class Bullet(pygame.sprite.Sprite):
 class Aim(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((50,50))
-        self.image.fill("green")
+        self.image = pygame.image.load(os.path.join("images","crosshair.png")).convert_alpha()
+        #self.image = pygame.transform.scale(self.image, (100, 100))
         self.rect = self.image.get_rect()
         self.speed = 5
         self.rect.centerx = x_center
