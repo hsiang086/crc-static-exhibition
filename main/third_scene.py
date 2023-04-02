@@ -80,7 +80,6 @@ def init():
     shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet,back)
     shooting_scene.add(balloon, aim, bullet,back)
 
-
 class Back(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
