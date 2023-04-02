@@ -5,19 +5,24 @@ import os
 
 def init():
     global FPS
-    global RES, WIDTH, HIGHT
+    global RES, WIDTH, HIGHT, Road_Width
     global clock
     global screen
     global POS
     global pause_times, time_start
     global object_kill
+    global speed
+    global tree_pos
 
+    tree_pos = 125
     object_kill = False
     pause_times = 0
     time_start = tm.time()
     FPS = 60
     RES = WIDTH, HIGHT = (1500, 800)
-    POS=[(HIGHT/2)-200,(HIGHT/2),(HIGHT/2)+200]
+    Road_Width = 200
+    POS=[(HIGHT/2)-Road_Width,(HIGHT/2),(HIGHT/2)+Road_Width]
+    speed = -5
     clock = pygame.time.Clock()
     
     itv = 0
@@ -40,8 +45,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = 10
         self.rect.centery = HIGHT/2
         self.pos = 1
-        self.itv = 0
-         
+
     def update(self):
         if not pause: self.rect.centery = POS[self.pos]
     def UP(self):
@@ -68,14 +72,30 @@ class Object(pygame.sprite.Sprite):
         self.rect.left = WIDTH
         self.pos = random.randrange(0,3)
         self.rect.centery = POS[self.pos]
-        self.v = -5
-        self.itv = 0
+        self.v = speed
     def update(self):
         if not pause:
             if self.rect.right >= 0:
                 self.rect.x += self.v
             else:    
                 self.kill()
+
+class Tree(pygame.sprite.Sprite):
+    def __init__(self,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((40,50))
+        self.image.fill((0,153,0))
+        self.rect = self.image.get_rect()
+        self.rect.left = WIDTH
+        self.rect.y = y
+        self.v = speed
+    def update(self):
+        if not pause:
+            if self.rect.right >= 0:
+                self.rect.x += self.v
+            else:    
+                self.kill()      
+
 class BalloonAppear(pygame.sprite.Sprite):
     def __init__(self) :
         pygame.sprite.Sprite.__init__(self)
@@ -84,8 +104,7 @@ class BalloonAppear(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH
         self.rect.centery = HIGHT / 2
-        self.v = -5
-        self.itv = 0
+        self.v = speed
     def update(self):
         if not pause:
             self.rect.centerx += self.v
@@ -127,11 +146,16 @@ player = Player()
 all_sprites.add(player) 
 
 
-time = 0
+o_time = 0
+tree_time = 0
+up_down = 0 
+
 p_moment = 0 
 t_pause = 3 #Stop for __ second if collide
+tree_generate_interval = 1.5
 object_generate_interval = 2 #(seconds)
 ogi = object_generate_interval*FPS
+tgi = tree_generate_interval*FPS
 
 pause = False
 running = True
@@ -145,11 +169,19 @@ while running:
                 player.UP()
             elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 player.DOWN()
-    if time >= ogi and not object_kill:
+    if o_time >= ogi and not object_kill:
         Obj = Object()
         all_sprites.add(Obj)
         objects.add(Obj)  
-        time = 0
+        o_time = 0
+    if tree_time >= tgi:
+        if up_down % 2:
+            tree = Tree(POS[0]-tree_pos)
+        else:
+            tree = Tree(POS[2]+tree_pos)
+        all_sprites.add(tree)
+        tree_time = 0 
+        up_down += 1   
     t_run = tm.time()
     
     if pause:
@@ -178,6 +210,8 @@ while running:
     all_sprites.draw(screen)
     pygame.display.update()
 
-    if not pause: time += 1        
+    if not pause:
+        o_time += 1        
+        tree_time += 1
 
 pygame.quit()
