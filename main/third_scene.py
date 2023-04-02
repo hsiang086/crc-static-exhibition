@@ -403,8 +403,9 @@ class AnswerButton(pygame.sprite.Sprite):
         self.image = pygame.Surface((question_background.image.get_width() / 7.5, question_background.image.get_height() / 5))
         self.image.fill("yellow")
         self.rect = self.image.get_rect()
-        self.rect.left = question_background.rect.centerx + ((((pos+ 1) % 2) + 1)* question_background.image.get_width() / 6)
-        self.rect.centery = question_background.rect.top + ((((pos+ 1) // 3) + 1) * question_background.image.get_height() / 3)
+        self.pos = pos - 2
+        self.rect.left = 40 + question_background.rect.centerx + self.pos * ((question_background.rect.right - question_background.rect.left) / 4)
+        self.rect.centery = question_background.rect.bottom - 30
         self.text = answer
         self.num = pos
 
@@ -414,10 +415,6 @@ class AnswerButton(pygame.sprite.Sprite):
             q_listinit()
         q_list.remove(q)
         q = random.choice(q_list)
-
-        
-
-
 
     def update(self):
         global q_list, shooting, balloon, player_decrease_bool
@@ -430,6 +427,7 @@ class AnswerButton(pygame.sprite.Sprite):
                 else:
                     player_decrease_bool = True
                     self.switch_q()
+
 class Question():
     def __init__(self, question_index: int, amount_per_line: int):
         question = questions['questions'][question_index]
