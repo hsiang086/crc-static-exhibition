@@ -33,7 +33,7 @@ def init():
     global background_init
 
 
-    RES = WIDTH, HEIGHT = 1280, 720
+    RES = WIDTH, HEIGHT = 1920, 1080
     FPS = 60
     x_center, y_center = WIDTH / 2, HEIGHT / 2
 
@@ -64,6 +64,7 @@ def init():
     balloonblooddecrease = BalloonBloodDecrease()
     playerblood = PlayerBlood()
     playerblooddecrease = PlayerBloodDecrease()
+    back = Back()
     #bullet_count = BulletCount()
 
     q = random.randrange(4)
@@ -71,14 +72,32 @@ def init():
         global q_list
         q_list = [i for i in range(len(questions['questions']))]
     q_listinit()
-    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'][0])])
+    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'][0])],back)
 
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
     bullet = Bullet()
-    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet)
-    shooting_scene.add(balloon, aim, bullet)
+    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet,back)
+    shooting_scene.add(balloon, aim, bullet,back)
 
+
+class Back(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("images/x.png").convert()
+        self.image = pygame.transform.scale(self.image, (100, 100))
+        self.image.set_colorkey("BLACK")
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH-270, 170)
+
+    def update(self):
+        for event in events:
+            if self.rect.collidepoint(pygame.mouse.get_pos()):
+                self.image = pygame.transform.scale(self.image, (120, 120))
+            else:
+                self.image = pygame.transform.scale(self.image, (100, 100))
+            if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
+                pygame.quit()
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self):
@@ -460,7 +479,6 @@ class Question():
 init()
 
 while True:
-    print(q_list)
     clock.tick(FPS)
     events = pygame.event.get()
     for event in events:
