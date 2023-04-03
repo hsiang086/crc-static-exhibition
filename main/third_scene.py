@@ -29,7 +29,8 @@ def init():
     global bullet_bool
 
     global q
-
+    global q_listinit
+    global background_init
 
 
     RES = WIDTH, HEIGHT = 1920, 1080
@@ -41,6 +42,9 @@ def init():
     pygame.display.set_caption("third")
     screen = pygame.display.set_mode(RES)
     
+    bg_image = pygame.image.load("images/third_scene_images/bg.png").convert()
+    def background_init():
+        screen.blit(bg_image,(0,0))
     clock = pygame.time.Clock()
     text_size = 50
     font = pygame.font.SysFont('Arial', text_size, bold=True)
@@ -64,6 +68,9 @@ def init():
     #bullet_count = BulletCount()
 
     q = random.randrange(4)
+    def q_listinit():
+        global q_list
+        q_list = [i for i in range(len(questions['questions']))]
     q_listinit()
     question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'][0])],back)
 
@@ -72,16 +79,6 @@ def init():
     bullet = Bullet()
     shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet,back)
     shooting_scene.add(balloon, aim, bullet,back)
-
-
-
-def background_init():
-    screen.blit(pygame.image.load("images/third_scene_images/bg.png").convert() ,(0,0))
-
-def q_listinit():
-    global q_list
-    q_list = [i for i in range(len(questions['questions']))]
-
 
 class Back(pygame.sprite.Sprite):
     def __init__(self):
@@ -422,10 +419,10 @@ class PlayerBloodDecrease(pygame.sprite.Sprite):
 class QuestionBackground(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/third_scene_images/frame/main_frame.png").convert()
-        self.image = pygame.transform.scale(self.image,(100,100))
+        self.image = pygame.Surface((WIDTH * 6 / 10, HEIGHT / 3))
+        self.image.fill("white")
         self.rect = self.image.get_rect()
-        self.rect.centerx = x_center
+        self.rect.left = WIDTH * 6 / 100
         self.rect.centery = y_center + HEIGHT * 5 / 18
     
 class AnswerButton(pygame.sprite.Sprite):
