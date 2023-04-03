@@ -11,13 +11,18 @@ def init():
     global clock
     global FPS
 
-    global typing
+    global typing, end_type
     global first_scenes
     global lock_focusing
     global ascii_focusing
-
+    
+    global IPBw,IPBh,IPBx,IPBy
+    global answer, correct
+    
     typing = False
-
+    end_type = False
+    correct = False
+    answer = "123"
     # idk
     pygame.init()
     pygame.display.set_caption('first scene')
@@ -27,6 +32,10 @@ def init():
 
     # screen
     RES = WIDTH, HEIGHT = 752, 480
+    IPBw = 140
+    IPBh = 32
+    IPBx = (WIDTH / 2) - IPBw
+    IPBy = (HEIGHT / 2) - IPBh
     screen = pygame.display.set_mode(RES)
     screen.fill('BLACK')
 
@@ -75,6 +84,7 @@ class InputBox():
         self.text = ''
         self.done = False
         self.font = pygame.font.Font(None, 32)
+        self.width = 200
 
     def dealEvent(self, event: pygame.event.Event):
         if(event.type == pygame.MOUSEBUTTONDOWN):
@@ -82,8 +92,7 @@ class InputBox():
                 self.active = not self.active
             else:
                 self.active = False
-            self.color = self.color_active if(
-                self.active) else self.color_inactive
+            self.color = self.color_active if(self.active) else self.color_inactive
         if(event.type == pygame.KEYDOWN):
             if(self.active):
                 if(event.key == pygame.K_RETURN):
@@ -92,11 +101,12 @@ class InputBox():
                     self.text = self.text[:-1]
                 else:
                     self.text += event.unicode
-
+    def update(self):
+        self.color = self.color_active if(self.active) else self.color_inactive
     def draw(self, screen: pygame.surface.Surface):
         txtSurface = self.font.render(self.text, True, self.color)
-        width = max(200, txtSurface.get_width()+10)
-        self.boxBody.w = width
+        self.width = max(200, txtSurface.get_width()+10)
+        self.boxBody.w = self.width
         screen.blit(txtSurface, (self.boxBody.x+5, self.boxBody.y+5))
         pygame.draw.rect(screen, self.color, self.boxBody, 2)
 
@@ -106,8 +116,31 @@ class InputBox():
 
 def Type_PW():
     global inputbox
-    inputbox = InputBox(pygame.Rect(WIDTH/2-70, HEIGHT/2+16, 140, 32))
-    
+    global IPBw,IPBh,IPBx,IPBy
+    inputbox = InputBox(pygame.Rect(IPBx, IPBy, IPBw, IPBh))
+   
+
+class Confirm(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((100,IPBh))    
+        self.image.fill((153,153,0))
+        self.rect = self.image.get_rect()
+        self.rect.y = IPBy
+    def dealEvent(self,inputbox: InputBox):
+        global correct
+        self.image.fill((255,255,255))
+        if inputbox.text == answer:
+            correct = True
+        else:
+            correct = False
+            inputbox.text = ""   
+        print(correct)            
+    def update(self,inputbox:InputBox):
+        self.rect.x = IPBx + inputbox.width + 10  
+    def disappear(self):
+        self.kill()
+
 
 # first scenes
 class PcScreen(pygame.sprite.Sprite):
@@ -130,17 +163,25 @@ class Lock(pygame.sprite.Sprite):
 
     def update(self):
         global typing
+        global confirm, confirm_bottons
         for event in events:
+            confirm = Confirm()
+            confirm_bottons = pygame.sprite.Group()
+            confirm_bottons.add(confirm)
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()) and not inputbox.active:
-                if not inputbox.active:screen.fill('BLACK')
-                lock_focusing.draw(screen)
-                typing = True
-                
+                screen.fill('BLACK')
+                typing = True        
             inputbox.dealEvent(event) 
+            
+             
             if typing:
-                if inputbox.active: screen.fill('BLACK')
+                screen.fill('BLACK')
                 lock_focusing.update()
-                inputbox.draw(screen)
+                inputbox.draw(screen)      
+        if typing: 
+            lock_focusing.draw(screen)
+            confirm.update(inputbox)     
+            confirm_bottons.draw(screen)   
                
 
 
@@ -191,6 +232,15 @@ while True:
         if event == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 os._exit(True)
-        
+        if typing:
+            if event.type == pygame.MOUSEBUTTONDOWN: 
+                if confirm.rect.collidepoint(pygame.mouse.get_pos()):
+                    confirm.dealEvent(inputbox)
+                    print(correct)
+ 
+
+                    
+    if correct:
+        os._exit(True)    
                       
     pygame.display.update()
