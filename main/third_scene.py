@@ -101,7 +101,7 @@ class Back(pygame.sprite.Sprite):
             #     self.image.set_colorkey("BLACK")
 
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
-                pygame.quit()
+                os._exit(1)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self):
