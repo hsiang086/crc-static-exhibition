@@ -42,17 +42,18 @@ def init():
     pygame.display.set_caption("third")
     screen = pygame.display.set_mode(RES)
     
-    bg_image = pygame.image.load("images/third_scene_images/bg.png").convert()
+    bg_image = pygame.image.load("images/third_scene_images/bg.png").convert_alpha()
     def background_init():
         screen.blit(bg_image,(0,0))
     clock = pygame.time.Clock()
     text_size = 50
-    font = pygame.font.SysFont('Arial', text_size, bold=True)
+    font = pygame.font.Font('font/Cubic_11_1.013_R.ttf', text_size)
+    # font = pygame.font.SysFont('新細明體', text_size, bold=True)
 
     shooting = False
     bullet_bool = False
 
-    with open('data/questions.yml', 'r') as file:
+    with open('data/questions.yml', 'r', encoding='utf8') as file:
         questions = yaml.load(file, Loader=yaml.CLoader)
     question_scene = pygame.sprite.Group()
     question_background = QuestionBackground()
@@ -83,7 +84,7 @@ def init():
 class Back(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/x.png").convert()
+        self.image = pygame.image.load("images/x.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (100, 100))
         self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
@@ -92,11 +93,11 @@ class Back(pygame.sprite.Sprite):
     def update(self):
         for event in events:
             # if self.rect.collidepoint(pygame.mouse.get_pos()):
-            #     self.image = pygame.image.load("images/x.png").convert()
+            #     self.image = pygame.image.load("images/x.png").convert_alpha()
             #     self.image = pygame.transform.scale(self.image, (120, 120))
             #     self.image.set_colorkey("BLACK")
             # else:
-            #     self.image = pygame.image.load("images/x.png").convert()
+            #     self.image = pygame.image.load("images/x.png").convert_alpha()
             #     self.image = pygame.transform.scale(self.image, (100, 100))
             #     self.image.set_colorkey("BLACK")
 
@@ -419,11 +420,12 @@ class PlayerBloodDecrease(pygame.sprite.Sprite):
 class QuestionBackground(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((WIDTH * 6 / 10, HEIGHT / 3))
-        self.image.fill("white")
+        self.image = pygame.image.load("images/third_scene_images/frame/main_frame.png").convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.left = WIDTH * 6 / 100
-        self.rect.centery = y_center + HEIGHT * 5 / 18
+        self.rect.centerx = WIDTH * 1 / 2
+        self.rect.centery = HEIGHT * 7 / 9
+        # self.rect.left = WIDTH * 6 / 100
+        # self.rect.centery = y_center + HEIGHT * 5 / 18
     
 class AnswerButton(pygame.sprite.Sprite):
     def __init__(self, pos, answer):
@@ -467,7 +469,7 @@ class Question():
     def display(self):
         for i, char in enumerate(self.text_list):
             text = font.render(str(char), True, "black")
-            text_rect = text.get_rect(topleft=(question_background.rect.left * 1.1, question_background.rect.top + (text_size * i)))
+            text_rect = text.get_rect(topleft=(question_background.rect.left * 1.6, question_background.rect.top * 1.1 + (text_size * i)))
             screen.blit(text, text_rect)
 
 # class BulletCount(pygame.sprite.Sprite):
