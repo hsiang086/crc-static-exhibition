@@ -31,13 +31,14 @@ def init():
     font = pygame.font.SysFont('Arial', 20, bold=True)
 
     # screen
-    RES = WIDTH, HEIGHT = 752, 480
+    RES = WIDTH, HEIGHT = 1920, 1080
     IPBw = 140
     IPBh = 32
     IPBx = (WIDTH / 2) - IPBw
     IPBy = (HEIGHT / 2) - IPBh
     screen = pygame.display.set_mode(RES)
     screen.fill('BLACK')
+
 
     # clock
     clock = pygame.time.Clock()
@@ -146,8 +147,7 @@ class Confirm(pygame.sprite.Sprite):
 class PcScreen(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface(RES)
-        self.image.fill('WHITE')
+        self.image = pygame.image.load("images/first_scene_images/desktop.png").convert()
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
         self.rect.centery = HEIGHT / 2
@@ -155,8 +155,9 @@ class PcScreen(pygame.sprite.Sprite):
 class Lock(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((WIDTH * 8 / 100, HEIGHT * 14 / 100))
-        self.image.fill('BLUE')
+        self.image = pygame.image.load("images/first_scene_images/icon/lock.png").convert()
+        self.image = pygame.transform.scale(self.image, (134, 171))
+        self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
         self.rect.x = WIDTH / 2.65
         self.rect.y = HEIGHT / 5
@@ -188,8 +189,9 @@ class Lock(pygame.sprite.Sprite):
 class Ascii(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((WIDTH / 15, WIDTH / 15))
-        self.image.fill('GREEN')
+        self.image = pygame.image.load("images/first_scene_images/icon/prtsc.png").convert()
+        self.image = pygame.transform.scale(self.image, (134, 171))
+        self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH * 15 / 100
         self.rect.bottom = HEIGHT * 85 / 100
@@ -226,6 +228,7 @@ while True:
     events = pygame.event.get()
     first_scenes.update()
     lock_focusing.update()
+
     for event in events:
         if event.type == pygame.QUIT:
             os._exit(True)
