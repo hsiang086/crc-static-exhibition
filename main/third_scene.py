@@ -419,10 +419,10 @@ class PlayerBloodDecrease(pygame.sprite.Sprite):
 class QuestionBackground(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((WIDTH * 6 / 10, HEIGHT / 3))
-        self.image.fill("white")
+        self.image = pygame.image.load("images/third_scene_images/frame/main_frame.png").convert()
+        self.image = pygame.transform.scale(self.image,(100,100))
         self.rect = self.image.get_rect()
-        self.rect.left = WIDTH * 6 / 100
+        self.rect.centerx = x_center
         self.rect.centery = y_center + HEIGHT * 5 / 18
     
 class AnswerButton(pygame.sprite.Sprite):
