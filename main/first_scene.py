@@ -61,7 +61,7 @@ class Back(pygame.sprite.Sprite):
     def __init__(self, to_draw: pygame.sprite.Group):
         super().__init__()
         self.to_draw = to_draw
-        self.image = pygame.image.load(os.path.join("images", "x.png")).convert()
+        self.image = pygame.image.load(os.path.join("images", "x.png")).convert_alpha()
         self.image = pygame.transform.scale(self.image, (40, 40))
         # self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
@@ -147,7 +147,7 @@ class Confirm(pygame.sprite.Sprite):
 class PcScreen(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/first_scene_images/desktop.png").convert()
+        self.image = pygame.image.load("images/first_scene_images/desktop.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
         self.rect.centery = HEIGHT / 2
@@ -155,7 +155,7 @@ class PcScreen(pygame.sprite.Sprite):
 class Lock(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/first_scene_images/icon/lock.png").convert()
+        self.image = pygame.image.load("images/first_scene_images/icon/lock.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (134, 171))
         self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
@@ -189,9 +189,8 @@ class Lock(pygame.sprite.Sprite):
 class Ascii(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/first_scene_images/icon/prtsc.png").convert()
+        self.image = pygame.image.load("images/first_scene_images/icon/prtsc.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (134, 171))
-        self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH * 15 / 100
         self.rect.bottom = HEIGHT * 85 / 100
