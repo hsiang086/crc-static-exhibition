@@ -1,7 +1,7 @@
 import pygame
 import os
 import random
-from math import sin, cos, pi, sqrt, pow, ceil
+from math import sin, cos, pi, sqrt, pow, ceil, atan
 import yaml
 
 def init():
@@ -106,8 +106,7 @@ class Back(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill("pink")
+        self.image = pygame.image.load(os.path.join("images/third_scene/ammo_icon.png")).convert_alpha()
         self.time = 0
         self.x = WIDTH
         self.y = HEIGHT + 30
@@ -118,10 +117,16 @@ class Bullet(pygame.sprite.Sprite):
         self.x_move = (abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length) * self.speed
         self.y_move = (abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length) * self.speed
         self.is_flying = False
+        self.is_rotated = False
+        self.angle = atan(abs(aim.rect.centery - self.rect.centery) / abs(aim.rect.centerx - self.rect.centerx))
 
     def update(self):
         global shooting
         if self.is_flying:
+            if not self.is_rotated:
+                self.image = pygame.transform.rotate(self.image, 45 - self.angle / pi * 180)
+                print(self.angle)
+                self.is_rotated = True
             self.rect.centerx -= self.x_move
             self.rect.centery -= self.y_move
             if balloon.rect.collidepoint(self.rect.center):
@@ -136,6 +141,8 @@ class Bullet(pygame.sprite.Sprite):
                 shooting = False
                 aim.__init__()
             if self.rect.centery <= 0 or self.rect.centerx <= 0:
+                self.image = pygame.image.load(os.path.join("images/third_scene/ammo_icon.png")).convert_alpha()
+                self.is_rotated = False
                 self.time += 1
                 self.rect.x = WIDTH            
                 self.rect.y = HEIGHT + 30
@@ -149,6 +156,7 @@ class Bullet(pygame.sprite.Sprite):
             self.x_move = abs(aim.rect.centerx - self.rect.centerx) / self.aim_bullet_length * self.speed
             self.y_move = abs(aim.rect.centery - self.rect.centery) / self.aim_bullet_length * self.speed
             self.aim_bullet_length = pow(pow(aim.rect.centerx - self.rect.centerx, 2) + pow(aim.rect.centery - self.rect.centery, 2), 0.5)
+            self.angle = atan(abs(aim.rect.centery - self.rect.centery) / abs(aim.rect.centerx - self.rect.centerx))
     # def reset(self):
     #     self.rect.centery = self.y
 
@@ -167,7 +175,7 @@ class Bullet(pygame.sprite.Sprite):
 class Aim(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load(os.path.join("images","crosshair.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join("images/third_scene/crosshair.png")).convert_alpha()
         #self.image = pygame.transform.scale(self.image, (100, 100))
         self.rect = self.image.get_rect()
         self.speed = 5
@@ -187,8 +195,8 @@ class Aim(pygame.sprite.Sprite):
 class Balloon(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load(os.path.join("images", "balloon(2).png")).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (150, 150))
+        self.image = pygame.image.load(os.path.join("images/third_scene/balloon_red.png")).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (183.6, 243.9)) # the ratio is 204:271
         self.rect = self.image.get_rect()
         self.paused = False
         self.change = True
@@ -200,7 +208,7 @@ class Balloon(pygame.sprite.Sprite):
         self.circle_speed = 3
         self.r = 150
         self.rect.centerx = x_center
-        self.rect.centery = HEIGHT / 8
+        self.rect.centery = HEIGHT / 4.5
         self.circle_centerx = self.rect.centerx 
         self.circle_centery = self.rect.centery + self.r
         self.check = True
