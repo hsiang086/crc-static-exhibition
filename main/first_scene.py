@@ -12,9 +12,10 @@ def init():
     global FPS
 
     global typing, end_type
-    global first_scenes
+
+    global desktop
     global lock_focusing
-    global ascii_focusing
+    global ascii_scene
     
     global IPBw,IPBh,IPBx,IPBy
     global answer, correct
@@ -45,28 +46,26 @@ def init():
     FPS = 60
 
     # scenes
-    first_scenes = pygame.sprite.Group()
-    first_scenes.add(PcScreen(), Lock(), Ascii())
+    desktop = pygame.sprite.Group()
+    desktop.add(Wallpaper(), Lock(), AsciiButton())
 
     lock_focusing = pygame.sprite.Group()
-    lock_focusing.add(Back(first_scenes))
+    lock_focusing.add(Back(desktop, (1800, 45)))
 
-    ascii_focusing = pygame.sprite.Group()
-    ascii_focusing.add(DetailedAscii(), Back(first_scenes))
+    ascii_scene = pygame.sprite.Group()
+    ascii_scene.add(AsciiFile(), Back(desktop, pos=(1800, 45)))
 
 
 
 # back button
 class Back(pygame.sprite.Sprite):
-    def __init__(self, to_draw: pygame.sprite.Group):
+    def __init__(self, to_draw: pygame.sprite.Group, pos: tuple):
         super().__init__()
         self.to_draw = to_draw
         self.image = pygame.image.load(os.path.join("images", "x.png")).convert_alpha()
         self.image = pygame.transform.scale(self.image, (40, 40))
-        # self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
-        self.rect.right = WIDTH-10
-        self.rect.top = 10
+        self.rect.center = pos
 
     def update(self):
         for event in events:
@@ -88,22 +87,21 @@ class InputBox():
         self.width = 200
 
     def dealEvent(self, event: pygame.event.Event):
-        if(event.type == pygame.MOUSEBUTTONDOWN):
-            if(self.boxBody.collidepoint(event.pos)):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.boxBody.collidepoint(event.pos):
                 self.active = not self.active
             else:
                 self.active = False
-            self.color = self.color_active if(self.active) else self.color_inactive
-        if(event.type == pygame.KEYDOWN):
-            if(self.active):
-                if(event.key == pygame.K_RETURN):
+            self.color = self.color_active if self.active else self.color_inactive
+        if event.type == pygame.KEYDOWN:
+            if self.active:
+                if event.key == pygame.K_RETURN:
                     print(self.text)
-                elif(event.key == pygame.K_BACKSPACE):
+                elif event.key == pygame.K_BACKSPACE:
                     self.text = self.text[:-1]
                 else:
                     self.text += event.unicode
-    def update(self):
-        self.color = self.color_active if(self.active) else self.color_inactive
+        
     def draw(self, screen: pygame.surface.Surface):
         txtSurface = self.font.render(self.text, True, self.color)
         self.width = max(200, txtSurface.get_width()+10)
@@ -114,6 +112,9 @@ class InputBox():
     def disappear(self):  
         global typing 
         typing = False 
+
+    def update(self):
+        self.color = self.color_active if self.active else self.color_inactive
 
 def Type_PW():
     global inputbox
@@ -128,6 +129,7 @@ class Confirm(pygame.sprite.Sprite):
         self.image.fill((153,153,0))
         self.rect = self.image.get_rect()
         self.rect.y = IPBy
+
     def dealEvent(self,inputbox: InputBox):
         global correct
         self.image.fill((255,255,255))
@@ -137,17 +139,28 @@ class Confirm(pygame.sprite.Sprite):
             correct = False
             inputbox.text = ""   
         print(correct)            
-    def update(self,inputbox:InputBox):
-        self.rect.x = IPBx + inputbox.width + 10  
+
     def disappear(self):
         self.kill()
 
+    def update(self,inputbox:InputBox):
+        self.rect.x = IPBx + inputbox.width + 10  
+
 
 # first scenes
-class PcScreen(pygame.sprite.Sprite):
+class Wallpaper(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/first_scene_images/desktop.png").convert_alpha()
+        self.image = pygame.image.load("images/first_scene/desktop.png").convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH / 2
+        self.rect.centery = HEIGHT / 2
+    
+
+class AsciiFile(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("images/first_scene/ascii.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
         self.rect.centery = HEIGHT / 2
@@ -155,7 +168,7 @@ class PcScreen(pygame.sprite.Sprite):
 class Lock(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/first_scene_images/icon/lock.png").convert_alpha()
+        self.image = pygame.image.load("images/first_scene/icon/lock.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (134, 171))
         self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
@@ -186,11 +199,11 @@ class Lock(pygame.sprite.Sprite):
                
 
 
-class Ascii(pygame.sprite.Sprite):
+class AsciiButton(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/first_scene_images/icon/prtsc.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (134, 171))
+        self.image = pygame.image.load("images/first_scene/icon/prtsc.png").convert_alpha()
+        # self.image = pygame.transform.scale(self.image, (134, 171))
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH * 15 / 100
         self.rect.bottom = HEIGHT * 85 / 100
@@ -198,35 +211,17 @@ class Ascii(pygame.sprite.Sprite):
     def update(self):
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
-                screen.fill('BLACK')
-                ascii_focusing.draw(screen)
-
-
-
-
-
-
-# ascii focusing
-class DetailedAscii(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load(os.path.join("images", "ascii list.png")).convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH / 2
-        self.rect.centery = HEIGHT / 2
-
-
+                ascii_scene.draw(screen)
 
 
 init()
-first_scenes.draw(screen)
+desktop.draw(screen)
 Type_PW()
 
 while True:
     clock.tick(FPS)
     events = pygame.event.get()
-    first_scenes.update()
-    lock_focusing.update()
+
 
     for event in events:
         if event.type == pygame.QUIT:
@@ -241,6 +236,8 @@ while True:
                     print(correct)
  
 
+    desktop.update()
+    lock_focusing.update()
                     
     if correct:
         os._exit(True)    
