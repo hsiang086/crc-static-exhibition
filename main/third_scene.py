@@ -42,7 +42,7 @@ def init():
     pygame.display.set_caption("third")
     screen = pygame.display.set_mode(RES)
     
-    bg_image = pygame.image.load("images/third_scene_images/bg.png").convert_alpha()
+    bg_image = pygame.image.load("images/third_scene/bg.png").convert_alpha()
     def background_init():
         screen.blit(bg_image,(0,0))
     clock = pygame.time.Clock()
@@ -413,7 +413,7 @@ class PlayerBloodDecrease(pygame.sprite.Sprite):
 class QuestionBackground(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/third_scene_images/frame/main_frame.png").convert_alpha()
+        self.image = pygame.image.load("images/third_scene/frame/main_frame.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH * 1 / 2
         self.rect.centery = HEIGHT * 7 / 9
@@ -426,7 +426,7 @@ class AnswerButton(pygame.sprite.Sprite):
         # self.image = pygame.Surface((question_background.image.get_width() / 7.5, question_background.image.get_height() / 5))
         # self.image.fill("yellow")
         self.num = pos
-        self.image = pygame.image.load(f'images/third_scene_images/frame/button_{self.num}.png')
+        self.image = pygame.image.load(f'images/third_scene/frame/button_{self.num}.png')
         self.rect = self.image.get_rect()
         self.pos = pos - 2
         self.rect.left = 10 + question_background.rect.centerx + self.pos * ((question_background.rect.right - question_background.rect.left) / 4)
