@@ -190,7 +190,7 @@ class Ascii(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load("images/first_scene_images/icon/prtsc.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (134, 171))
+        # self.image = pygame.transform.scale(self.image, (134, 171))
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH * 15 / 100
         self.rect.bottom = HEIGHT * 85 / 100
