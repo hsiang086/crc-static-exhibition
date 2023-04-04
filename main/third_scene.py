@@ -48,7 +48,6 @@ def init():
     clock = pygame.time.Clock()
     text_size = 50
     font = pygame.font.Font('font/Cubic_11_1.013_R.ttf', text_size)
-    # font = pygame.font.SysFont('新細明體', text_size, bold=True)
 
     shooting = False
     bullet_bool = False
@@ -122,7 +121,6 @@ class Bullet(pygame.sprite.Sprite):
 
     def update(self):
         global shooting
-        print(self.rect.center)
         if self.is_flying:
             self.rect.centerx -= self.x_move
             self.rect.centery -= self.y_move
@@ -139,7 +137,6 @@ class Bullet(pygame.sprite.Sprite):
                 aim.__init__()
             if self.rect.centery <= 0 or self.rect.centerx <= 0:
                 self.time += 1
-                print(1)
                 self.rect.x = WIDTH            
                 self.rect.y = HEIGHT + 30
                 self.is_flying = False
@@ -296,13 +293,9 @@ class Balloon(pygame.sprite.Sprite):
                 #     global shooting
                 #     shooting = not shooting
         if self.size == 'large' and self.theta == 0 and self.count == 0:
-            print(self.theta, self.count)
-            print('large')
             self.r = 200
             self.step = 90
         if self.size == 'small' and self.theta == 0 and self.count == 0:
-            print(self.theta, self.count)
-            print('small')
             self.r = 150
             self.step = 45
 
@@ -430,14 +423,15 @@ class QuestionBackground(pygame.sprite.Sprite):
 class AnswerButton(pygame.sprite.Sprite):
     def __init__(self, pos, answer):
         super().__init__()
-        self.image = pygame.Surface((question_background.image.get_width() / 7.5, question_background.image.get_height() / 5))
-        self.image.fill("yellow")
+        # self.image = pygame.Surface((question_background.image.get_width() / 7.5, question_background.image.get_height() / 5))
+        # self.image.fill("yellow")
+        self.num = pos
+        self.image = pygame.image.load(f'images/third_scene_images/frame/button_{self.num}.png')
         self.rect = self.image.get_rect()
         self.pos = pos - 2
-        self.rect.left = 40 + question_background.rect.centerx + self.pos * ((question_background.rect.right - question_background.rect.left) / 4)
-        self.rect.centery = question_background.rect.bottom - 30
+        self.rect.left = 10 + question_background.rect.centerx + self.pos * ((question_background.rect.right - question_background.rect.left) / 4)
+        self.rect.centery = question_background.rect.bottom - 80
         self.text = answer
-        self.num = pos
 
     def switch_q(self):
         global q
