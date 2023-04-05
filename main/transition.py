@@ -32,7 +32,7 @@ def init():
 
     # clock
     clock = pygame.time.Clock()
-    FPS = 30
+    FPS = 8
 
     with open('data/transitions.yml', 'r', encoding='utf8') as file:
         transitions = yaml.load(file, Loader=yaml.CLoader)
