@@ -59,8 +59,11 @@ def check_events():
         if (event.type == pygame.MOUSEBUTTONUP and continue_.rect.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
             global next_page
             global pause
-            next_page = True
-            pause = False
+            if pause:
+                next_page = True
+                pause = False
+            # else:
+            #     os._exit(True)
         if event.type == pygame.QUIT:
             os._exit(True)
             # pygame.quit()
