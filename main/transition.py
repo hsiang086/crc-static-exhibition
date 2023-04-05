@@ -62,8 +62,9 @@ def check_events():
             if pause:
                 next_page = True
                 pause = False
-            # else:
-            #     os._exit(True)
+            else:
+                global FPS
+                FPS = 240
         if event.type == pygame.QUIT:
             os._exit(True)
             # pygame.quit()
@@ -72,6 +73,7 @@ global abc
 abc=0
 class Text():
     def display(self, text: str, amount_per_line: int):
+        global FPS
         global abc
         self.text_list = [text[amount_per_line * i:amount_per_line * (i + 1)] for i in range(math.ceil(len(text) / amount_per_line))]
         for i, text in enumerate(self.text_list):
@@ -80,13 +82,15 @@ class Text():
             for j in range(len(text) + 1):
                 # print(pause)
                 clock.tick(FPS)
-                #print(text[:j + 1])
+                # print(text[:j + 1])
                 global next_page
-                #global pause
+                # global pause
                 
                 if next_page:    
                     screen.fill('black')
                     abc=0
+                    
+                    FPS = 10
                     next_page = False
                 text_surface = font.render(text[:j + 1], True, "white")
                 text_rect = text_surface.get_rect(left=0, y=text_size* abc*2)
