@@ -18,7 +18,6 @@ def init():
 
     global transitions
 
-
     # idk
     pygame.init()
     pygame.display.set_caption('first scene')
@@ -45,27 +44,31 @@ def check_events():
             os._exit(True)
             # pygame.quit()
 
-
+global abc
+abc=1
 class Text():
-    def __init__(self, text: str, amount_per_line: int):
+    def __init__(self):#, text: str, amount_per_line: int):
+       # self.text_list = [text[amount_per_line * i:amount_per_line * (i + 1)] for i in range(math.ceil(len(text) / amount_per_line))]
+        print(1)
+    def display(self, text: str, amount_per_line: int):
+        global abc
         self.text_list = [text[amount_per_line * i:amount_per_line * (i + 1)] for i in range(math.ceil(len(text) / amount_per_line))]
-
-    def display(self):
         for i, text in enumerate(self.text_list):
             for j in range(len(text) + 1):
                 clock.tick(FPS)
-                print(text[:j + 1])
+                #print(text[:j + 1])
                 text_surface = font.render(text[:j + 1], True, "white")
-                text_rect = text_surface.get_rect(left=0, y=text_size * i)
-                screen.fill('black')
+                text_rect = text_surface.get_rect(left=0, y=text_size * abc)
+                # screen.fill('black')
                 screen.blit(text_surface, text_rect) 
                 pygame.display.update()
                 check_events()
+            abc+=1
 
 
 
 init()
 
 for transition in transitions:
-    a = Text(transition, 25)
-    a.display()
+    a = Text()
+    a.display(transition, 25)
