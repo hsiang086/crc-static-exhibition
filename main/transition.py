@@ -29,7 +29,7 @@ def init():
     pause = False
     next_page = False
     #font
-    text_size = 45
+    text_size = 70
     font = pygame.font.Font('font/Cubic_11_1.013_R.ttf', text_size)
     # screen
     RES = WIDTH, HEIGHT = 1920, 1080
@@ -155,3 +155,11 @@ def sceneone_transition():
     display_conversation(transitions, 37)
 
 sceneone_transition()
+running = True
+while running:
+    events = pygame.event.get()
+    for event in events:
+        if (event.type == pygame.MOUSEBUTTONUP and continue_.rect.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
+            os._exit(True)
+        if event.type == pygame.QUIT:
+            os._exit(True)
