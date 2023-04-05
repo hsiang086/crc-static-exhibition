@@ -2,7 +2,6 @@ import pygame
 import os
 import yaml
 import math
-import time
 
 def init():
 
@@ -17,6 +16,8 @@ def init():
     global FPS
 
     global transitions
+    global continue_
+    global continue_group
 
     # idk
     pygame.init()
@@ -32,10 +33,15 @@ def init():
 
     # clock
     clock = pygame.time.Clock()
-    FPS = 8
+    FPS = 6
 
     with open('data/transitions.yml', 'r', encoding='utf8') as file:
         transitions = yaml.load(file, Loader=yaml.CLoader)
+
+
+    continue_=Continue()
+    continue_group = pygame.sprite.Group()
+    continue_group.add(continue_)
 
 def check_events():
     events = pygame.event.get()
@@ -47,9 +53,6 @@ def check_events():
 global abc
 abc=0
 class Text():
-    def __init__(self):#, text: str, amount_per_line: int):
-       # self.text_list = [text[amount_per_line * i:amount_per_line * (i + 1)] for i in range(math.ceil(len(text) / amount_per_line))]
-        print(1)
     def display(self, text: str, amount_per_line: int):
         global abc
         self.text_list = [text[amount_per_line * i:amount_per_line * (i + 1)] for i in range(math.ceil(len(text) / amount_per_line))]
@@ -62,11 +65,49 @@ class Text():
                     abc=0
                 text_surface = font.render(text[:j + 1], True, "white")
                 text_rect = text_surface.get_rect(left=0, y=text_size* abc*2)
-                # screen.fill('black')
                 screen.blit(text_surface, text_rect) 
+                #screen.fill('black')
+                continue_group.draw(screen)
+                continue_group.update()
                 pygame.display.update()
                 check_events()
             abc+=1
+
+class Continue(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("images/continue button.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image,(50,50))
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH-50, HEIGHT - 50)
+        self.change = True
+        self.count = 1
+        # flashing speed
+        self.step = 3
+    
+    def update(self):
+        self.count %= self.step
+        if self.count == 1:
+            if self.change:
+                self.image = pygame.image.load("images/continue button.png").convert_alpha()
+                self.image = pygame.transform.scale(self.image,(50,50))
+                self.change = not self.change
+            else:
+                self.image = pygame.Surface((50,50))
+                self.change = not self.change
+        self.count += 1
+
+# class ContinueBack(pygame.sprite.Sprite):
+#     def __init__(self):
+#         super().__init__()
+#         self.image = pygame.Surface(50,50)
+#         self.rect = self.image.get_rect()
+#         self.rect.center = continue_.rect.center
+
+#     def update(self):
+#         if continue_.change:
+#             self.image = pygame.Surface(50,50)
+
 
 
 

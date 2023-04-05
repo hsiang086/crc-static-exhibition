@@ -6,7 +6,7 @@ def init():
     global RES, WIDTH, HIGHT
     global clock, screen
 
-    FPS = 60
+    FPS = 120
     RES = WIDTH, HIGHT = (1920, 1080)
     
     pygame.init()
@@ -31,11 +31,11 @@ def intro():
 
 init()
 intro()
-running = True
-while running:
-    clock.tick(FPS)
-    events = pygame.event.get()
-    for event in events:
-        if event.type == pygame.QUIT:
-            pygame.quit()
-    pygame.display.update()
+# running = True
+# while running:
+#     clock.tick(FPS)
+#     events = pygame.event.get()
+#     for event in events:
+#         if event.type == pygame.QUIT:
+#             pygame.quit()
+#     pygame.display.update()
