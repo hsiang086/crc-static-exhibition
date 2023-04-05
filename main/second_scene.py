@@ -20,8 +20,8 @@ def init():
     time_start = tm.time()
     FPS = 60
     RES = WIDTH, HIGHT = (1500, 800)
-    Road_Width = 200
-    POS=[(HIGHT/2)-Road_Width,(HIGHT/2),(HIGHT/2)+Road_Width]
+    Road_Width = 230
+    POS=[(HIGHT/2)-Road_Width-30,(HIGHT/2)-30,(HIGHT/2)+Road_Width-30]
     speed = -5
     clock = pygame.time.Clock()
     
@@ -76,8 +76,17 @@ class Player(pygame.sprite.Sprite):
 class Object(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((50,50))
-        self.image.fill((0,153,153))
+        self.imagerandom = random.randint(0,2)
+        print(self.imagerandom)
+        if self.imagerandom == 0:
+            self.image = pygame.image.load("images/second_scene/障礙物1 去背.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (150, 100))
+        elif self.imagerandom == 1:
+            self.image = pygame.image.load("images/second_scene/障礙物2 去背.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (150, 100))
+        elif self.imagerandom == 2:
+            self.image = pygame.image.load("images/second_scene/障礙物3 去背.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (150, 100))
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH
         self.pos = random.randrange(0,3)
@@ -129,6 +138,14 @@ class collide_effect(pygame.sprite.Sprite):
     def update(self):
         if not pause:
             self.kill()    
+class Wallpaper(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("images/second_scene/道路俯視.jpg").convert_alpha()
+        self.image = pygame.transform.scale(self.image, RES)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH / 2
+        self.rect.centery = HIGHT / 2
 
 class TimeRunning():
     def __init__(self):
@@ -151,6 +168,8 @@ timerunning.__init__()
 all_sprites = pygame.sprite.Group()
 objects = pygame.sprite.Group() 
 balloon = pygame.sprite.Group()
+wallpaper = Wallpaper()
+all_sprites.add(wallpaper)
 player = Player()
 all_sprites.add(player) 
 
