@@ -39,15 +39,23 @@ init()
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((100,100))
-        self.image.fill((0,255,0))
+        self.image = pygame.image.load("images/second_scene/分鏡1.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = 10
         self.rect.centery = HIGHT/2
         self.pos = 1
+        self.time =1
 
     def update(self):
-        if not pause: self.rect.centery = POS[self.pos]
+        if not pause: 
+            self.rect.centery = POS[self.pos]
+            self.time += 0.25
+            if self.time % 3 ==0:
+                self.image = pygame.image.load("images/second_scene/分鏡1.png").convert_alpha()
+            elif self.time %3 ==1:
+                self.image = pygame.image.load("images/second_scene/分鏡2.png").convert_alpha()
+            elif self.time %3 ==2:
+                self.image = pygame.image.load("images/second_scene/分鏡3.png").convert_alpha()
     def UP(self):
         if self.pos == 0:
             self.pos = 0
