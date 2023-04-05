@@ -138,14 +138,19 @@ class collide_effect(pygame.sprite.Sprite):
     def update(self):
         if not pause:
             self.kill()    
+
 class Wallpaper(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, speed=-5):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("images/second_scene/道路俯視.jpg").convert_alpha()
         self.image = pygame.transform.scale(self.image, RES)
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
         self.rect.centery = HIGHT / 2
+        self.speed = speed
+
+    def update(self):
+        self.rect.centerx += self.speed
 
 class TimeRunning():
     def __init__(self):
