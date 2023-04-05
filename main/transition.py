@@ -149,7 +149,6 @@ class Continue(pygame.sprite.Sprite):
 #             self.image = pygame.Surface(50,50)
 
 
-
 init()
 #if not pause:
 def sceneone_transition():
