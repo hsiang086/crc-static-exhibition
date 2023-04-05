@@ -56,6 +56,8 @@ class Player(pygame.sprite.Sprite):
                 self.image = pygame.image.load("images/second_scene/分鏡2.png").convert_alpha()
             elif self.time %3 ==2:
                 self.image = pygame.image.load("images/second_scene/分鏡3.png").convert_alpha()
+        else:
+            self.image = pygame.image.load("images/second_scene/撞擊.png").convert_alpha()
     def UP(self):
         if self.pos == 0:
             self.pos = 0
@@ -120,8 +122,7 @@ class BalloonAppear(pygame.sprite.Sprite):
 class collide_effect(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((75,75))
-        self.image.fill((153,153,0))
+        self.image = pygame.image.load("images/second_scene/撞擊特效.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y

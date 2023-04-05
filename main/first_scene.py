@@ -71,7 +71,6 @@ class Back(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (40, 40))
         self.rect = self.image.get_rect()
         self.rect.center = pos
-        print((pygame.mouse.get_pos()))
     def update(self):
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
