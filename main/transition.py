@@ -106,7 +106,7 @@ def display_conversation(transitions: list, amount_per_line: int):
                 continue_group.update()
                 pygame.display.update()
                 check_events()
-            print(math.ceil(len(transitions[i + 1]) / amount_per_line) * text_size * (line * 2), HEIGHT - text_y - text_size - (line * 2), '|', len(transitions), i + 1, transitions[i])
+            # print(math.ceil(len(transitions[i + 1]) / amount_per_line) * text_size * (line * 2), HEIGHT - text_y - text_size - (line * 2), '|', len(transitions), i + 1, transitions[i])
             if len(transitions) == i + 1:
                 paused()
             elif math.ceil(len(transitions[i + 1]) / amount_per_line) * (text_size + (line * 2)) >= HEIGHT - text_y - text_size - (line * 2):
