@@ -20,8 +20,8 @@ def init():
     time_start = tm.time()
     FPS = 60
     RES = WIDTH, HIGHT = (1500, 800)
-    Road_Width = 200
-    POS=[(HIGHT/2)-Road_Width,(HIGHT/2),(HIGHT/2)+Road_Width]
+    Road_Width = 230
+    POS=[(HIGHT/2)-Road_Width-30,(HIGHT/2)-30,(HIGHT/2)+Road_Width-30]
     speed = -5
     clock = pygame.time.Clock()
     
@@ -39,15 +39,25 @@ init()
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((100,100))
-        self.image.fill((0,255,0))
+        self.image = pygame.image.load("images/second_scene/分鏡1.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = 10
         self.rect.centery = HIGHT/2
         self.pos = 1
+        self.time =1
 
     def update(self):
-        if not pause: self.rect.centery = POS[self.pos]
+        if not pause: 
+            self.rect.centery = POS[self.pos]
+            self.time += 0.25
+            if self.time % 3 ==0:
+                self.image = pygame.image.load("images/second_scene/分鏡1.png").convert_alpha()
+            elif self.time %3 ==1:
+                self.image = pygame.image.load("images/second_scene/分鏡2.png").convert_alpha()
+            elif self.time %3 ==2:
+                self.image = pygame.image.load("images/second_scene/分鏡3.png").convert_alpha()
+        else:
+            self.image = pygame.image.load("images/second_scene/撞擊.png").convert_alpha()
     def UP(self):
         if self.pos == 0:
             self.pos = 0
@@ -66,8 +76,17 @@ class Player(pygame.sprite.Sprite):
 class Object(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((50,50))
-        self.image.fill((0,153,153))
+        self.imagerandom = random.randint(0,2)
+        print(self.imagerandom)
+        if self.imagerandom == 0:
+            self.image = pygame.image.load("images/second_scene/障礙物1 去背.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (150, 100))
+        elif self.imagerandom == 1:
+            self.image = pygame.image.load("images/second_scene/障礙物2 去背.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (150, 100))
+        elif self.imagerandom == 2:
+            self.image = pygame.image.load("images/second_scene/障礙物3 去背.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (150, 100))
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH
         self.pos = random.randrange(0,3)
@@ -112,14 +131,26 @@ class BalloonAppear(pygame.sprite.Sprite):
 class collide_effect(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((75,75))
-        self.image.fill((153,153,0))
+        self.image = pygame.image.load("images/second_scene/撞擊特效.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
     def update(self):
         if not pause:
             self.kill()    
+
+class Wallpaper(pygame.sprite.Sprite):
+    def __init__(self, speed=-5):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("images/second_scene/道路俯視.jpg").convert_alpha()
+        self.image = pygame.transform.scale(self.image, RES)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH / 2
+        self.rect.centery = HIGHT / 2
+        self.speed = speed
+
+    def update(self):
+        self.rect.centerx += self.speed
 
 class TimeRunning():
     def __init__(self):
@@ -142,6 +173,8 @@ timerunning.__init__()
 all_sprites = pygame.sprite.Group()
 objects = pygame.sprite.Group() 
 balloon = pygame.sprite.Group()
+wallpaper = Wallpaper()
+all_sprites.add(wallpaper)
 player = Player()
 all_sprites.add(player) 
 
