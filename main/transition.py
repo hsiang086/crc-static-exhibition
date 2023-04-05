@@ -18,11 +18,16 @@ def init():
     global transitions
     global continue_
     global continue_group
+    global pause
+    global next_page
 
     # idk
     pygame.init()
     pygame.display.set_caption('first scene')
 
+
+    pause = False
+    next_page = False
     #font
     text_size = 45
     font = pygame.font.Font('font/Cubic_11_1.013_R.ttf', text_size)
@@ -33,7 +38,8 @@ def init():
 
     # clock
     clock = pygame.time.Clock()
-    FPS = 8
+    FPS = 10
+
 
     with open('data/transitions.yml', 'r', encoding='utf8') as file:
         transitions = yaml.load(file, Loader=yaml.CLoader)
@@ -43,9 +49,18 @@ def init():
     continue_group = pygame.sprite.Group()
     continue_group.add(continue_)
 
+def paused():
+    global pause
+    pause = True
+
 def check_events():
     events = pygame.event.get()
     for event in events:
+        if (event.type == pygame.MOUSEBUTTONUP and continue_.rect.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
+            global next_page
+            global pause
+            next_page = True
+            pause = False
         if event.type == pygame.QUIT:
             os._exit(True)
             # pygame.quit()
@@ -57,18 +72,27 @@ class Text():
         global abc
         self.text_list = [text[amount_per_line * i:amount_per_line * (i + 1)] for i in range(math.ceil(len(text) / amount_per_line))]
         for i, text in enumerate(self.text_list):
+            while(pause):
+                check_events()
             for j in range(len(text) + 1):
+                # print(pause)
                 clock.tick(FPS)
                 #print(text[:j + 1])
-                if(text_size* abc*2>= HEIGHT):
+                global next_page
+                #global pause
+                
+                if next_page:    
                     screen.fill('black')
                     abc=0
+                    next_page = False
                 text_surface = font.render(text[:j + 1], True, "white")
                 text_rect = text_surface.get_rect(left=0, y=text_size* abc*2)
                 screen.blit(text_surface, text_rect) 
                 #screen.fill('black')
                 continue_group.draw(screen)
                 continue_group.update()
+                if(text_size* abc*2>= HEIGHT):
+                    paused()
                 pygame.display.update()
                 check_events()
             abc+=1
@@ -112,7 +136,7 @@ class Continue(pygame.sprite.Sprite):
 
 
 init()
-
+#if not pause:
 for transition in transitions:
     a = Text()
     a.display(transition, 25)
