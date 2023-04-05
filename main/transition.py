@@ -150,7 +150,6 @@ class Continue(pygame.sprite.Sprite):
 
 
 
-
 init()
 #if not pause:
 def sceneone_transition():
