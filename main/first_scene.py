@@ -16,6 +16,7 @@ def init():
     global desktop
     global lock_focusing
     global ascii_scene
+    global password
     
     global IPBw,IPBh,IPBx,IPBy
     global answer, correct
@@ -47,13 +48,17 @@ def init():
 
     # scenes
     desktop = pygame.sprite.Group()
-    desktop.add(Wallpaper(), Lock(), AsciiButton())
+    desktop.add(Wallpaper(), Lock(), AsciiButton(),PasswordBotton())
 
     lock_focusing = pygame.sprite.Group()
     lock_focusing.add(Back(desktop, (1800, 45)))
 
     ascii_scene = pygame.sprite.Group()
     ascii_scene.add(AsciiFile(), Back(desktop, pos=(1800, 45)))
+
+    password = pygame.sprite.Group()
+    password.add(PassFile(), Back(desktop, pos=(1800,45)))
+
 
 
 
@@ -66,7 +71,7 @@ class Back(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (40, 40))
         self.rect = self.image.get_rect()
         self.rect.center = pos
-
+        print((pygame.mouse.get_pos()))
     def update(self):
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
@@ -164,7 +169,13 @@ class AsciiFile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
         self.rect.centery = HEIGHT / 2
-    
+class PassFile(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("images/first_scene/icon/password.png").convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH / 2
+        self.rect.centery = HEIGHT / 2   
 class Lock(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -197,8 +208,21 @@ class Lock(pygame.sprite.Sprite):
             confirm.update(inputbox)     
             confirm_bottons.draw(screen)   
                
+class PasswordBotton(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("images/first_scene/icon/newtext.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (134, 171))
+        self.image.set_colorkey("BLACK")
+        self.rect = self.image.get_rect()
+        self.rect.x = WIDTH / 2     
+        self.rect.y = HEIGHT / 5
 
-
+    def update(self):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()) and not inputbox.active:
+                password.draw(screen)
+             
 class AsciiButton(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -212,7 +236,6 @@ class AsciiButton(pygame.sprite.Sprite):
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
                 ascii_scene.draw(screen)
-
 
 init()
 desktop.draw(screen)
