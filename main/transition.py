@@ -144,6 +144,9 @@ class Continue(pygame.sprite.Sprite):
 
 init()
 #if not pause:
-for transition in transitions:
-    a = Text()
-    a.display(transition, 25)
+def sceneone_transition():
+    for transition in transitions:
+        a = Text()
+        a.display(transition, 25)
+
+sceneone_transition()

@@ -23,7 +23,7 @@ def init():
     typing = False
     end_type = False
     correct = False
-    answer = "123"
+    answer = "hsnucrc"
     # idk
     pygame.init()
     pygame.display.set_caption('first scene')
