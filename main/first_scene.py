@@ -212,11 +212,11 @@ class PasswordBotton(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load("images/first_scene/icon/newtext.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (134, 171))
+        self.image = pygame.transform.scale(self.image, (207, 225))
         self.image.set_colorkey("BLACK")
         self.rect = self.image.get_rect()
         self.rect.x = WIDTH / 2     
-        self.rect.y = HEIGHT / 5
+        self.rect.y = HEIGHT / 6
 
     def update(self):
         for event in events:
