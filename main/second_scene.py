@@ -150,7 +150,26 @@ class Wallpaper(pygame.sprite.Sprite):
         self.speed = speed
 
     def update(self):
+        if wallpapercontinue.rect.center == (WIDTH / 2 , HIGHT / 2):
+            self.rect.left = wallpapercontinue.rect.right
         self.rect.centerx += self.speed
+wallpaper = Wallpaper()
+class WallpaperContinue(pygame.sprite.Sprite):
+    def __init__(self, speed=-5):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("images/second_scene/道路俯視.jpg").convert_alpha()
+        self.image = pygame.transform.scale(self.image, RES)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH / 2
+        self.rect.left = wallpaper.rect.right
+        self.speed = speed
+
+    def update(self):
+        if wallpaper.rect.center == (WIDTH / 2 , HIGHT / 2):
+            self.rect.left = wallpaper.rect.right
+        self.rect.centerx += self.speed
+
+wallpapercontinue = WallpaperContinue()
 
 class TimeRunning():
     def __init__(self):
@@ -173,8 +192,8 @@ timerunning.__init__()
 all_sprites = pygame.sprite.Group()
 objects = pygame.sprite.Group() 
 balloon = pygame.sprite.Group()
-wallpaper = Wallpaper()
-all_sprites.add(wallpaper)
+
+all_sprites.add(wallpaper,wallpapercontinue)
 player = Player()
 all_sprites.add(player) 
 
@@ -225,7 +244,6 @@ while running:
 
     hits = pygame.sprite.spritecollide(player, objects, 1)
     screen.fill((255,255,255))
-    timerunning.display(t_run)
     if hits:
         pause = True
         p_moment = tm.time()
@@ -241,8 +259,8 @@ while running:
         running = False
     all_sprites.update()
     all_sprites.draw(screen)
+    timerunning.display(t_run)
     pygame.display.update()
-
     if not pause:
         o_time += 1        
         tree_time += 1
