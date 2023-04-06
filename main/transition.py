@@ -72,8 +72,6 @@ def transitionfunc(filepath:str):
                 else:
                     global FPS
                     FPS = 240
-            if event.type == pygame.QUIT:
-                os._exit(True)
                 # pygame.quit()
 
 

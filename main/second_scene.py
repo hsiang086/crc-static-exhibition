@@ -224,8 +224,6 @@ def run():
     while running:
         clock.tick(FPS)
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
             if event.type == pygame.KEYDOWN and not pause:
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     player.UP()

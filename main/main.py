@@ -4,6 +4,7 @@ from transition import transitionfunc
 import first_scene
 import second_scene
 import third_scene
+import thanks_list
 
 def init():
     global running
@@ -12,7 +13,7 @@ def init():
 def check_events():
     events = pygame.event.get()
     for event in events:
-        if event.type == pygame.MOUSEBUTTONUP or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
+        if event.type == pygame.MOUSEBUTTONUP or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE) or (event.type == pygame.KEYUP and event.key == pygame.K_RETURN):
             global running 
             running= False
         if event.type == pygame.QUIT:
@@ -24,20 +25,24 @@ def transition_transition():
         check_events()
     running = True
 
-init()
+thanks_list.init()
+while thanks_list.replay:
 
-transitionfunc("data/transitions_first.yml")
-transition_transition()
-first_scene.init()
-first_scene.run()
-transition_transition()
-transitionfunc("data/transitions_second.yml")
-transition_transition()
-second_scene.init()
-second_scene.run()
-transitionfunc("data/transitions_third.yml")
-transition_transition()
-third_scene.init()
-third_scene.run()
-transitionfunc("data/transitions_last.yml")
-transition_transition()
+    init()
+
+    transitionfunc("data/transitions_first.yml")
+    transition_transition()
+    first_scene.init()
+    first_scene.run()
+    transition_transition()
+    transitionfunc("data/transitions_second.yml")
+    transition_transition()
+    second_scene.init()
+    second_scene.run()
+    transitionfunc("data/transitions_third.yml")
+    transition_transition()
+    third_scene.init()
+    third_scene.run()
+    transitionfunc("data/transitions_last.yml")
+    transition_transition()
+    thanks_list.last()

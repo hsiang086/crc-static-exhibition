@@ -28,9 +28,6 @@ def intro():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 
-
-init()
-intro()
 # running = True
 # while running:
 #     clock.tick(FPS)

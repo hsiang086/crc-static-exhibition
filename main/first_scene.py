@@ -250,10 +250,9 @@ def run():
 
         for event in events:
             if typing:
-                if event.type == pygame.MOUSEBUTTONDOWN: 
-                    if confirm.rect.collidepoint(pygame.mouse.get_pos()):
-                        confirm.dealEvent(inputbox)
-                        print(correct)
+                if (event.type == pygame.MOUSEBUTTONDOWN and confirm.rect.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN): 
+                    confirm.dealEvent(inputbox)
+                    print(correct)
     
 
         desktop.update()
