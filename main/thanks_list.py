@@ -33,7 +33,7 @@ def init():
 class LastThanks(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.speed = 100
+        self.speed = 3
         self.check_button = True
         self.image = pygame.image.load("images/last thanks.png").convert_alpha()
         self.rect = self.image.get_rect()

@@ -5,6 +5,7 @@ import first_scene
 import second_scene
 import third_scene
 import thanks_list
+import easteregg
 
 def init():
     global running
@@ -46,3 +47,5 @@ while thanks_list.replay:
     transitionfunc("data/transitions_last.yml")
     transition_transition()
     thanks_list.last()
+    if thanks_list.egg_check :
+        easteregg.egg()
