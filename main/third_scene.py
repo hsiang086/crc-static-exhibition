@@ -3,6 +3,7 @@ import os
 import random
 from math import sin, cos, pi, sqrt, pow, ceil, atan
 import yaml
+#import easteregg
 
 def init():
     global FPS
@@ -366,6 +367,9 @@ class BalloonBloodDecrease(pygame.sprite.Sprite):
                 self.bloodstep = not self.bloodstep
             if self.bloodstep:
                 self.bf += 1
+                if self.width == 0:
+                    global running
+                    running = False
                 self.image = pygame.Surface((self.width,15))
                 self.image.fill('red')
             else:
@@ -409,6 +413,11 @@ class PlayerBloodDecrease(pygame.sprite.Sprite):
                 self.bloodstep = not self.bloodstep
             if self.bloodstep:
                 self.bf += 1
+                if self.width == 0:
+                    init()
+                    run()
+                    global running
+                    running = False
                 self.image = pygame.Surface((self.width,15))
                 self.image.fill('red')
             else:
@@ -485,24 +494,27 @@ class Question():
 
 
 init()
+def run():
+    global running
+    running = True
+    while running:
+        global events
+        clock.tick(FPS)
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.QUIT:
+                running = False
 
-while True:
-    clock.tick(FPS)
-    events = pygame.event.get()
-    for event in events:
-        if event.type == pygame.QUIT:
-            os._exit(True)
-
-    background_init()
-    
-    if not shooting:
-        question_scene.draw(screen)
-        ques = Question(q, 50)
-        ques.display()
-        question_scene.update()
-    else:
         background_init()
-        shooting_scene.draw(screen)
-        shooting_scene.update()
+        
+        if not shooting:
+            question_scene.draw(screen)
+            ques = Question(q, 50)
+            ques.display()
+            question_scene.update()
+        else:
+            background_init()
+            shooting_scene.draw(screen)
+            shooting_scene.update()
 
-    pygame.display.update()
+        pygame.display.update()

@@ -1,6 +1,9 @@
 import pygame
 import os
 from transition import transitionfunc
+import first_scene
+import second_scene
+import third_scene
 
 def init():
     global running
@@ -25,6 +28,16 @@ init()
 
 transitionfunc("data/transitions_first.yml")
 transition_transition()
+first_scene.init()
+first_scene.run()
+transition_transition()
 transitionfunc("data/transitions_second.yml")
 transition_transition()
+second_scene.init()
+second_scene.run()
 transitionfunc("data/transitions_third.yml")
+transition_transition()
+third_scene.init()
+third_scene.run()
+transitionfunc("data/transitions_last.yml")
+transition_transition()

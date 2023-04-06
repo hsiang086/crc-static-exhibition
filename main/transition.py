@@ -162,6 +162,8 @@ def transitionfunc(filepath:str):
         display_conversation(transitions, 25)
 
     sceneone_transition()
+    global FPS
+    FPS = 10
     # running = True
     # while running:
     #     events = pygame.event.get()

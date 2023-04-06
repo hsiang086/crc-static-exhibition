@@ -59,6 +59,8 @@ def init():
     password = pygame.sprite.Group()
     password.add(PassFile(), Back(desktop, pos=(1800,45)))
 
+    desktop.draw(screen)
+    Type_PW()
 
 
 
@@ -237,31 +239,27 @@ class AsciiButton(pygame.sprite.Sprite):
                 ascii_scene.draw(screen)
 
 init()
-desktop.draw(screen)
-Type_PW()
+def run():
+    global events
+    global running
+    running = True
+    while running:
+        clock.tick(FPS)
+        events = pygame.event.get()
 
-while True:
-    clock.tick(FPS)
-    events = pygame.event.get()
 
+        for event in events:
+            if typing:
+                if event.type == pygame.MOUSEBUTTONDOWN: 
+                    if confirm.rect.collidepoint(pygame.mouse.get_pos()):
+                        confirm.dealEvent(inputbox)
+                        print(correct)
+    
 
-    for event in events:
-        if event.type == pygame.QUIT:
-            os._exit(True)
-        if event == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                os._exit(True)
-        if typing:
-            if event.type == pygame.MOUSEBUTTONDOWN: 
-                if confirm.rect.collidepoint(pygame.mouse.get_pos()):
-                    confirm.dealEvent(inputbox)
-                    print(correct)
- 
-
-    desktop.update()
-    lock_focusing.update()
-                    
-    if correct:
-        os._exit(True)    
-                      
-    pygame.display.update()
+        desktop.update()
+        lock_focusing.update()
+                        
+        if correct:
+            running = False
+                        
+        pygame.display.update()
