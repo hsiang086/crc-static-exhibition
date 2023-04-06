@@ -1,6 +1,7 @@
 import pygame
 import os
-from transition import transitionfunc
+import yaml
+import transition
 import first_scene
 import second_scene
 import third_scene
@@ -8,7 +9,10 @@ import thanks_list
 
 def init():
     global running
+    global transitions
     running = True
+    with open('data/transitions.yml', 'r', encoding='utf8') as file:
+        transitions = yaml.load(file, Loader=yaml.CLoader)
 
 def check_events():
     events = pygame.event.get()
@@ -25,24 +29,27 @@ def transition_transition():
         check_events()
     running = True
 
+init()
 thanks_list.init()
+transition.init()
+
 while thanks_list.replay:
-
-    init()
-
-    transitionfunc("data/transitions_first.yml")
+    transition.display_conversation(transitions['first_scene'], 25)
     transition_transition()
     first_scene.init()
     first_scene.run()
-    transition_transition()
-    transitionfunc("data/transitions_second.yml")
+    # transition_transition()
+
+    transition.display_conversation(transitions['second_scene'], 25)
     transition_transition()
     second_scene.init()
     second_scene.run()
-    transitionfunc("data/transitions_third.yml")
+
+    transition.display_conversation(transitions['third_scene'], 25)
     transition_transition()
     third_scene.init()
     third_scene.run()
-    transitionfunc("data/transitions_last.yml")
+
+    transition.display_conversation(transitions['last_scene'], 25)
     transition_transition()
     thanks_list.last()

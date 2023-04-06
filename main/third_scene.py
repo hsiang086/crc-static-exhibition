@@ -73,7 +73,7 @@ def init():
         global q_list
         q_list = [i for i in range(len(questions['questions']))]
     q_listinit()
-    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i, ans) for i, ans in enumerate(questions['answers'][0])],back)
+    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i) for i in range(4)],back)
 
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
@@ -438,7 +438,7 @@ class QuestionBackground(pygame.sprite.Sprite):
         # self.rect.centery = y_center + HEIGHT * 5 / 18
     
 class AnswerButton(pygame.sprite.Sprite):
-    def __init__(self, pos, answer):
+    def __init__(self, pos):
         super().__init__()
         # self.image = pygame.Surface((question_background.image.get_width() / 7.5, question_background.image.get_height() / 5))
         # self.image.fill("yellow")
@@ -448,7 +448,6 @@ class AnswerButton(pygame.sprite.Sprite):
         self.pos = pos - 2
         self.rect.left = 10 + question_background.rect.centerx + self.pos * ((question_background.rect.right - question_background.rect.left) / 4)
         self.rect.centery = question_background.rect.bottom - 80
-        self.text = answer
 
     def switch_q(self):
         global q
@@ -461,7 +460,7 @@ class AnswerButton(pygame.sprite.Sprite):
         global q_list, shooting, balloon, player_decrease_bool
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()) and not player_decrease_bool:
-                if questions['answer'][0] == self.num:
+                if questions['answer'][q] == self.num:
                     shooting = True
                     balloon.size = 'large'
                     self.switch_q()
@@ -473,9 +472,6 @@ class Question():
     def __init__(self, question_index: int, amount_per_line: int):
         question = questions['questions'][question_index]
         self.text_list = [question[amount_per_line * i:amount_per_line * (i + 1)] for i in range(ceil(len(question) / amount_per_line))]
-        self.anwsers = questions['answers'][question_index]
-        self.anwser = questions['answer'][question_index]
-        super().__init__()
 
     def display(self):
         for i, char in enumerate(self.text_list):

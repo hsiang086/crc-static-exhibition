@@ -12,10 +12,8 @@ def init():
     global pause_times, time_start
     global object_kill
     global speed
-    global tree_pos
     global pause
 
-    tree_pos = 125
     object_kill = False
     pause_times = 0
     time_start = tm.time()
@@ -208,15 +206,11 @@ def run():
 
 
     o_time = 0
-    tree_time = 0
-    up_down = 0 
 
     p_moment = 0 
     t_pause = 3 #Stop for __ second if collide
-    tree_generate_interval = 1.5
     object_generate_interval = 2 #(seconds)
     ogi = object_generate_interval*FPS
-    tgi = tree_generate_interval*FPS
 
     pause = False
     running = True
@@ -255,16 +249,13 @@ def run():
             object_kill = True
             balloon.add(balloon_appear)
             all_sprites.add(balloon_appear)
-        balloon_hits = pygame.sprite.spritecollide(player, balloon, 1)
-        if balloon_hits:
-            running = False
         if not pause:
             all_sprites.update()
+            o_time += 5
         all_sprites.draw(screen)
         timerunning.display(t_run)
         
+        balloon_hits = pygame.sprite.spritecollide(player, balloon, 1)
+        if balloon_hits:
+            running = False
         pygame.display.update()
-        if not pause:
-            o_time += 5        
-            tree_time += 1
-
