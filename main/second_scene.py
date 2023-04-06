@@ -159,7 +159,7 @@ wallpapercontinue = WallpaperContinue()
 
 class TimeRunning():
     def __init__(self):
-        self.time = 60
+        self.time = 63
         self.time_start = tm.time()
         self.text_rect = (WIDTH / 2, 100)
     def display(self,time_run):
@@ -170,7 +170,10 @@ class TimeRunning():
             global running
             running = False
         font = pygame.font.SysFont('Arial', 150, bold = True)
-        text = font.render(str(time_left), True, 'black')
+        if time_left%60 ==0:
+            text = font.render(str(time_left), True, 'black')
+        else :
+            text = font.render(str(time_left%60), True, 'black')
         screen.blit(text, self.text_rect)
 global timerunning
 timerunning = TimeRunning()
@@ -212,7 +215,8 @@ def run():
     object_generate_interval = 2 #(seconds)
     ogi = object_generate_interval*FPS
 
-    pause = False
+    pause = True
+    p_moment = tm.time()
     running = True
     object_kill = False
     while running:
@@ -259,3 +263,4 @@ def run():
         if balloon_hits:
             running = False
         pygame.display.update()
+run()
