@@ -99,21 +99,7 @@ class Object(pygame.sprite.Sprite):
             else:    
                 self.kill()
 
-class Tree(pygame.sprite.Sprite):
-    def __init__(self,y):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((40,50))
-        self.image.fill((0,153,0))
-        self.rect = self.image.get_rect()
-        self.rect.left = WIDTH
-        self.rect.y = y
-        self.v = speed
-    def update(self):
-        if not pause:
-            if self.rect.right >= 0:
-                self.rect.x += self.v
-            else:    
-                self.kill()      
+  
 
 class BalloonAppear(pygame.sprite.Sprite):
     def __init__(self) :
@@ -142,7 +128,7 @@ class collide_effect(pygame.sprite.Sprite):
 class Wallpaper(pygame.sprite.Sprite):
     def __init__(self, speed=-5):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("images/second_scene/道路俯視.jpg").convert_alpha()
+        self.image = pygame.image.load("images/second_scene/road.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, RES)
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
@@ -157,7 +143,7 @@ wallpaper = Wallpaper()
 class WallpaperContinue(pygame.sprite.Sprite):
     def __init__(self, speed=-5):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("images/second_scene/道路俯視.jpg").convert_alpha()
+        self.image = pygame.image.load("images/second_scene/road.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, RES)
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
@@ -226,14 +212,6 @@ while running:
         all_sprites.add(Obj)
         objects.add(Obj)  
         o_time = 0
-    if tree_time >= tgi:
-        if up_down % 2:
-            tree = Tree(POS[0]-tree_pos)
-        else:
-            tree = Tree(POS[2]+tree_pos)
-        all_sprites.add(tree)
-        tree_time = 0 
-        up_down += 1   
     t_run = tm.time()
     
     if pause:
@@ -257,9 +235,11 @@ while running:
     balloon_hits = pygame.sprite.spritecollide(player, balloon, 1)
     if balloon_hits:
         running = False
-    all_sprites.update()
+    if not pause:
+        all_sprites.update()
     all_sprites.draw(screen)
     timerunning.display(t_run)
+    
     pygame.display.update()
     if not pause:
         o_time += 1        
