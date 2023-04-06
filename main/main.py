@@ -30,27 +30,30 @@ def transition_transition():
         check_events()
     running = True
 
-init()
 thanks_list.init()
-transition.init()
 
 while thanks_list.replay:
+    init()
+    transition.init()
     transition.display_conversation(transitions['first_scene'], 25)
     transition_transition()
     first_scene.init()
     first_scene.run()
     # transition_transition()
 
+    transition.init()
     transition.display_conversation(transitions['second_scene'], 25)
     transition_transition()
     second_scene.init()
     second_scene.run()
 
+    transition.init()
     transition.display_conversation(transitions['third_scene'], 25)
     transition_transition()
     third_scene.init()
     third_scene.run()
 
+    transition.init()
     transition.display_conversation(transitions['last_scene'], 25)
     transition_transition()
     thanks_list.last()
