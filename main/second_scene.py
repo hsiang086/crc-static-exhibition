@@ -100,7 +100,6 @@ class Object(pygame.sprite.Sprite):
             else:    
                 self.kill()
 
-  
 
 class BalloonAppear(pygame.sprite.Sprite):
     def __init__(self) :
@@ -171,16 +170,30 @@ class TimeRunning():
         font = pygame.font.SysFont('Arial', 150, bold = True)
         text = font.render(str(time_left), True, 'black')
         screen.blit(text, self.text_rect)
-
-
 global timerunning
 timerunning = TimeRunning()
 timerunning.__init__()
+
+class TB(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("images/second_scene/time background.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image,(400, 500))
+        self.rect = self.image.get_rect()
+        self.rect.top = -60
+        self.rect.centerx = WIDTH / 2 + 72
+
+
+
+global tb
+
+tb = TB()
+
 all_sprites = pygame.sprite.Group()
 objects = pygame.sprite.Group() 
 balloon = pygame.sprite.Group()
 
-all_sprites.add(wallpaper,wallpapercontinue)
+all_sprites.add(wallpaper,wallpapercontinue,tb)
 player = Player()
 all_sprites.add(player) 
 

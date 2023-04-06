@@ -56,7 +56,7 @@ def paused():
 def check_events():
     events = pygame.event.get()
     for event in events:
-        if (event.type == pygame.MOUSEBUTTONUP and continue_.rect.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
+        if event.type == pygame.MOUSEBUTTONUP or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
             global next_page
             global pause
             if pause:
@@ -159,7 +159,7 @@ running = True
 while running:
     events = pygame.event.get()
     for event in events:
-        if (event.type == pygame.MOUSEBUTTONUP and continue_.rect.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
+        if event.type == pygame.MOUSEBUTTONUP or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
             os._exit(True)
         if event.type == pygame.QUIT:
             os._exit(True)
