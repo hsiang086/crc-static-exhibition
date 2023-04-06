@@ -40,6 +40,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("images/second_scene/分鏡1.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image,(200, 200))
         self.rect = self.image.get_rect()
         self.rect.x = 10
         self.rect.centery = HIGHT/2
@@ -49,7 +50,7 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         if not pause: 
             self.rect.centery = POS[self.pos]
-            self.time += 0.25
+            self.time += 1/4
             if self.time % 3 ==0:
                 self.image = pygame.image.load("images/second_scene/分鏡1.png").convert_alpha()
             elif self.time %3 ==1:
@@ -80,13 +81,13 @@ class Object(pygame.sprite.Sprite):
         print(self.imagerandom)
         if self.imagerandom == 0:
             self.image = pygame.image.load("images/second_scene/障礙物1 去背.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (150, 100))
+            self.image = pygame.transform.scale(self.image, (200, 200))
         elif self.imagerandom == 1:
             self.image = pygame.image.load("images/second_scene/障礙物2 去背.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (150, 100))
+            self.image = pygame.transform.scale(self.image, (200, 200))
         elif self.imagerandom == 2:
             self.image = pygame.image.load("images/second_scene/障礙物3 去背.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (150, 100))
+            self.image = pygame.transform.scale(self.image, (200, 200))
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH
         self.pos = random.randrange(0,3)
@@ -104,8 +105,8 @@ class Object(pygame.sprite.Sprite):
 class BalloonAppear(pygame.sprite.Sprite):
     def __init__(self) :
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join("images", "balloon(2).png")).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (700, 700))
+        self.image = pygame.image.load(os.path.join("images/third_scene/balloon_red.png")).convert_alpha()
+        # self.image = pygame.transform.scale(self.image, (700, 700))
         self.rect = self.image.get_rect()
         self.rect.left = WIDTH
         self.rect.centery = HIGHT / 2
