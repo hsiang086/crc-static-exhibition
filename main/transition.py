@@ -152,7 +152,7 @@ class Continue(pygame.sprite.Sprite):
 init()
 #if not pause:
 def sceneone_transition():
-    display_conversation(transitions, 37)
+    display_conversation(transitions, 25)
 
 sceneone_transition()
 running = True

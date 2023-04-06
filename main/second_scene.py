@@ -19,9 +19,9 @@ def init():
     pause_times = 0
     time_start = tm.time()
     FPS = 60
-    RES = WIDTH, HIGHT = (1500, 800)
+    RES = WIDTH, HIGHT = (1920,1080)
     Road_Width = 230
-    POS=[(HIGHT/2)-Road_Width-30,(HIGHT/2)-30,(HIGHT/2)+Road_Width-30]
+    POS=[(HIGHT/2)-Road_Width-50,(HIGHT/2)-30,(HIGHT/2)+Road_Width-10]
     speed = -5
     clock = pygame.time.Clock()
     
@@ -168,7 +168,7 @@ class TimeRunning():
         if time_left < 0:
             global running
             running = False
-        font = pygame.font.SysFont('Arial', 70, bold = True)
+        font = pygame.font.SysFont('Arial', 150, bold = True)
         text = font.render(str(time_left), True, 'black')
         screen.blit(text, self.text_rect)
 

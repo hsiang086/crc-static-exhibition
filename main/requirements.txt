@@ -1,4 +1,4 @@
 pygame
 pyyaml
-fpyplayer
+ffpyplayer
 pymediainfo
