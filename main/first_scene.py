@@ -57,7 +57,8 @@ def init():
     ascii_scene.add(AsciiFile(), Back(desktop, pos=(1800, 45)))
 
     password = pygame.sprite.Group()
-    password.add(PassFile(), Back(desktop, pos=(1800,45)))
+    pass_file = PassFile()
+    password.add(pass_file, Back(desktop, pos=(pass_file.rect.right - 21, pass_file.rect.top + 15)))
 
     desktop.draw(screen)
     Type_PW()
@@ -73,9 +74,11 @@ class Back(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (40, 40))
         self.rect = self.image.get_rect()
         self.rect.center = pos
+
     def update(self):
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
+                print(self.rect.center)
                 screen.fill('BLACK')
                 self.to_draw.draw(screen)
                 inputbox.disappear()
@@ -257,6 +260,7 @@ def run():
 
         desktop.update()
         lock_focusing.update()
+        password.update()
                         
         if correct:
             running = False

@@ -65,7 +65,6 @@ def init():
     balloonblooddecrease = BalloonBloodDecrease()
     playerblood = PlayerBlood()
     playerblooddecrease = PlayerBloodDecrease()
-    back = Back()
     #bullet_count = BulletCount()
 
     q = random.randrange(4)
@@ -73,36 +72,14 @@ def init():
         global q_list
         q_list = [i for i in range(len(questions['questions']))]
     q_listinit()
-    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i) for i in range(4)],back)
+    question_scene.add(balloon, question_background, balloonblood, balloonblooddecrease, playerblood, playerblooddecrease, [AnswerButton(i) for i in range(4)])
 
     shooting_scene = pygame.sprite.Group()
     aim = Aim()
     bullet = Bullet()
-    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet,back)
-    shooting_scene.add(balloon, aim, bullet,back)
+    shooting_scene.add(balloon, aim, balloonblood, balloonblooddecrease,bullet)
+    shooting_scene.add(balloon, aim, bullet)
 
-class Back(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load("images/x.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (100, 100))
-        self.image.set_colorkey("BLACK")
-        self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH-270, 170)
-
-    def update(self):
-        for event in events:
-            # if self.rect.collidepoint(pygame.mouse.get_pos()):
-            #     self.image = pygame.image.load("images/x.png").convert_alpha()
-            #     self.image = pygame.transform.scale(self.image, (120, 120))
-            #     self.image.set_colorkey("BLACK")
-            # else:
-            #     self.image = pygame.image.load("images/x.png").convert_alpha()
-            #     self.image = pygame.transform.scale(self.image, (100, 100))
-            #     self.image.set_colorkey("BLACK")
-
-            if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(pygame.mouse.get_pos()):
-                os._exit(1)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self):
@@ -475,7 +452,7 @@ class Question():
 
     def display(self):
         for i, char in enumerate(self.text_list):
-            text = font.render(str(char), True, "black")
+            text = font.render(str(char), True, "white")
             text_rect = text.get_rect(topleft=(question_background.rect.left * 1.6, question_background.rect.top * 1.1 + (text_size * i)))
             screen.blit(text, text_rect)
 
@@ -505,7 +482,7 @@ def run():
         
         if not shooting:
             question_scene.draw(screen)
-            ques = Question(q, 50)
+            ques = Question(q, 34)
             ques.display()
             question_scene.update()
         else:
