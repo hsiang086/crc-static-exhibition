@@ -263,4 +263,3 @@ def run():
         if balloon_hits:
             running = False
         pygame.display.update()
-run()
