@@ -13,6 +13,7 @@ def init():
     global object_kill
     global speed
     global pause
+    global replay
 
     object_kill = False
     pause_times = 0
@@ -23,6 +24,7 @@ def init():
     POS=[(HIGHT/2)-Road_Width-50,(HIGHT/2)-30,(HIGHT/2)+Road_Width-10]
     speed = -40
     clock = pygame.time.Clock()
+    replay = True
     
     itv = 0
     pygame.init()
@@ -165,8 +167,6 @@ class TimeRunning():
     def display(self,time_run):
         time_left = self.time - int(time_run - self.time_start)
         if time_left < 0:
-            init()
-            run()
             global running
             running = False
         font = pygame.font.SysFont('Arial', 150, bold = True)
@@ -261,5 +261,7 @@ def run():
         
         balloon_hits = pygame.sprite.spritecollide(player, balloon, 1)
         if balloon_hits:
+            global replay
+            replay = False
             running = False
         pygame.display.update()

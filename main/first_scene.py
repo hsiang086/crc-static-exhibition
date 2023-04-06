@@ -24,6 +24,7 @@ def init():
     typing = False
     end_type = False
     correct = False
+
     answer = "hsnucrc"
     # idk
     pygame.init()

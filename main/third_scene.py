@@ -32,12 +32,13 @@ def init():
     global q
     global q_listinit
     global background_init
+    global replay 
 
 
     RES = WIDTH, HEIGHT = 1920, 1080
     FPS = 60
     x_center, y_center = WIDTH / 2, HEIGHT / 2
-
+    replay = True
     
     pygame.init()
     pygame.display.set_caption("third")
@@ -346,6 +347,8 @@ class BalloonBloodDecrease(pygame.sprite.Sprite):
                 self.bf += 1
                 if self.width == 0:
                     global running
+                    global replay
+                    replay = False
                     running = False
                 self.image = pygame.Surface((self.width,15))
                 self.image.fill('red')
@@ -391,8 +394,6 @@ class PlayerBloodDecrease(pygame.sprite.Sprite):
             if self.bloodstep:
                 self.bf += 1
                 if self.width == 0:
-                    init()
-                    run()
                     global running
                     running = False
                 self.image = pygame.Surface((self.width,15))
