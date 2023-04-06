@@ -170,8 +170,8 @@ class TimeRunning():
             global running
             running = False
         font = pygame.font.SysFont('Arial', 150, bold = True)
-        if time_left%60 ==0:
-            text = font.render(str(time_left), True, 'black')
+        if time_left == 60:
+            text = font.render(str("GO"), True, 'black')
         else :
             text = font.render(str(time_left%60), True, 'black')
         screen.blit(text, self.text_rect)
@@ -248,7 +248,7 @@ def run():
             p_moment = tm.time()
             player.collide()
             pause_times += 1
-        if tm.time()-time_start >= 30 + pause_times*3 and not object_kill:
+        if tm.time()-time_start >= 33 + pause_times*3 and not object_kill:
             balloon_appear = BalloonAppear()
             object_kill = True
             balloon.add(balloon_appear)

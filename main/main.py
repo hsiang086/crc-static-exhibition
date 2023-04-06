@@ -6,7 +6,6 @@ import first_scene
 import second_scene
 import third_scene
 import thanks_list
-# import easteregg
 
 def init():
     global running
@@ -57,5 +56,3 @@ while thanks_list.replay:
     transition.display_conversation(transitions['last_scene'], 25)
     transition_transition()
     thanks_list.last()
-    # if thanks_list.egg_check :
-    #     easteregg.egg()
