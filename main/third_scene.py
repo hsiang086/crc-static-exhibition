@@ -119,6 +119,7 @@ class Bullet(pygame.sprite.Sprite):
                 balloon_decrease_bool = True
                 shooting = False
                 aim.__init__()
+                balloon.__init__()
             if self.rect.centery <= 0 or self.rect.centerx <= 0:
                 self.image = pygame.image.load(os.path.join("images/third_scene/ammo_icon.png")).convert_alpha()
                 self.is_rotated = False
@@ -129,6 +130,7 @@ class Bullet(pygame.sprite.Sprite):
                 if self.time >= 3:
                     self.time = 0
                     aim.__init__()
+                    balloon.__init__()
                     shooting = False
         else:
             #m = abs(aim.rect.centery - self.rect.centery) / abs(aim.rect.centerx - self.rect.centerx)
@@ -280,7 +282,8 @@ class Balloon(pygame.sprite.Sprite):
                 #     global shooting
                 #     shooting = not shooting
         if self.size == 'large' and self.theta == 0 and self.count == 0:
-            self.r = 400
+            self.r = 350
+            self.circle_speed = 1
             self.step = 120
         if self.size == 'small' and self.theta == 0 and self.count == 0:
             self.r = 150
