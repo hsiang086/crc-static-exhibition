@@ -22,7 +22,7 @@ def init():
     
     pygame.init()
     pygame.display.set_caption("last")
-    screen = pygame.display.set_mode(RES)
+    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME, vsync=1)
     clock = pygame.time.Clock()
 
     scene = pygame.sprite.Group()
