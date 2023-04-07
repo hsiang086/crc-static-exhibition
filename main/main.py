@@ -1,5 +1,3 @@
-import pygame
-import os
 import yaml
 import transition
 import first_scene

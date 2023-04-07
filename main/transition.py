@@ -1,8 +1,5 @@
 import pygame
-import yaml
 import math
-
-
 
 def init():
 
