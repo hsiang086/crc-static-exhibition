@@ -70,7 +70,7 @@ class ReplayButton(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load("images/transparent.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image,(420,200))
+        self.image = pygame.transform.scale(self.image,(420,190))
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2 + 10, HEIGHT - 580)
 
@@ -86,7 +86,7 @@ class QuitButton(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load("images/transparent.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image,(420,200))
+        self.image = pygame.transform.scale(self.image,(420,190))
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2 + 10, HEIGHT - 315)
 
