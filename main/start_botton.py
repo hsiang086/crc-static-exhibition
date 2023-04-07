@@ -6,28 +6,95 @@ def init():
     global running
     global clock
     global scene
+    global speed
+    global i,ialpha
+    global luck_y
 
     RES = WIDTH, HEIGHT = 1920,1080
     FPS = 60
     running = True
+    speed = 5
+    i = -1
+    ialpha = 1
+    luck_y = 200
     
     pygame.init()
     pygame.display.set_caption("last")
-    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
+    screen = pygame.display.set_mode(RES)
     clock = pygame.time.Clock()
     scene = pygame.sprite.Group()
     start_button = StartButton()
-    scene.add(start_button)
+    luckymove = LuckyMove()
+    luckymovealpha = LuckyMoveAlpha()
+    luckymoveamain = LuckyMoveMain()
+    bg = BackGround()
+    scene.add(bg,start_button,luckymove,luckymovealpha,luckymoveamain)
+
+class BackGround(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("images/start bg.png").convert_alpha()
+        # self.image = pygame.Surface((200,200))
+        # self.image.fill("white")
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2,HEIGHT / 2)
+
+class LuckyMove(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("images/second_scene/障礙物1 去背.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image,(400,400))
+        # self.image = pygame.Surface((200,200))
+        # self.image.fill("white")
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2,luck_y)
+
+    def update(self):
+        global i
+        if self.rect.centerx <= WIDTH / 2:
+            i *= -1
+        elif self.rect.right >= WIDTH :
+            i *= -1
+        self.rect.centerx += speed * i
+
+class LuckyMoveAlpha(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("images/second_scene/障礙物2 去背.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image,(400,400))
+        # self.image = pygame.Surface((200,200))
+        # self.image.fill("white")
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2,luck_y)
+
+    def update(self):
+        global ialpha
+        if self.rect.centerx >= WIDTH / 2:
+            ialpha *= -1
+        elif self.rect.right <= 0 :
+            ialpha *= -1
+        self.rect.centerx -= speed * i
+
+class LuckyMoveMain(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("images/second_scene/障礙物3 去背.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image,(500,500))
+        # self.image = pygame.Surface((200,200))
+        # self.image.fill("white")
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2,luck_y)
+       
 
 class StartButton(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        # self.image = pygame.image.load("images/transparent.png").convert_alpha()
-        # self.image = pygame.transform.scale(self.image,(420,200))
-        self.image = pygame.Surface((420,200))
-        self.image.fill("white")
+        self.image = pygame.image.load("images/transparent.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image,(420,200))
+        # self.image = pygame.Surface((420,200))
+        # self.image.fill("white")
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 2 + 10, HEIGHT - 315)
+        self.rect.center = (WIDTH / 2, HEIGHT - 315)
 
     def update(self):
         for event in events:
@@ -36,8 +103,6 @@ class StartButton(pygame.sprite.Sprite):
                 running = False
 init()
 def run():
-
-
     global running
     while running:
         global events
