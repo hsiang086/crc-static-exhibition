@@ -52,8 +52,8 @@ class LastThanks(pygame.sprite.Sprite):
 class EasterEggButton(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/transparent.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image,(500,400))
+        self.image = pygame.Surface((500, 400)).convert_alpha()
+        self.image.fill((0, 0, 0, 0))
         # self.image = pygame.Surface((500,400))
         # self.image.fill("white")
         self.rect = self.image.get_rect()
@@ -69,8 +69,8 @@ class EasterEggButton(pygame.sprite.Sprite):
 class ReplayButton(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/transparent.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image,(420,190))
+        self.image = pygame.Surface((420, 190)).convert_alpha()
+        self.image.fill((0, 0, 0, 0))
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2 + 10, HEIGHT - 580)
 
@@ -85,8 +85,10 @@ class ReplayButton(pygame.sprite.Sprite):
 class QuitButton(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/transparent.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image,(420,190))
+        # self.image = pygame.image.load("images/transparent.png").convert_alpha()
+        # self.image = pygame.transform.scale(self.image,(420,190))
+        self.image = pygame.Surface((420, 190)).convert_alpha()
+        self.image.fill((0, 0, 0, 0))
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2 + 10, HEIGHT - 315)
 
