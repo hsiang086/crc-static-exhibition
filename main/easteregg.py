@@ -3,4 +3,3 @@ import os
 def run():
     clip = VideoFileClip('images/RAnggyu.mp4')
     clip.preview()
-    os._exit(1)

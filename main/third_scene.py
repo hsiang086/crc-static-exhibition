@@ -280,8 +280,8 @@ class Balloon(pygame.sprite.Sprite):
                 #     global shooting
                 #     shooting = not shooting
         if self.size == 'large' and self.theta == 0 and self.count == 0:
-            self.r = 200
-            self.step = 90
+            self.r = 400
+            self.step = 120
         if self.size == 'small' and self.theta == 0 and self.count == 0:
             self.r = 150
             self.step = 45

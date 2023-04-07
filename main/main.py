@@ -25,11 +25,15 @@ while thanks_list.replay:
     start_botton.run()
     transition.init()
     transition.display_conversation(transitions['first_scene'], 25)
+    transition.init()
+    transition.display_conversation(transitions['first_rule'], 25)
     first_scene.init()
     first_scene.run()
 
     transition.init()
     transition.display_conversation(transitions['second_scene'], 25)
+    transition.init()
+    transition.display_conversation(transitions['second_rule'], 25)
     second_scene.init()
     while second_scene.replay:
         second_scene.init()
@@ -41,6 +45,8 @@ while thanks_list.replay:
 
     transition.init()
     transition.display_conversation(transitions['third_scene'], 25)
+    transition.init()
+    transition.display_conversation(transitions['third_rule'], 25)
     third_scene.init()
     while third_scene.replay:
         third_scene.init()
