@@ -47,8 +47,6 @@ while thanks_list.replay:
 
     transition.init()
     transition.display_conversation(transitions['last_scene'], 25)
-    transition_transition()
     transition.init()
     transition.display_conversation(transitions['last_last_scene'], 25)
-    transition_transition()
     thanks_list.last()

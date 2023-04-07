@@ -39,7 +39,7 @@ def init():
     IPBh = 32
     IPBx = (WIDTH / 2) - IPBw
     IPBy = (HEIGHT / 2) - IPBh
-    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME, vsync=1)
+    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
     screen.fill('BLACK')
 
 

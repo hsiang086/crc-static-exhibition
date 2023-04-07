@@ -34,7 +34,7 @@ def init():
     font = pygame.font.Font('font/Cubic_11_1.013_R.ttf', text_size)
     # screen
     RES = WIDTH, HEIGHT = 1920, 1080
-    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME, vsync=1)
+    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
     screen.fill('BLACK')
 
     # clock

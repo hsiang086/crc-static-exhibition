@@ -29,7 +29,7 @@ def init():
     itv = 0
     pygame.init()
 
-    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME, vsync=1)
+    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
     
 
     pygame.display.set_caption("second scene")
