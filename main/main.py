@@ -24,6 +24,8 @@ while thanks_list.replay:
     start_botton.init()
     start_botton.run()
     transition.init()
+    transition.display_conversation(transitions['start'], 25)
+    transition.init()
     transition.display_conversation(transitions['first_scene'], 25)
     transition.init()
     transition.display_conversation(transitions['first_rule'], 25)
