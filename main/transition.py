@@ -92,7 +92,7 @@ def display_conversation(transitions: list, amount_per_line: int):
                 # text_rect = text_surface.get_rect(left=0, y=text_size* abc*2)
                 # screen.blit(text_surface, text_rect) 
                 #screen.fill('black')
-                text_y = text_size * line * 2
+                text_y = text_size * line * 1.2
                 display_text(text[:j + 1], "white", (0, text_y))
                 continue_group.draw(screen)
                 continue_group.update()
@@ -107,6 +107,7 @@ def display_conversation(transitions: list, amount_per_line: int):
                 # clock.tick(FPS)
                 check_events()
             line += 1
+        line += 1
 
 class Continue(pygame.sprite.Sprite):
     def __init__(self):
