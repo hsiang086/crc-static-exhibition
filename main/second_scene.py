@@ -41,7 +41,6 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("images/second_scene/分鏡1.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image,(200, 200))
         self.rect = self.image.get_rect()
         self.rect.x = 10
         self.rect.centery = HIGHT/2
@@ -263,5 +262,6 @@ def run():
         if balloon_hits:
             global replay
             replay = False
+
             running = False
         pygame.display.update()

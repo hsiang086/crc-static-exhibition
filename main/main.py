@@ -30,6 +30,7 @@ while thanks_list.replay:
 
     transition.init()
     transition.display_conversation(transitions['second_scene'], 25)
+    second_scene.init()
     while second_scene.replay:
         second_scene.init()
         second_scene.run()
@@ -40,6 +41,7 @@ while thanks_list.replay:
 
     transition.init()
     transition.display_conversation(transitions['third_scene'], 25)
+    third_scene.init()
     while third_scene.replay:
         third_scene.init()
         third_scene.run()
