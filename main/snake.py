@@ -8,7 +8,7 @@ def run():
     BLOCK_SIZE = 60
     FONT = pygame.font.Font("font\\Cubic_11_1.013_R.ttf", BLOCK_SIZE*2)
 
-    screen = pygame.display.set_mode(RES)
+    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
     pygame.display.set_caption("Snake!")
     clock = pygame.time.Clock()
     global paused
@@ -92,8 +92,8 @@ def run():
             score1 = FONT.render("YOU DIED, ENTER TO RETRY,", True, "white")
             score2 = FONT.render(" ESC TO QUIT", True, "white")
             screen.fill('black')
-            screen.blit(score1, (0,0))
-            screen.blit(score2, (0,90))
+            screen.blit(score1, (0, 0))
+            screen.blit(score2, (0, 100))
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
@@ -107,16 +107,16 @@ def run():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_DOWN:
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     snake.ydir = 1
                     snake.xdir = 0
-                elif event.key == pygame.K_UP:
+                elif event.key == pygame.K_UP or event.key == pygame.K_w:
                     snake.ydir = -1
                     snake.xdir = 0
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     snake.ydir = 0
                     snake.xdir = 1
-                elif event.key == pygame.K_LEFT:
+                elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     snake.ydir = 0
                     snake.xdir = -1
 

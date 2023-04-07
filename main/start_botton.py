@@ -20,7 +20,7 @@ def init():
     
     pygame.init()
     pygame.display.set_caption("last")
-    screen = pygame.display.set_mode(RES)
+    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
     clock = pygame.time.Clock()
     scene = pygame.sprite.Group()
     start_button = StartButton()
@@ -89,8 +89,8 @@ class LuckyMoveMain(pygame.sprite.Sprite):
 class StartButton(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("images/transparent.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image,(420,200))
+        self.image = pygame.Surface((420, 200)).convert_alpha()
+        self.image.fill((0, 0, 0, 0))
         # self.image = pygame.Surface((420,200))
         # self.image.fill("white")
         self.rect = self.image.get_rect()
