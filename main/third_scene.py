@@ -480,7 +480,7 @@ def run():
         
         if not shooting:
             question_scene.draw(screen)
-            ques = Question(q, 34)
+            ques = Question(q, 30)
             ques.display()
             question_scene.update()
         else:
