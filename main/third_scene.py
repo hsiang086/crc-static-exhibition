@@ -42,8 +42,8 @@ def init():
     
     pygame.init()
     pygame.display.set_caption("third")
-    screen = pygame.display.set_mode(RES)
-    
+    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME, vsync=1)
+        
     bg_image = pygame.image.load("images/third_scene/bg.png").convert_alpha()
     def background_init():
         screen.blit(bg_image,(0,0))
@@ -475,15 +475,12 @@ def run():
         global events
         clock.tick(FPS)
         events = pygame.event.get()
-        for event in events:
-            if event.type == pygame.QUIT:
-                running = False
 
         background_init()
         
         if not shooting:
             question_scene.draw(screen)
-            ques = Question(q, 34)
+            ques = Question(q, 30)
             ques.display()
             question_scene.update()
         else:

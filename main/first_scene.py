@@ -39,7 +39,7 @@ def init():
     IPBh = 32
     IPBx = (WIDTH / 2) - IPBw
     IPBy = (HEIGHT / 2) - IPBh
-    screen = pygame.display.set_mode(RES)
+    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME, vsync=1)
     screen.fill('BLACK')
 
 
@@ -254,7 +254,7 @@ def run():
 
         for event in events:
             if typing:
-                if (event.type == pygame.MOUSEBUTTONDOWN and confirm.rect.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN): 
+                if (event.type == pygame.MOUSEBUTTONDOWN and confirm.rect.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYUP and event.key == pygame.K_RETURN): 
                     confirm.dealEvent(inputbox)
                     print(correct)
     

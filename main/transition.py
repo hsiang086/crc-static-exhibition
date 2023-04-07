@@ -34,7 +34,7 @@ def init():
     font = pygame.font.Font('font/Cubic_11_1.013_R.ttf', text_size)
     # screen
     RES = WIDTH, HEIGHT = 1920, 1080
-    screen = pygame.display.set_mode(RES)
+    screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME, vsync=1)
     screen.fill('BLACK')
 
     # clock
@@ -53,7 +53,7 @@ def paused():
 def check_events():
     events = pygame.event.get()
     for event in events:
-        if event.type == pygame.MOUSEBUTTONUP or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
+        if event.type == pygame.MOUSEBUTTONUP or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE) or (event.type == pygame.KEYUP and event.key == pygame.K_RETURN):
             global next_page
             global pause
             if pause:
@@ -79,9 +79,6 @@ def display_conversation(transitions: list, amount_per_line: int):
         transition = transitions[i]
         text_list = [transition[amount_per_line * i:amount_per_line * (i + 1)] for i in range(math.ceil(len(transition) / amount_per_line))]
         for text in text_list:
-            while pause:
-                # clock.tick(FPS)
-                check_events()
             for j in range(len(text) + 1):
                 clock.tick(FPS)
                 
@@ -106,6 +103,9 @@ def display_conversation(transitions: list, amount_per_line: int):
                 paused()
             elif math.ceil(len(transitions[i + 1]) / amount_per_line) * (text_size + (line * 2)) >= HEIGHT - text_y - text_size - (line * 2):
                 paused()
+            while pause:
+                # clock.tick(FPS)
+                check_events()
             line += 1
 
 class Continue(pygame.sprite.Sprite):
