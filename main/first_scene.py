@@ -1,5 +1,6 @@
 import pygame
 import os
+import snake
 
 def init():
 
@@ -19,13 +20,14 @@ def init():
     global password
     
     global IPBw,IPBh,IPBx,IPBy
-    global answer, correct
+    global answer, correct, snake_egg
     
     typing = False
     end_type = False
     correct = False
 
     answer = "hsnucrc"
+    snake_egg = "snake"
     # idk
     pygame.init()
     pygame.display.set_caption('first scene')
@@ -145,6 +147,8 @@ class Confirm(pygame.sprite.Sprite):
         self.image.fill((255,255,255))
         if inputbox.text == answer:
             correct = True
+        elif inputbox.text == snake_egg:
+            snake.run()
         else:
             correct = False
             inputbox.text = ""   
