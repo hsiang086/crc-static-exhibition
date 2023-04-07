@@ -1,9 +1,6 @@
 from moviepy.editor import *
-import pygame
-
-
+import os
 def run():
     clip = VideoFileClip('images/RAnggyu.mp4')
     clip.preview()
-    pygame.quit()
-run()
+    os._exit(1)

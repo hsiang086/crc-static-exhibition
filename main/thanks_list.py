@@ -113,5 +113,3 @@ def last():
         scene.update()
         scene.draw(screen)
         pygame.display.update()
-
-last()
