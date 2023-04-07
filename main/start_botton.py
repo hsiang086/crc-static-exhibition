@@ -79,12 +79,32 @@ class LuckyMoveMain(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load("images/second_scene/障礙物3 去背.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image,(500,500))
-        # self.image = pygame.Surface((200,200))
-        # self.image.fill("white")
+        self.image = pygame.transform.scale(self.image, (500, 500))
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 2,luck_y)
-       
+        self.cx = WIDTH / 2
+        self.cy = luck_y
+        self.rect.center = (self.cx, self.cy)
+        self.moving = False
+        self.step = 0
+        self.alpha = 255
+
+    def update(self):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(pygame.mouse.get_pos()):
+                self.moving = True
+
+        if self.moving:
+            self.step += 1
+            self.cy += self.step
+            self.image = pygame.transform.scale(self.image, (round(500 * self.step * 1.01), round(500 * self.step * 1.01)))
+            self.alpha -= self.step * 15
+            self.image.set_alpha(self.alpha)
+            self.rect = self.image.get_rect()
+            self.rect.center = (self.cx, self.cy)
+
+            if self.alpha <= 0:
+                self.__init__()
+
 
 class StartButton(pygame.sprite.Sprite):
     def __init__(self):
