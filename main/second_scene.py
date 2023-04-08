@@ -30,8 +30,8 @@ def init():
     pygame.init()
 
     screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
-    
 
+    pygame.display.set_icon(pygame.image.load('images/icon.png'))
     pygame.display.set_caption("second scene")
 
 init()

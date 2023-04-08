@@ -33,6 +33,8 @@ def init():
     # idk
     pygame.init()
     pygame.display.set_caption('first scene')
+    pygame.display.set_icon(pygame.image.load('images/icon.png'))
+
 
     #font
     font = pygame.font.SysFont('Arial', 20, bold=True)

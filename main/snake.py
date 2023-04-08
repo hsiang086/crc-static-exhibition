@@ -10,6 +10,7 @@ def run():
 
     screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
     pygame.display.set_caption("Snake!")
+    pygame.display.set_icon(pygame.image.load('images/icon.png'))
     clock = pygame.time.Clock()
     global paused
     paused = False

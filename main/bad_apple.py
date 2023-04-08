@@ -24,6 +24,7 @@ def init():
     
     pygame.init()
     pygame.display.set_caption("Bad Apple!!")
+    pygame.display.set_icon(pygame.image.load('images/icon.png'))
     screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
     clock = pygame.time.Clock()
     font_size = 22
@@ -33,7 +34,7 @@ def run():
     global running, font_size
     frame = 0
     while running:
-        clock.tick(30)
+        clock.tick(FPS)
         screen.fill('black')
         if not frame >= len(frame_list):
             ascii_list = frame_list[frame].split('\n')

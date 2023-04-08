@@ -42,6 +42,7 @@ def init():
     
     pygame.init()
     pygame.display.set_caption("third")
+    pygame.display.set_icon(pygame.image.load('images/icon.png'))
     screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
         
     bg_image = pygame.image.load("images/third_scene/bg.png").convert_alpha()

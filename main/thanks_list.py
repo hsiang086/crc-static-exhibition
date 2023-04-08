@@ -22,6 +22,7 @@ def init():
     
     pygame.init()
     pygame.display.set_caption("last")
+    pygame.display.set_icon(pygame.image.load('images/icon.png'))
     screen = pygame.display.set_mode(RES, pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME)
     clock = pygame.time.Clock()
 
